@@ -1,0 +1,74 @@
+<wicket:panel>
+	<div class="projectnamecontainer box4">
+		<div class="boxname">
+			Name:
+		</div>
+		<div class="boxcontent">
+			<div>
+				<span wicket:id="projectname">Project Name</span>
+			</div>
+		</div>
+	</div>
+        <div class="projectnamecontainer box4">
+		<div class="boxcontent">
+			<div>
+                            <span class="label">Default Release: </span><span wicket:id="defaultrelease">Default Release</span>
+			</div>
+		</div>
+                <div class="boxcontent">
+			<div>
+			    <span class="label">Default Build: </span><span wicket:id="defaultbuild">Default Build</span>
+			</div>
+		</div>
+	</div>
+        <div class="clear">
+	</div>
+	<div class="projectdescrioptioncontainer box">
+		<div class="boxname">
+			Description:
+		</div>
+		<div class="boxcontent">
+			<div>
+				<span wicket:id="projectdescription">Project Description</span>
+			</div>
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+        <div class="box">
+		<div class="boxname">
+			<a wicket:id="componentsinfolink"><span wicket:id="componentsinfolinklabel">Components:</span></a>
+		</div>
+		<div class="componentboxcontent">
+			<div class="componentboxinnercontent" wicket:id="componentsinfo">
+				<div wicket:id="componentslist">
+					<div class="component">
+						<span class="label">Name: </span><span wicket:id="componentname">Component Name</span>
+					</div>
+                                        <div class="clear">
+                                        </div>
+					<div class="component">
+						<span class="label">Description: </span><span wicket:id="componentdescription">Component Description</span>
+					</div>
+					<div class="clear">
+                                        </div>
+                                        <div class="component">
+						<span class="label">Code: </span><span wicket:id="componentcode">Component Code</span>
+					</div>
+                                        <div class="clear">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+        <div class="lastupdatedcontainer box4">
+		<div class="boxname">
+			Last Updated:
+		</div>
+		<div class="boxcontent">
+			<div>
+				<span wicket:id="lastupdated">Last Updated</span>
+			</div>
+		</div>
+	</div>
+</wicket:panel>

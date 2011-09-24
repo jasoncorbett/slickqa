@@ -1,0 +1,7 @@
+org.tcrun.slickij.webbase.WebBaseModule
+org.tcrun.slickij.webgroup.automation.AutomationModule
+org.tcrun.slickij.webgroup.dashboards.DashboardsModule
+org.tcrun.slickij.webgroup.plans.TestplanModule
+org.tcrun.slickij.webgroup.reports.ReportsModule
+org.tcrun.slickij.webgroup.testcases.TestcasesModule
+org.tcrun.slickij.webgroup.projects.ProjectsModule

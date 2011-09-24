@@ -1,0 +1,37 @@
+div.wicket-mask-dark {
+	/* from: http://www.robarspages.ca/web-development/css-opacity-for-all-browsers-cross-browser-compatible/ */
+	-moz-opacity: .6;
+	-webkit-opacity: .6;
+	opactiy: .6;
+	filter: alpha(opacity=60);
+	background-color: black;
+}
+
+div.wicket-modal div.w_caption {
+	font-family: 'Yanone Kaffeesatz', arial, sans-serif;
+	color: white;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#A6000D), to(#650207));
+	background: -moz-linear-gradient(#A6000D, #650207);
+	background: linear-gradient(#A6000D, #650207);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#a6000d', endColorstr='#650207');
+	font-size: .25in;
+	font-weight: normal;
+	margin: 0px;
+	padding: 1px;
+	text-shadow: 1px 1px 0 #CCC,
+	             2px 2px 0 #444,
+	             3px 3px 0 #444,
+	             4px 4px 0 #444;
+}
+
+div.wicket-modal div.w_top_1 {
+	overflow: auto;
+}
+
+div.wicket-modal div.w_content_2 {
+	background: #1b1b1a;
+}
+
+div.wicket-modal div.w_content_3 {
+	border: 1px solid #1b1b1a;
+}

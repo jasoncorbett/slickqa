@@ -1,0 +1,31 @@
+
+.file-button {
+	width: .9in;
+	padding-bottom: .1in;
+	margin-right: .1in;
+	margin-bottom: .1in;
+	cursor: pointer;
+	cursor: hand;
+	word-wrap: break-word;
+}
+
+.file-button:hover {
+	font-weight: bolder;
+}
+
+.file-button img {
+	width: .8in;
+	height: .8in;
+	margin-left: .05in;
+}
+
+#files-button-container {
+	float: left;
+	width: 1.3in;
+}
+
+#files-display-container {
+	border-left: 1px solid white;
+	margin-left: 1.3in;
+	padding-left: .1in;
+}

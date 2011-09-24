@@ -1,0 +1,210 @@
+body {
+	background: black;
+}
+
+#titlebar {
+	color: white;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#A6000D), to(#650207));
+	background: -moz-linear-gradient(#A6000D, #650207);
+	background: linear-gradient(#A6000D, #650207);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#A6000D', endColorstr='#650207');
+}
+
+#useractions a:link {
+	color: white;
+}
+
+#useractions a:visited {
+	color: white;
+}
+
+#useractions a:hover {
+	color: white;
+}
+
+#inbetween {
+	color: white;
+}
+
+.toolbar {
+	color: #dddddd;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#4f4f4f), to(#2c2c2c));
+	background: -moz-linear-gradient(#4f4f4f, #2c2c2c);
+	background: linear-gradient(#4f4f4f, #2c2c2c);
+	border-color: #404040;
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#4f4f4f', endColorstr='#2c2c2c');
+}
+
+.mainnavigation {
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#424242), to(#252525));
+	background: -moz-linear-gradient(#424242, #252525);
+	background: linear-gradient(#424242, #252525);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#424242', endColorstr='#252525');
+	border-color: #1e1e1e;
+}
+
+.mainnavigation a:link {
+	color: #dddddd;
+}
+
+.mainnavigation a:visited {
+	color: #dddddd;
+}
+
+.mainnavigation a:hover {
+	color: white;
+}
+
+.mainnavigation li {
+	border-right-color: #2a2a2a;
+}
+
+.toolbarselected {
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#2b2b2b), to(#1a1a1a));
+	background: -moz-linear-gradient(#2b2b2b, #1a1a1a);
+	background: linear-gradient(#2b2b2b, #1a1a1a);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#2b2b2b', endColorstr='#1a1a1a');
+}
+
+.beforemain {
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#2c2c2c), to(#1b1b1a));
+	background: -moz-linear-gradient(#2c2c2c, #1b1b1a);
+	background: linear-gradient(#2c2c2c, #1b1b1a);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#2c2c2c', endColorstr='#1b1b1a');
+}
+
+.main {
+	background: #1b1b1a;
+	color: #d3d2d2;
+}
+
+.main a:link {
+	color: #dddddd;
+}
+
+.main a:visited {
+	color: #dddddd;
+}
+
+.main a:hover {
+	color: white;
+}
+
+
+.selectedtoolbar {
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#A6000D), to(#650207));
+	background: -moz-linear-gradient(#A6000D, #650207);
+	background: linear-gradient(#A6000D, #650207);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#a6000d', endColorstr='#650207');
+}
+
+.actions {
+	background-color: #8e8e8e;
+	color: white;
+}
+
+.action {
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#A6000D), to(#650207));
+	background: -moz-linear-gradient(#A6000D, #650207);
+	background: linear-gradient(#A6000D, #650207);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#a6000d', endColorstr='#650207');
+}
+
+.button {
+	color: #dddddd;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#4f4f4f), to(#2c2c2c));
+	background: -moz-linear-gradient(#4f4f4f, #2c2c2c);
+	background: linear-gradient(#4f4f4f, #2c2c2c);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#4f4f4f', endColorstr='#2c2c2c');
+	border-color: #404040;
+}
+
+.result-status-PASS {
+	color: #499c6e;
+}
+
+.result-status-BROKENTEST {
+	color: #e99235;
+}
+
+.result-status-NORESULT {
+	color: #9dd0f3;
+}
+
+.result-status-FAIL {
+	color: #a6000d;
+}
+
+.result-status-NOTTESTED {
+	color: #195364;
+}
+
+.result-status-SKIPPED {
+	color: #e2e457;
+}
+
+.result-status-CANCELLED {
+	color: #9235e9;
+}
+
+.box {
+	background: #2f2f2f;
+}
+
+.box3 {
+	background: #2f2f2f;
+}
+
+.box4 {
+	background: #2f2f2f;
+}
+
+.box5 {
+	background: #2f2f2f;
+}
+
+.box6 {
+	background: #2f2f2f;
+}
+
+.box7 {
+	background: #2f2f2f;
+}
+
+.box8 {
+	background: #2f2f2f;
+}
+
+.boxname {
+	border-color: white;
+}
+
+.boxcontent {
+	border-color: white;
+}
+
+.stepname {
+	border-color: white;
+}
+
+.stepresult {
+	border-color: white;
+}
+
+.even {
+}
+
+.odd {
+	color: #ffffc0;
+}
+
+.label {
+	color: #ffffff;
+}
+
+.headers {
+	color: white;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#A6000D), to(#650207));
+	background: -moz-linear-gradient(#A6000D, #650207);
+	background: linear-gradient(#A6000D, #650207);
+}

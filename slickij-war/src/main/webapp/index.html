@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>Slick</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+		<!-- Fonts
+		<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css' />
+		-->
+
+		<!-- Styles -->
+		<!--  Before we compile them with wro
+		<link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="css/colors.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="css/jquery-ui-1.8.11.custom.css" rel="stylesheet" type="text/css" media="screen" />
+		-->
+		<link href='http://fonts.googleapis.com/css?family=Muli:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
+		<link href="css/jquery-ui.custom.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="css/TableTools_JUI.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="compiled/all.css" rel="stylesheet" type="text/css" media="screen" />
+
+		<!-- JQuery -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript" language="javascript">
+		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js" type="text/javascript" language="javascript">
+		</script>
+		<script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js" type="text/javascript" language="javascript">
+		</script>
+		<!-- Underscore is a set of javascript utilities -->
+		<script src="js/underscore-min.js" type="text/javascript" language="javascript">
+		</script>
+
+
+		<!-- JQuery Address http://www.asual.com/jquery/address -->
+		<script src="js/jquery.address.min.js" type="text/javascript" language="javascript">
+		</script>
+
+		<!-- JQuery Routes http://routesjs.com, changed to allow for query parameters -->
+		<script src="js/jquery.routes.custom.js" type="text/javascript" language="javascript">
+		</script>
+
+		<!-- Prettify does code highlighting, like the html highlighting in results -->
+		<script src="js/prettify.js" type="text/javascript" language="javascript">
+		</script>
+
+		<!-- Google chart apis -->
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript">
+			google.load("visualization", "1", {packages:["corechart"]})
+		</script>
+
+		<!-- Datatables -->
+		<script type="text/javascript" src="js/jquery.dataTables.min.js">
+		</script>
+		<script type="text/javascript" src="js/TableTools.min.js">
+		</script>
+
+		<!-- Main Javascript Setup (everything else is a plugin). -->
+		<script src="js/main.js" type="text/javascript" language="javascript">
+		</script>
+
+		<!-- All the javascript in the js/plugin compiled by wro -->
+		<script src="compiled/all.js" type="text/javascript" language="javascript">
+		</script>
+
+		<!-- Final Javascript -->
+		<script src="js/pagestart.js" type="text/javascript" language="javascript">
+		</script>
+	</head>
+	<body>
+		<h2 id="pagetitle">Current Slick Title</h2>
+		<div id="titlebar">
+			<ul id="mainnavigation" class="mainnavigation">
+				<li><a href="#/">S<span class="fakecaps">lick</span> Home</a></li>
+				<li id="actiongroup-dashboards" class="actiongroup"><a id="dashboards"href="javascript:return false;">Dashboards</a></li>
+				<li id="actiongroup-managetests" class="actiongroup"><a id="managetests"href="javascript:return false;">Manage Tests</a></li>
+				<li id="actiongroup-runtests" class="actiongroup"><a id="runtests" href="javascript:return false;">Run Tests</a></li>
+				<li id="actiongroup-reports" class="actiongroup"><a id="reports" href="javascript:return false;">Reports</a></li>
+				<li><a href="dashboards/main">Old Slick</a></li>
+				<li><select id="current-project-select" name="current-project"></select></li>
+			</ul>
+		</div>
+		<div id="actions">
+		</div>
+		<div id="main" class="main">
+			<div id="footer">
+			</div>
+		</div>
+	</body>
+</html>

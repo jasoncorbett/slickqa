@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+	<head>
+		<title>Slick v2.0</title>
+		<wicket:link>
+			<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+			<link href="colors.css" rel="stylesheet" type="text/css" media="screen" />
+		</wicket:link>
+		<link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:regular,bold' rel='stylesheet' type='text/css' />
+		<link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold' rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+		<div id="titlebar">
+			<div id="title">S<span class="fakecaps">lick</span></div>
+			<div id="titlenav">
+				<div id="newslick"><wicket:link><a href="/slickij/index.html">Try out the new (incomplete) version of Slick.</a></wicket:link></div>
+				<ul id="useractions" wicket:id="useractions">
+					<li><a href="#">Login</a></li>
+				</ul>
+				<select wicket:id="projectchoice">
+					<option>Project Name</option>
+				</select>
+			</div>
+			<div class="clear">
+			</div>
+		</div>
+		<div id="inbetween">
+			<div id="subtitle" wicket:id="subtitle">BATS</div>
+			<div id="messagepane1" wicket:id="messagepane1">Environment QA</div>
+			<div id="messagepane2" wicket:id="messagepane2">QS57 Build 687</div>
+			<div class="clear">
+			</div>
+		</div>
+		<wicket:child />
+	</body>
+</html>

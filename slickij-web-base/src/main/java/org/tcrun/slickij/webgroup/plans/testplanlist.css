@@ -1,0 +1,31 @@
+.headerrow {
+	font-size: .25in;
+	font-weight: 600;
+	border-bottom: 1px solid;
+}
+
+.testplanname {
+	width: 1.8in;
+	display: inline-block;
+}
+
+.numbertests {
+	width: 1.5in;
+	display: inline-block;
+}
+
+.createdby {
+	width: 1.8in;
+	display: inline-block;
+}
+
+.lastrunbuild {
+	width: 1.8in;
+	display: inline-block;
+}
+
+.boxcontent {
+	padding-left: .05in;
+	padding-right: .05in;
+	padding-bottom: .1in;
+}

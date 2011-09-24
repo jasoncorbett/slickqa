@@ -1,0 +1,74 @@
+<wicket:panel>
+	<div class="tcnamecontainer box">
+		<div class="boxname">
+			Name:
+		</div>
+		<div class="boxcontent">
+			<div>
+				<span wicket:id="testcasename">Test Case Name</span>
+			</div>
+		</div>
+	</div>
+	<div class="tcpurposecontainer box">
+		<wicket:enclosure child="testcasepurpose">
+			<div wicket:id="purposelabel" class="boxname">
+				Purpose:
+			</div>
+			<div class="boxcontent">
+				<div>
+					<span wicket:id="testcasepurpose">Test Case Purpose</span>
+				</div>
+			</div>
+		</wicket:enclosure>
+	</div>
+	<div class="clear">
+	</div>
+	<div class="box">
+		<div class="boxname">
+			<a wicket:id="stepsinfolink"><span wicket:id="stepsinfolinklabel">Steps:</span></a>
+		</div>
+		<div class="stepboxcontent">
+			<div class="stepboxinnercontent" wicket:id="stepsinfo">
+				<div wicket:id="steplist">
+					<div class="stepname">
+						<span class="label" wicket:id="stepnamelabel">Step 1: </span><span wicket:id="stepname">Step Name</span>
+					</div>
+					<div class="stepresult">
+						<span class="label">Expected Result: </span><span wicket:id="stepresult">Step Result</span>
+					</div>
+					<div class="clear">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="box">
+		<div class="boxname">
+			<a wicket:id="automationinfolink"><span wicket:id="automationinfolinklabel">Automation Info</span></a>
+		</div>
+		<div class="boxcontent">
+			<div wicket:id="automationinfo">
+				<span class="label">Automated: </span><span wicket:id="isautomated">Got Automation</span>
+				<br>
+				<span class="label">Automation Tool: </span><span wicket:id="automationtool">Automation Tool</span>
+				<br>
+				<span class="label">Automation ID: </span><span wicket:id="automationid">Automation Id</span>
+			</div>
+		</div>
+	</div>
+	<div class="box">
+		<div class="boxname">
+			<a wicket:id="additionalinfolink"><span wicket:id="additionalinfolinklabel">Additional Info</span></a>
+		</div>
+		<div class="boxcontent">
+			<div wicket:id="additionalinfo">
+				<span class="label">Stability Rating: </span><span wicket:id="stabilityrating">0</span>
+				<br>
+				<span id="tags" class="label">Tags: </span>
+				<wicket:container wicket:id="tagsList">
+					<span wicket:id="testTag">tag</span>
+				</wicket:container>
+			</div>
+		</div>
+	</div>
+</wicket:panel>

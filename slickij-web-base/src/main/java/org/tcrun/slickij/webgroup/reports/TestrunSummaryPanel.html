@@ -1,0 +1,24 @@
+<wicket:head>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" wicket:id="chartscript">
+	</script>
+</wicket:head>
+
+<wicket:panel>
+	<div class="chart" id="chart">
+	</div>
+	<div id="summary">
+		<div class="summaryline" wicket:id="summaryline">
+			<div class="summarylinetitle" wicket:id="summarylinetitle"></div>
+			<div class="summarylinenumber" wicket:id="summarylinenumber"></div>
+			<div class="summarylinepercent" wicket:id="summarylinepercent"></div>
+		</div>
+		<hr />
+		<div class="summaryline">
+			<div class="summarylinetitle">TOTAL</div>
+			<div class="summarylinenumber" wicket:id="totalsummarylinenumber"></div>
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+</wicket:panel>

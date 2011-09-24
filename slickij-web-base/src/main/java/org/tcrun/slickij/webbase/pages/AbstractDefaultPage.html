@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+  <head>
+  	<wicket:head>
+		<wicket:link>
+			<link href="jquery-ui-1.8.11.custom.css" rel="stylesheet" type="text/css" media="screen" />
+		</wicket:link>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript" language="javascript">
+		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js" type="text/javascript" language="javascript">
+		</script>
+		<script type="text/javascript" language="javascript">
+			$(document).ready(function () {
+				$(".actions").hide();
+				$("#mainnavigation a").click(function () {
+					var showid="#" + $(this).attr("id") + "pane";
+					if($(showid).is(":visible"))
+					{
+						$(showid).hide(250);
+					} else
+					{
+						$(".actions").hide();
+						$(showid).show(250);
+					}
+				})
+			})
+		</script>
+  	</wicket:head>
+  </head>
+  <body>
+  <wicket:extend>
+	  <div id="toolbar" class="toolbar">
+			<ul id="mainnavigation" class="mainnavigation">
+				<wicket:container wicket:id="mainnavigation">
+					<li wicket:id="groupli"><a wicket:id="grouplink" href="javascript:return false;">Dashboards</a></li>
+				</wicket:container>
+			</ul>
+			<div class="clear">
+			</div>
+		</div>
+		<wicket:container wicket:id="grouppane">
+			<div wicket:id="grouppanediv" class="actions">
+				<wicket:container wicket:id="actions">
+					<div class="action" wicket:id="action">
+						<img wicket:id="actionimg" />
+						<span wicket:id="actionname" class="actionname">Action Name</span>
+					</div>
+				</wicket:container>
+				<div class="clear">
+				</div>
+			</div>
+		</wicket:container>
+	<div id="beforemain" class="beforemain">
+	</div>
+	<div id="main" class="main">
+		<wicket:child />
+		<div id="footer">
+		</div>
+	</div>
+  </wicket:extend>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<wicket:head>
+	<wicket:link>
+		<link href="livestatusreport.css" rel="stylesheet" type="text/css" media="screen" />
+	</wicket:link>
+</wicket:head>
+
+<wicket:panel>
+	<div class="box">
+		<h2 class="boxname">Live Automation Host Status</h2>
+                <div class="hostsummary" wicket:id="hostsummary"></div>
+		<div class="boxcontent">
+			<p class="headerrow">
+				<span class="hostname">Host Name</span>
+				<span class="lastcheckin">Last Check-in</span>
+				<span class="currenttest">Current Test</span>
+				<span class="currentrun">Current Run</span>
+				<span class="runtime">Runtime</span>
+				<span class="resaction">Actions</span>
+			</p>
+			<p wicket:id="hoststatusline">
+				<span class="hostname" wicket:id="hostname"></span>
+				<span class="lastcheckin" wicket:id="lastcheckin"></span>
+				<span class="currenttest" wicket:id="currenttest"></span>
+				<a class="currentrun" wicket:id="currentrun"><span wicket:id="currentrunlinktext"></span></a>
+				<span class="runtime" wicket:id="runtime"></span>
+				<span class="resaction">
+					<a wicket:id="unassignlink">Unassign</a>
+					<a wicket:id="cancellink">Cancel</a>
+				</span>
+			</p>
+		</div>
+	</div>
+</wicket:panel>
