@@ -2,10 +2,10 @@
 
 USERNAME="tcrunij"
 PASSWORD="f00b@r"
-SLICKURL="http://localhost:8080/slickij"
+SLICKURL="http://localhost:8080/slickij-war"
 MONGO="mongo localhost/slickij"
 
-POST="curl -s --digest -u ${USERNAME}:${PASSWORD} -X POST"
+POST="curl -s -X POST"
 
 
 PROJECT=`$POST -H 'Content-Type: application/json' -d '{"name": "Slickij Developer Project", "description": "A Project to be used by slickij developers to test features.", "tags": ["basics", "api", "negative"], "automationTools": ["tcrunij", "tcrun", "Shell Script"], "components": [{"name": "Data Extensions", "code": "dataext"}]}' "${SLICKURL}/api/projects" |python -m json.tool |grep '^    .id' |perl -pi -e 's/.*"([0-9a-f]+)".*/$1/'`
