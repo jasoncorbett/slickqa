@@ -16,33 +16,11 @@
 		<link href="css/jquery-ui-1.8.11.custom.css" rel="stylesheet" type="text/css" media="screen" />
 		-->
 		<link href='http://fonts.googleapis.com/css?family=Muli:300,400,300italic,400italic' rel='stylesheet' type='text/css'>
-		<link href="css/jquery-ui.custom.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="css/TableTools_JUI.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="compiled/all.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="compiled/libraries.css" rel="stylesheet" type="text/css" media="screen" />
+		<link href="compiled/style.css" rel="stylesheet" type="text/css" media="screen" />
 
-		<!-- JQuery -->
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript" language="javascript">
-		</script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js" type="text/javascript" language="javascript">
-		</script>
-		<script src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js" type="text/javascript" language="javascript">
-		</script>
-		<!-- Underscore is a set of javascript utilities -->
-		<script src="js/underscore-min.js" type="text/javascript" language="javascript">
-		</script>
-
-
-		<!-- JQuery Address http://www.asual.com/jquery/address -->
-		<script src="js/jquery.address.min.js" type="text/javascript" language="javascript">
-		</script>
-
-		<!-- JQuery Routes http://routesjs.com, changed to allow for query parameters -->
-		<script src="js/jquery.routes.custom.js" type="text/javascript" language="javascript">
-		</script>
-
-		<!-- Prettify does code highlighting, like the html highlighting in results -->
-		<script src="js/prettify.js" type="text/javascript" language="javascript">
-		</script>
+		<!-- All dependent libraries -->
+		<script type="text/javascript" src="compiled/libraries.js"></script>
 
 		<!-- Google chart apis -->
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -50,23 +28,17 @@
 			google.load("visualization", "1", {packages:["corechart"]})
 		</script>
 
-		<!-- Datatables -->
-		<script type="text/javascript" src="js/jquery.dataTables.min.js">
-		</script>
-		<script type="text/javascript" src="js/TableTools.min.js">
-		</script>
-
 		<!-- Main Javascript Setup (everything else is a plugin). -->
 		<script src="js/main.js" type="text/javascript" language="javascript">
 		</script>
 
-		<!-- All the javascript in the js/plugin compiled by wro -->
-		<script src="compiled/all.js" type="text/javascript" language="javascript">
-		</script>
+		<!-- All the javascript in the js/pages compiled by wro -->
+		<script src="compiled/pages.js" type="text/javascript" language="javascript"></script>
+		<!-- All the javascript in the js/views compiled by wro -->
+		<script src="compiled/views.js" type="text/javascript" language="javascript"></script>
 
 		<!-- Final Javascript -->
-		<script src="js/pagestart.js" type="text/javascript" language="javascript">
-		</script>
+		<script src="js/pagestart.js" type="text/javascript" language="javascript"></script>
 	</head>
 	<body>
 		<h2 id="pagetitle">Current Slick Title</h2>
