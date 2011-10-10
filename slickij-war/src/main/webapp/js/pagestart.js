@@ -33,7 +33,7 @@ $(function() {
 				}
 				var onPageChange = function() {
 					$("#main").html("");
-					//$("#main-loading").show();
+					$("#main-loading").show();
 					$(".actions").hide(250);
 					$(".groupselected").removeClass("groupselected");
 					setSlickTitle(" ");
