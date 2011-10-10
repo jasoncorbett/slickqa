@@ -53,7 +53,6 @@ Pages.group("reports").page("testrundetail")
 								   "<span class=\"result-status-" + result["status"].replace("_","") + "\">" + result["status"].replace("_", " ") + 
 								   "<img class=\"result-status-image\" src=\"images/status-" + result["status"] + ".png\" /></span>"];
 	}
-	$("#data-loading").hide();
 	var datatable = $("#trdetailtable").dataTable({aaData: tbldata,
 	                                               aoColumns: [
 	                                                   {"sTitle": "Test Name", "sWidth": "55%", "sType": "html"},

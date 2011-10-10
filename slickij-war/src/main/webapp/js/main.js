@@ -276,7 +276,6 @@ PageInstance.prototype.displayIfReady = function() {
 			displayMethod.call(this, []);
 		}
 		$("#main-loading").hide(250);
-		$("#main").show(250);
 	}
 }
 
