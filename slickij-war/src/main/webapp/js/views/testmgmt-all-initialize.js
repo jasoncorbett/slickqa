@@ -3,7 +3,7 @@
  * testmgmt-all-initialize.js
  * ---------------------------------------------------------------------------
  */
-
+/*
 TestMgmtView = function(){
 	for(view in TestMgmtView.views) {
 		this[view] = TestMgmtView.views[view];
@@ -18,7 +18,7 @@ TestMgmtView.instance = function() {
 	$("#actiongroup-testmgmt").addClass("groupselected");
 	$("#testmgmt-pane").show();
 */
-	if(!TestMgmtView._instance) {
+/*	if(!TestMgmtView._instance) {
 		TestMgmtView._instance = new TestMgmtView();
 	}
 	return TestMgmtView._instance;
@@ -37,3 +37,4 @@ Routes["/testmgmt/addtest"] = comingSoon;
 addNavigationMenu({"group": "Manage Tests", "action": "Find Tests", "url": "#/testmgmt/findtests"});
 Routes["/testmgmt/findtests"] = comingSoon;
 
+*/

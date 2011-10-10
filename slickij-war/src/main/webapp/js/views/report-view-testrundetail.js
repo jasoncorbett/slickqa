@@ -1,70 +1,77 @@
 
-Routes["/reports/testrundetail/:testrunid"] = "ReportsView#testrundetail";
-ReportsView.views.testrundetail = function(options) {
-		grabTemplate("report-view-testrundetail-testruntable", function(detailtable) {
-			setSlickTitle("Report - Detailed Testrun Results");
-			$.tmpl(detailtable, options).appendTo("#main");
-			$("#trdetailtable").addClass("slick-event-result-load").bind("slick-data-result-load", function(evt, results) {
-				var tbldata = [];
-				for(i in results) {
-					result = results[i];
-					tbldata[tbldata.length] = ["<span id=\"" + result.id + "\" class=\"clickable-individual-result\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>", 
-											   safeReference(result, "component.name", ""),
-											   new Date(result.recorded),
-					                           safeReference(result, "testcase.automationId", ""),
-											   safeReference(result, "reason", ""),
-											   safeReference(result, "hostname", ""),
-											   "<span class=\"result-status-" + result["status"].replace("_","") + "\">" + result["status"].replace("_", " ") + 
-											   "<img class=\"result-status-image\" src=\"images/status-" + result["status"] + ".png\" /></span>"];
-				}
-				$("#data-loading").hide();
-				var datatable = $("#trdetailtable").dataTable({aaData: tbldata,
-				                                               aoColumns: [
-				                                                   {"sTitle": "Test Name", "sWidth": "55%", "sType": "html"},
-																   {"sTitle": "Component", "sWidth": "10%"},
-				                                                   {"sTitle": "Time Reported", "sWidth": "25%"},
-				                                                   {"sTitle": "Automation ID", "bVisible": false},
-				                                                   {"sTitle": "Reason", "bVisible": false},
-				                                                   {"sTitle": "Hostname", "bVisible": false},
-				                                                   {"sTitle": "Result Status", "sWidth": "10%", "sType": "html", "sClass": "right-justify"}],
-				                                               bJQueryUI: true,
-				                                               bAutoWidth: false,
-				                                               bDeferRender: true,
-				                                               bPaginate: false,
-				                                               sDom: '<"H"lfrT<"clear">>tS<"F"ip>',
-				                                               sScrollY: "" + ($(document).height() - (5 * $("#pagetitle").height()) -  (4 * $("#titlebar").height())) + "px",
-				                                               oTableTools: { "sSwfPath": "media/swf/copy_cvs_xls_pdf.swf" }
-				});
-				datatable.fnSort([[2, "desc"]]);
-			});
+Pages.group("reports").page("testrundetail")
+.addRequiredTemplate("report-view-testrundetail-testruntable")
+.addRequiredData("results", function() { 
+	// we must examine url options before determining which data to load
+	if(this.pageParameters.query.only) {
+		return SlickUrlBuilder.result.getResultsByTestrun(this.pageParameters.positional[0], {"status": this.pageParameters.query.only});
+	} else if(this.pageParameters.query.includepass) {
+		return SlickUrlBuilder.result.getResultsByTestrun(this.pageParameters.positional[0]);
+	} else {
+		return SlickUrlBuilder.result.getResultsByTestrun(this.pageParameters.positional[0], {"excludestatus": "PASS"});
+	}
+})
+.addRequiredData("testrun", function() {
+	return SlickUrlBuilder.testrun.getTestrun(this.pageParameters.positional[0]);
+})
+.addDataRecievedListener(function(key, value) {
+	if(key == "testrun" && value.testplanId) {
+		this.addRequiredData("testplan", SlickUrlBuilder.testplan.getTestplan(value.testplanId));
+	}
+})
+.addDisplayMethod(function() {
+	setSlickTitle("Report - Detailed Testrun Results");
 
-			$("#subtitle1").addClass("slick-event-testrun-load").bind("slick-data-testrun-load", function(evt, testrun) {
-				if(testrun.testplanId) {
-					$(this).addClass("slick-event-testplan-load").bind("slick-data-testplan-load", function(evt, testplan) {
-						$(this).text("Testrun for Plan: " + testplan.name);
-					});
-					Slick.testplan.getTestplan(testrun.testplanId);
-				} else {
-					$(this).text(testrun.name);
-				}
-				var buildname = "";
-				if(testrun.release) {
-					buildname = testrun.release.name + " ";
-				}
-				if(testrun.build) {
-					buildname = buildname + "Build " + testrun.build.name;
-				}
-				$("#subtitle2").text(buildname);
-			});
-			Slick.testrun.getTestrun(options.testrunid);
-			if(options.only) {
-				Slick.result.getResultsByTestrun(options.testrunid, {"status": options.only});
-			} else if(options.includepass) {
-				Slick.result.getResultsByTestrun(options.testrunid);
-			} else { 
-				Slick.result.getResultsByTestrun(options.testrunid, {"excludestatus": "PASS"});
-			}
-		});
-}
+	if(this.data.testplan) {
+		$("#subtitle1").text(this.data.testplan.name);
+	} else {
+		$("#subtitle1").text(this.data.testrun.name);
+	}
+	var buildname = "";
+	if(this.data.testrun.release) {
+		buildname = this.data.testrun.release.name + " ";
+	}
+	if(this.data.testrun.build) {
+		buildname = buildname + "Build " + this.data.testrun.build.name;
+	}
+	$("#subtitle2").text(buildname);
+
+
+	var detailtable = this.templates["report-view-testrundetail-testruntable"];
+	var results = this.data["results"];
+	var tbldata = [];
+
+	$.tmpl(detailtable, {"testrunid": this.pageParameters.positional[0], "includepass": this.pageParameters.query.includepass}).appendTo("#main");
+	for(i in results) {
+		result = results[i];
+		tbldata[tbldata.length] = ["<span id=\"" + result.id + "\" class=\"clickable-individual-result\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>", 
+								   safeReference(result, "component.name", ""),
+								   new Date(result.recorded),
+		                           safeReference(result, "testcase.automationId", ""),
+								   safeReference(result, "reason", ""),
+								   safeReference(result, "hostname", ""),
+								   "<span class=\"result-status-" + result["status"].replace("_","") + "\">" + result["status"].replace("_", " ") + 
+								   "<img class=\"result-status-image\" src=\"images/status-" + result["status"] + ".png\" /></span>"];
+	}
+	$("#data-loading").hide();
+	var datatable = $("#trdetailtable").dataTable({aaData: tbldata,
+	                                               aoColumns: [
+	                                                   {"sTitle": "Test Name", "sWidth": "55%", "sType": "html"},
+													   {"sTitle": "Component", "sWidth": "10%"},
+	                                                   {"sTitle": "Time Reported", "sWidth": "25%"},
+	                                                   {"sTitle": "Automation ID", "bVisible": false},
+	                                                   {"sTitle": "Reason", "bVisible": false},
+	                                                   {"sTitle": "Hostname", "bVisible": false},
+	                                                   {"sTitle": "Result Status", "sWidth": "10%", "sType": "html", "sClass": "right-justify"}],
+	                                               bJQueryUI: true,
+	                                               bAutoWidth: false,
+	                                               bDeferRender: true,
+	                                               bPaginate: false,
+	                                               sDom: '<"H"lfrT<"clear">>tS<"F"ip>',
+	                                               sScrollY: "" + ($(document).height() - (5 * $("#pagetitle").height()) -  (4 * $("#titlebar").height())) + "px",
+	                                               oTableTools: {"sSwfPath": "media/swf/copy_cvs_xls_pdf.swf"}
+	});
+	datatable.fnSort([[2, "desc"]]);
+});
 
 
