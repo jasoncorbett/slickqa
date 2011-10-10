@@ -32,7 +32,7 @@ $(function() {
 					}
 				}
 				var onPageChange = function() {
-					$("#main").html("").hide();
+					$("#main").html("");
 					//$("#main-loading").show();
 					$(".actions").hide(250);
 					$(".groupselected").removeClass("groupselected");
