@@ -443,7 +443,7 @@ var Pages = {
 function grabTemplate(templatename, callback) {
 	var template = $.template(templatename);
 	if(template.length) {
-		callback(template);
+		callback(template, templatename);
 		return;
 	}
 	$.ajax({
