@@ -233,15 +233,15 @@ public class TestplanResourceImpl implements TestplanResource
 			{
 				for(ConfigurationOverride override : parameters.getOverrides())
 				{
-					for(DataDrivenPropertyType ddtype : test.getDataDriven())
-					{
-						if(override.getKey().equals(ddtype.getName()))
-						{
+					//for(DataDrivenPropertyType ddtype : test.getDataDriven())
+					//{
+						//if(override.getKey().equals(ddtype.getName()))
+						//{
 							if(result.getConfigurationOverride() == null)
 								result.setConfigurationOverride(new ArrayList<ConfigurationOverride>());
 							result.getConfigurationOverride().add(override);
-						}
-					}
+						//}
+					//}
 				}
 			}
 			if(parameters.getConfig() != null)
