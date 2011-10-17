@@ -276,6 +276,7 @@ PageInstance.prototype.displayIfReady = function() {
 			displayMethod.call(this, []);
 		}
 		$("#main-loading").hide(250);
+		$("[title]").tooltip({'events': {'def': "mouseover,mouseout click"}});
 	}
 }
 

@@ -1,0 +1,16 @@
+/* 
+    Document   : tooltip
+    Created on : Oct 17, 2011, 11:28:49 AM
+    Author     : jcorbett
+*/
+
+
+.tooltip {
+	display:none;
+	background:transparent url(../../images/tooltip-black-arrow.png);
+	font-size:12px;
+	height:70px;
+	width:160px;
+	padding:25px;
+	color:#fff;	
+}

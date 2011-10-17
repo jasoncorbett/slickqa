@@ -50,6 +50,7 @@ Pages.group("reports").page("testrundetail")
 		                           safeReference(result, "testcase.automationId", ""),
 								   safeReference(result, "reason", ""),
 								   safeReference(result, "hostname", ""),
+								   "<img src=\"images/reschedule.png\" id=\"reschedule-" + result.id + "\" class=\"reschedule-result\" alt=\"Reschedule Result\" title=\"Reschedule Result\" />",
 								   "<span class=\"result-status-" + result["status"].replace("_","") + "\">" + result["status"].replace("_", " ") + 
 								   "<img class=\"result-status-image\" src=\"images/status-" + result["status"] + ".png\" /></span>"];
 	}
@@ -57,10 +58,11 @@ Pages.group("reports").page("testrundetail")
 	                                               aoColumns: [
 	                                                   {"sTitle": "Test Name", "sWidth": "55%", "sType": "html"},
 													   {"sTitle": "Component", "sWidth": "10%"},
-	                                                   {"sTitle": "Time Reported", "sWidth": "25%"},
+	                                                   {"sTitle": "Time Reported", "sWidth": "20%"},
 	                                                   {"sTitle": "Automation ID", "bVisible": false},
 	                                                   {"sTitle": "Reason", "bVisible": false},
 	                                                   {"sTitle": "Hostname", "bVisible": false},
+													   {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "right-justify"},
 	                                                   {"sTitle": "Result Status", "sWidth": "10%", "sType": "html", "sClass": "right-justify"}],
 	                                               bJQueryUI: true,
 	                                               bAutoWidth: false,
@@ -71,6 +73,20 @@ Pages.group("reports").page("testrundetail")
 	                                               oTableTools: {"sSwfPath": "media/swf/copy_cvs_xls_pdf.swf"}
 	});
 	datatable.fnSort([[2, "desc"]]);
+
+	$(".reschedule-result").live("click", function() {
+		var resultid = $(this).attr("id");
+		resultid = resultid.replace("reschedule-","");
+		$.ajax({url: "api/results/" + resultid + "/reschedule",
+		        type: "POST",
+		        dataType: "json",
+				success: function(data) {
+					// TODO: figure out how to change the row
+					$.jGrowl("Successfully rescheduled result.");
+					window.onPageChange();
+				}
+		});
+	});
 });
 
 

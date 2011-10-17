@@ -31,7 +31,7 @@ $(function() {
 						
 					}
 				}
-				var onPageChange = function() {
+				window.onPageChange = function() {
 					$("#main").html("");
 					$("#main-loading").show();
 					$(".actions").hide(250);
@@ -40,7 +40,7 @@ $(function() {
 					Pages.currentPage = null;
 					Pages.getCurrentPage(); // this kicks it all off
 				}
-				$.address.change(onPageChange);
+				$.address.change(window.onPageChange);
 
 				// Load the projects, needs to be done before execution of the page continues.
 				grabTemplate("main-project-dropdown", function(template) {
@@ -61,7 +61,7 @@ $(function() {
 							$("#current-project-select").change(function(evt) {
 								$(".slick-event-current-project-change").trigger("slick-data-current-project-change", getCurrentProject());
 							});
-							onPageChange();
+							window.onPageChange();
 						}
 					});
 				});
