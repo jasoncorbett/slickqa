@@ -57,6 +57,11 @@ public interface ResultResource
 	@POST
 	public Result cancelResult(@PathParam("resultid") String resultid, String reason);
 
+	@Path("/{resultid}/reschedule")
+	@Produces(MediaType.APPLICATION_JSON)
+	@POST
+	public Result rescheduleResult(@PathParam("resultid") String resultid);
+
 	@Path("/{resultid}/log")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

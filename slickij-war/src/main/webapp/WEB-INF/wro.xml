@@ -2,8 +2,17 @@
 <groups xmlns="http://www.isdc.ro/wro"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.isdc.ro/wro wro.xsd">
-	<group name="all">
-		<css>/css/dynamic/**.css</css>
-		<js>/js/dynamic/**.js</js>
+	<group name="libraries">
+		<css>/css/libraries/**.css</css>
+		<js>/js/libraries/**.js</js>
+	</group>
+	<group name="pages">
+		<js>/js/pages/**.js</js>
+	</group>
+	<group name="views">
+		<js>/js/views/**.js</js>
+	</group>
+	<group name="style">
+		<css>/css/style/**.css</css>
 	</group>
 </groups>

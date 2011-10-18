@@ -121,7 +121,7 @@ body {
 	background-image: none;
 }
 
-#data-loading {
+#main-loading {
 	text-align: center;
 	font-size: 3em;
 	font-weight: bolder;
@@ -129,7 +129,7 @@ body {
 	margin: .3in;
 }
 
-#data-loading img {
+#main-loading img {
 	margin-right: .1in;
 }
 

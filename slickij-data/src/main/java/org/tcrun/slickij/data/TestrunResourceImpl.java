@@ -20,6 +20,8 @@ import org.tcrun.slickij.api.data.InvalidDataError;
 import org.tcrun.slickij.api.data.Project;
 import org.tcrun.slickij.api.data.Release;
 import org.tcrun.slickij.api.data.Result;
+import org.tcrun.slickij.api.data.ResultStatus;
+import org.tcrun.slickij.api.data.RunStatus;
 import org.tcrun.slickij.api.data.Testrun;
 import org.tcrun.slickij.api.data.TestRunSummary;
 import org.tcrun.slickij.api.data.dao.ConfigurationDAO;
@@ -318,5 +320,13 @@ public class TestrunResourceImpl implements TestrunResource
 		m_testrunDAO.save(testrun);
 		return testrun.getExtensions();
 		
+	}
+
+	@Override
+	public TestRunSummary rescheduleResults(String testrunId, ResultStatus status)
+	{
+		Testrun run = getTestrun(testrunId);
+		m_testrunDAO.rescheduleByStatus(run.getObjectId(), status);
+		return getTestrunSummary(testrunId);
 	}
 }

@@ -90,6 +90,10 @@
 			<param-name>postProcessors</param-name>
 			<param-value>cssVariables,yuiCssMin,yuiJsMin</param-value>
 		</init-param>
+		<init-param>
+			<param-name>cacheUpdatePeriod</param-name>
+			<param-value>10</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>WebResourceOptimizer</filter-name>

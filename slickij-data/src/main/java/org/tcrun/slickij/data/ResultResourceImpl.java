@@ -24,6 +24,7 @@ import org.tcrun.slickij.api.data.Release;
 import org.tcrun.slickij.api.data.Result;
 import org.tcrun.slickij.api.data.ResultStatus;
 import org.tcrun.slickij.api.data.RunStatus;
+import org.tcrun.slickij.api.data.StoredFile;
 import org.tcrun.slickij.api.data.TestRunParameter;
 import org.tcrun.slickij.api.data.Testcase;
 import org.tcrun.slickij.api.data.Testrun;
@@ -129,7 +130,14 @@ public class ResultResourceImpl implements ResultResource
 			if(update.getRunstatus() == null && update.getStatus() != ResultStatus.NO_RESULT)
 				update.setRunstatus(RunStatus.FINISHED);
 			if(update.getRecorded() == null && update.getStatus() != ResultStatus.NO_RESULT)
+			{
 				update.setRecorded(new Date());
+				if(result.getRecorded() != null)
+				{
+					// set the runlength to the difference between the recorded times / 1000 (to get rid of milliseconds).
+					update.setRunlength((int) ((update.getRecorded().getTime() - result.getRecorded().getTime()) / 1000));
+				}
+			}
 		}
 		if(update.getRunstatus() != null)
 		{
@@ -430,4 +438,23 @@ public class ResultResourceImpl implements ResultResource
 
 		return getResult(resultid);
     }
+
+	@Override
+	public Result rescheduleResult(String resultid)
+	{
+		Result res = getResult(resultid);
+		if(res.getRunstatus() == RunStatus.FINISHED)
+		{
+			res.setRunstatus(RunStatus.TO_BE_RUN);
+			res.setLog(new ArrayList<LogEntry>());
+			res.setFiles(new ArrayList<StoredFile>());
+			res.setStatus(ResultStatus.NO_RESULT);
+			res.setHostname(null);
+			res.setReason(null);
+			res.setRecorded(new Date());
+			m_resultDAO.save(res);
+		}
+
+		return res;
+	}
 }

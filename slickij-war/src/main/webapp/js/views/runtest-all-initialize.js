@@ -3,7 +3,7 @@
  * runtest-all-initialize.js
  * ---------------------------------------------------------------------------
  */
-
+/*
 RunTestsView = function(){
 	for(view in RunTestsView.views) {
 		this[view] = RunTestsView.views[view];
@@ -18,7 +18,7 @@ RunTestsView.instance = function() {
 	$("#actiongroup-runtests").addClass("groupselected");
 	$("#runtests-pane").show();
 */
-	if(!RunTestsView._instance) {
+/*	if(!RunTestsView._instance) {
 		RunTestsView._instance = new RunTestsView();
 	}
 	return RunTestsView._instance;
@@ -34,3 +34,4 @@ addNavigationMenu({"group": "Run Tests", "action": "Enter Manual Results", "url"
 Routes["/runtests/manualresults"] = comingSoon;
 
 
+*/

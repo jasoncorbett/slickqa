@@ -2,7 +2,7 @@
 
 USERNAME="tcrunij"
 PASSWORD="f00b@r"
-SLICKURL="http://localhost:8080/slickij-war"
+SLICKURL="http://localhost:8080"
 MONGO="mongo localhost/slickij"
 
 POST="curl -s -X POST"

@@ -1,19 +1,28 @@
 package org.tcrun.slickij.data.dao;
 
+import org.tcrun.slickij.api.data.ResultStatus;
 import org.tcrun.slickij.api.data.TestRunSummary;
 import org.tcrun.slickij.api.data.dao.TestrunDAO;
+import org.tcrun.slickij.api.data.dao.ResultDAO;
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.dao.BasicDAO;
 import com.google.code.morphia.query.Query;
+import com.google.code.morphia.query.UpdateOperations;
+import com.google.code.morphia.query.UpdateResults;
 import com.google.inject.Inject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.bson.BSONObject;
 import org.bson.types.ObjectId;
+import org.tcrun.slickij.api.data.LogEntry;
 import org.tcrun.slickij.api.data.Testrun;
 import org.tcrun.slickij.api.data.Result;
+import org.tcrun.slickij.api.data.RunStatus;
+import org.tcrun.slickij.api.data.StoredFile;
 import org.tcrun.slickij.api.data.Testplan;
 import org.tcrun.slickij.api.data.TestplanReference;
 import org.tcrun.slickij.api.data.TestrunReference;
@@ -24,10 +33,13 @@ import org.tcrun.slickij.api.data.TestrunReference;
  */
 public class TestrunDAOImpl extends BasicDAO<Testrun, ObjectId> implements TestrunDAO
 {
+	private ResultDAO resdao = null;
+
 	@Inject
-	public TestrunDAOImpl(Datastore ds)
+	public TestrunDAOImpl(Datastore ds, ResultDAO resultDAO)
 	{
 		super(Testrun.class, ds);
+		resdao = resultDAO;
 	}
 
 	@Override
@@ -86,5 +98,23 @@ public class TestrunDAOImpl extends BasicDAO<Testrun, ObjectId> implements Testr
 		}
 
 		return summary;
+	}
+
+	@Override
+	public void rescheduleByStatus(ObjectId testrunid, ResultStatus status)
+	{
+			Query<Result> updateQuery = resdao.createQuery();
+			updateQuery.criteria("testrun.testrunId").equal(testrunid);
+			updateQuery.criteria("runstatus").equal(RunStatus.FINISHED);
+			updateQuery.criteria("status").equal(status);
+			UpdateOperations<Result> updateOps = ds.createUpdateOperations(Result.class);
+			updateOps.set("runstatus", RunStatus.TO_BE_RUN);
+			updateOps.set("status", ResultStatus.NO_RESULT);
+			updateOps.set("log", new ArrayList<LogEntry>());
+			updateOps.set("files", new ArrayList<StoredFile>());
+			updateOps.set("recorded", new Date());
+			updateOps.unset("hostname");
+			updateOps.unset("reason");
+			ds.update(updateQuery, updateOps);
 	}
 }
