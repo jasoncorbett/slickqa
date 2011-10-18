@@ -74,6 +74,9 @@ Pages.group("reports").page("testrundetail")
 	});
 	datatable.fnSort([[2, "desc"]]);
 
+});
+
+$(function() {
 	$(".reschedule-result").live("click", function() {
 		var resultid = $(this).attr("id");
 		resultid = resultid.replace("reschedule-","");
@@ -83,10 +86,8 @@ Pages.group("reports").page("testrundetail")
 				success: function(data) {
 					// TODO: figure out how to change the row
 					$.jGrowl("Successfully rescheduled result.");
-					window.onPageChange();
+					$.address.update();
 				}
 		});
 	});
 });
-
-
