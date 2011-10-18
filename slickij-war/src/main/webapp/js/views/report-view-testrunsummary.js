@@ -49,3 +49,24 @@ Pages.group("reports").page("testrunsummary")
 	var chart = new google.visualization.PieChart(document.getElementById("testrunsummary-chart"));
 	chart.draw(data, {is3D: true, backgroundColor: $("#main").css('background-color'), legendTextStyle: {color: $("#main").css('color')}, colors: statusColors});
 });
+
+$(function() {
+	$(".testrun-reschedule-bulk").live("click", function(){
+		$.ajax({
+			url: "api/testruns/" + $(this).attr("id"),
+			type: "POST",
+			dataType: "json",
+			success: function(data) {
+				$("#main").html("");
+				$("#main-loading").show();
+				$(".actions").hide(250);
+				$(".groupselected").removeClass("groupselected");
+				var currentp = Pages.getCurrentPage();
+				$.jGrowl("Successfully rescheduled tests.");
+
+				// this will cause the display functions to rerun
+				currentp.addData("summary", data);
+			}
+		});
+	});
+});
