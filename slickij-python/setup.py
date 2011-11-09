@@ -1,5 +1,6 @@
+#!/usr/bin/env python
 import os
-from setuptools import setup
+from distutils.core import setup
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
@@ -13,7 +14,7 @@ setup(
     license = "Apache License 2.0",
     keywords = "testing qa results automation",
     url = "http://code.google.com/p/slickqa/",
-    packages=['slickqa', 'tests'],
+    py_modules=['slickApi'],
     long_description=read('README'),
     classifiers=[
         "Development Status :: 3 - Alpha",

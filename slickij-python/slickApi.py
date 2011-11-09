@@ -1,12 +1,7 @@
-import optparse
-import sys
-import os
 import json
 import urllib
-import re
 import httplib2
 from datetime import datetime
-from pymongo import *
 
 json_content = {'Content-Type': 'application/json'}
 
@@ -246,26 +241,39 @@ class SlickAsPy(object):
     def delete_testcase(self, testcaseId):
         return self._safe_delete("testcases", testcaseId)
     
-    def get_testcases(self):
-        '''Gets all test cases'''
-        return self._safe_get("testcases")
-    
     def get_matching_testcase(self, testcaseQuery):
         print json.dumps(testcaseQuery, indent=2)
         return self._safe_post(testcaseQuery, "testcases", "query")
     
-    def get_testcase_by_name(self, testcaseName):
-        return self.get_matching_testcase({"name": "testcase that starts with {}".format(testcaseName), 
-            "query": {"className": "org.tcrun.slickij.api.data.testqueries.FieldStartsWith", "fieldName": "name", "fieldValue": testcaseName}})
+    def get_testcases_by_name(self, testcaseName):
+        return self.get_testcases("namecontains", testcaseName)
     
-    def get_test_case(self, testcaseName):
-        testcases = self.get_testcases()
-        for testcase in testcases:
-            isinstance(testcase, dict)
-            tcName = testcase.get("name", None)
-            if tcName == testcaseName:
-                return testcase
-        return False
+    def get_testcases_by_tag(self, tag):
+        return self.get_testcases("tag", tag)
+    
+    def get_testcases_by_author(self, author):
+        return self.get_testcases("author", author)
+    
+    def get_testcases_by_projectId(self, projectId):
+        return self.get_testcases("projectid", projectId)
+    
+    def get_testcases_by_componentId(self, componentId):
+        return self.get_testcases("componentid", componentId)
+    
+    def get_testcases_by_automationId(self, automationId):
+        return self.get_testcases("automationId", automationId)
+    
+    def get_testcases_by_automationKey(self, automationKey):
+        return self.get_testcases("automationKey", automationKey)
+    
+    def get_testcases_by_automationTool(self, automationTool):
+        return self.get_testcases("automationTool", automationTool)
+    
+    def get_testcases_by_automated(self, automated):
+        return self.get_testcases("automated", automated)
+    
+    def get_testcases(self, searchmethod, searchcriteria):
+        return self._safe_get("testcases?{}={}".format(searchmethod, searchcriteria))
     
     def add_test_run(self, name, testPlanId, configurationRef=None, projectRef=None, dateCreated=None, releaseRef=None, 
                      buildRef=None, extensions=None):
@@ -349,6 +357,8 @@ PASS = "PASS"
 FAIL = "FAIL"
 
 def main():    
+    '''using this to test for now. Test suites to come later...'''
+    from pymongo import Connection
     db = Connection()
     db.drop_database("slickij")
     
@@ -372,8 +382,11 @@ def main():
         tp = applePy.add_test_plan("The plan", queries=[{"query": {"className": "org.tcrun.slickij.api.data.testqueries.ContainsTags", 
             "tagnames": ["basics"]},"name": "All basics"}])
         print tp["id"]
-        searchMe = applePy.get_test_case("Fred3")
+        searchMe = applePy.get_testcases_by_name("Fred3")
+        #searchMe = applePy.get_test_case("Fred3")
         print json.dumps(searchMe, indent=2)
+        me = applePy.get_testcases_by_author("me")
+        print json.dumps(me, indent=2)
         testplans = applePy.get_test_plans()
         #print "\nThe current test plans are:\n"
         #print json.dumps(testplans, indent=2)
