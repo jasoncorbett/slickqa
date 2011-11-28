@@ -1,0 +1,4 @@
+Slickqa is a python api for the slickqa test case database.
+It allows you to use all the rest apifunctions in python.
+
+You should be able to install by using python setup.py install
