@@ -69,8 +69,8 @@ public class ScheduleTestplanPanel extends Panel
 			}
 		}
 		
-		final TextField key = new TextField("overridekey");
-		final TextField value = new TextField("overridevalue");
+		final TextField<String> key = new TextField<String>("overridekey", new Model<String>());
+		final TextField<String> value = new TextField<String>("overridevalue", new Model<String>());
 
 		Form<TestplanRunParameters> scheduleTestplanForm = new Form<TestplanRunParameters>("scheduletestplanform", new Model<TestplanRunParameters>(parameters))
 		{
@@ -103,6 +103,8 @@ public class ScheduleTestplanPanel extends Panel
 
 		scheduleTestplanForm.add(environments);
 		scheduleTestplanForm.add(selectBuilds);
+		scheduleTestplanForm.add(key);
+		scheduleTestplanForm.add(value);
 		scheduleTestplanForm.add(new Button("submitscheduletestplanform"));
 		add(scheduleTestplanForm);
 	}
