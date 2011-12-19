@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
@@ -16,6 +17,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.bson.types.ObjectId;
 import org.tcrun.slickij.api.TestplanResource;
 import org.tcrun.slickij.api.data.Build;
+import org.tcrun.slickij.api.data.ConfigurationOverride;
 import org.tcrun.slickij.api.data.Project;
 import org.tcrun.slickij.api.data.Release;
 import org.tcrun.slickij.api.data.Testplan;
@@ -66,12 +68,23 @@ public class ScheduleTestplanPanel extends Panel
 				builds.add(new BuildReleaseReferenceCombo(build.createReference(), release.createReference()));
 			}
 		}
+		
+		final TextField key = new TextField("overridekey");
+		final TextField value = new TextField("overridevalue");
 
 		Form<TestplanRunParameters> scheduleTestplanForm = new Form<TestplanRunParameters>("scheduletestplanform", new Model<TestplanRunParameters>(parameters))
 		{
 			@Override
 			protected void onSubmit()
 			{
+				if(key.getValue() != null && !key.getValue().equals(""))
+				{
+					ConfigurationOverride keyvaluepair = new ConfigurationOverride();
+					keyvaluepair.setKey(key.getValue());
+					keyvaluepair.setValue(value.getValue());
+					parameters.setOverrides(new ArrayList<ConfigurationOverride>());
+					parameters.getOverrides().add(keyvaluepair);
+				}
 				Testrun run = testplanRestResource.runTestPlan(testplanId.toString(), parameters);
 				PageParameters reportParams = new PageParameters();
 				reportParams.add("testrunid", run.getId());
