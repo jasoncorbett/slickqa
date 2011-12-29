@@ -1,5 +1,7 @@
-__author__ = "Chris Saxey"
-__license__ = "Apache License 2.0"
-__version__ = "$Rev$"
+from slickApi import SlickAsPy, SlickError
+from SlickTestResult import SlickTestResult
+from SlickTestRunner import SlickTestRunner
 
-__all__ = ["slickqa"]
+__all__ = ["SlickAsPy", "SlickError", "SlickTestResult", "SlickTestRunner"]
+
+    

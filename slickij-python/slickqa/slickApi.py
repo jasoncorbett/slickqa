@@ -1,15 +1,7 @@
-import optparse
-import sys
-import os
 import json
 import urllib
-import re
 import httplib2
 from datetime import datetime
-from pymongo import *
-
-# this drops the data in the database
-# mongo localhost/slickij --eval 'db.dropDatabase()'
 
 json_content = {'Content-Type': 'application/json'}
 
@@ -249,6 +241,40 @@ class SlickAsPy(object):
     def delete_testcase(self, testcaseId):
         return self._safe_delete("testcases", testcaseId)
     
+    def get_matching_testcase(self, testcaseQuery):
+        print json.dumps(testcaseQuery, indent=2)
+        return self._safe_post(testcaseQuery, "testcases", "query")
+    
+    def get_testcases_by_name(self, testcaseName):
+        return self.get_testcases("namecontains", testcaseName)
+    
+    def get_testcases_by_tag(self, tag):
+        return self.get_testcases("tag", tag)
+    
+    def get_testcases_by_author(self, author):
+        return self.get_testcases("author", author)
+    
+    def get_testcases_by_projectId(self, projectId):
+        return self.get_testcases("projectid", projectId)
+    
+    def get_testcases_by_componentId(self, componentId):
+        return self.get_testcases("componentid", componentId)
+    
+    def get_testcases_by_automationId(self, automationId):
+        return self.get_testcases("automationId", automationId)
+    
+    def get_testcases_by_automationKey(self, automationKey):
+        return self.get_testcases("automationKey", automationKey)
+    
+    def get_testcases_by_automationTool(self, automationTool):
+        return self.get_testcases("automationTool", automationTool)
+    
+    def get_testcases_by_automated(self, automated):
+        return self.get_testcases("automated", automated)
+    
+    def get_testcases(self, searchmethod, searchcriteria):
+        return self._safe_get("testcases?{}={}".format(searchmethod, searchcriteria))
+    
     def add_test_run(self, name, testPlanId, configurationRef=None, projectRef=None, dateCreated=None, releaseRef=None, 
                      buildRef=None, extensions=None):
         if not projectRef:
@@ -277,6 +303,7 @@ class SlickAsPy(object):
             queries = [queries]
         testplan = {'name': planName, 'createdBy': createdBy, 'project': project, 'sharedWith': sharedWith, 'isprivate': private, 
                     'queries': queries, 'extensions': extentions}
+        #print json.dumps(testplan, indent=2)
         return self._safe_post(testplan, "testplans")
     
     def update_test_plan(self, testplan):
@@ -319,17 +346,23 @@ class SlickAsPy(object):
         if not buildRef:
             buildRef = self._get_current_build_ref()
         result = {"testrun": self._get_test_run_ref(testrunRef), "config": configRef, "configurationOverride": configOverride, 
-                  "testcase": self._get_test_case_ref(testcase), "recorded": date, "status": resultStatus}
+                  "testcase": self._get_test_case_ref(testcase), "recorded": date, "status": resultStatus, "project": projectRef, 
+                  "release": releaseRef, "build": buildRef }
         return self._safe_post(result, "results")
     
 class SlickError(Exception):
     pass
-    
+
+PASS = "PASS"
+FAIL = "FAIL"
+
 def main():    
+    '''using this to test for now. Test suites to come later...'''
+    from pymongo import Connection
     db = Connection()
     db.drop_database("slickij")
     
-    applePy = SlickAsPy()
+    applePy = SlickAsPy("http://localhost:8080/api")
     slick_project = applePy.add_project("Slickij Developer Project", "A Project to be used by slickij developers to test features.",
                                       ["basics", "api", "affirmative"], ["tcrunij", "tcrun", "Shell Script", "python unittest"], 
                                       [{"name": "Data Extensions", "code": "dataext"}])
@@ -341,46 +374,38 @@ def main():
     applePy.set_default_build(slick_build["id"])
     print slick_project['id']
     try:
-        tc = applePy.add_testcase("Fred", applePy._get_current_project_ref(), "To do something awesome!", "Apples, pie crust, and sugar", 
-                 [{"name": "step name?", "expectedResult": "this is what should happen"}], "me", tags=["tasty", "hairy", "basics"])
-        #oldTp = applePy.get_test_plan_by_id("4e9892c2ee16b0e42f48103a")
-        #print "Here is a good test plan:"
-        #print json.dumps(oldTp, indent=2) 
-        #print ""
+        tcList = []
+        for i in range(10):
+            tcList.append(applePy.add_testcase("Fred{}".format(i), applePy._get_current_project_ref(), "To do something awesome!", 
+                "Apples, pie crust, and sugar", [{"name": "step name{}".format(i), "expectedResult": "this is what should happen"}],
+                "me", tags=["tasty", "hairy", "basics"]))
         tp = applePy.add_test_plan("The plan", queries=[{"query": {"className": "org.tcrun.slickij.api.data.testqueries.ContainsTags", 
             "tagnames": ["basics"]},"name": "All basics"}])
         print tp["id"]
+        searchMe = applePy.get_testcases_by_name("Fred3")
+        #searchMe = applePy.get_test_case("Fred3")
+        print json.dumps(searchMe, indent=2)
+        me = applePy.get_testcases_by_author("me")
+        print json.dumps(me, indent=2)
         testplans = applePy.get_test_plans()
-        print "\nThe current test plans are:\n"
-        print json.dumps(testplans, indent=2)
+        #print "\nThe current test plans are:\n"
+        #print json.dumps(testplans, indent=2)
         testrun = applePy.add_test_run("testrun{}".format(datetime.now().isoformat()), tp["id"])
-        print "\nThe test run is this:"
-        print json.dumps(testrun, indent=2)
-        
-        result = applePy.add_result(testrun, tc, datetime.now().isoformat(), "PASS", "FINISHED", "just because")
-        print "Here is the result to be added:"
-        print json.dumps(result, indent=2)
+        #print "\nThe test run is this:"
+        #print json.dumps(testrun, indent=2)
+        p = PASS
+        for tc in tcList:
+            result = applePy.add_result(testrun, tc, datetime.now().isoformat(), p, "FINISHED", "just because")
+            #print "Here is the result to be added:"
+            #print json.dumps(result, indent=2)
+            if p == PASS:
+                p = FAIL
+            else:
+                p = PASS
         
     except SlickError as slickE:
         print slickE
-        
-    #for k,v in project.iteritems():
-        #print '{}: {}'.format(k, v) 
-    #release = applePy.add_release("4.0.0")
-    #applePy.add_build("311")
-    #result = applePy.add_testcase("Fred", applePy._get_current_project_ref(), "To do something awesome!", "Apples, pie crust, and sugar", 
-    #                              [{"name": "step name?", "expectedResult": "this is what should happen"}], "me", tags=["tasty", "hairy", "basic"])
-    #print result
-    #applePy.delete_testcase("4e71230f0985b0e4bb2ac083")
-    
-    #print "cleaning up"
-    #applePy.delete_build(applePy.current_build['id'])
-    #applePy.delete_release(release['id'])
-    #releases = applePy.get_releases()
-    #for r in releases:
-        #applePy.delete_release(r['id'])
-    #applePy.delete_release(release)
-        
+                
 
 if __name__ == "__main__":
     main()
