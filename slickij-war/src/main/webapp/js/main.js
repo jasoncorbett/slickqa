@@ -479,6 +479,25 @@ function safeReference(obj, ref, def) {
 	return context;
 }
 
+function getDuration(start, end) {
+    if (end == 0) {
+        return "";
+    } else { 
+        var duration = start - end;
+        var seconds=((duration/1000)%60).toFixed(0);;
+        var minutes=((duration/(1000*60))%60).toFixed(0);
+        var hours=((duration/(1000*60*60))%24).toFixed(0);
+        duration = "";
+        if (hours != 0) {
+            duration = duration + hours + " hours, "; }
+        if (minutes!= 0) {
+            duration = duration + minutes + " minutes, "; }
+        if (seconds != 0) {
+            duration = duration + seconds + " seconds"; }
+        return duration;
+    }
+}
+
 /**
  * Set the title of the page, and the title element in the page.
  * 

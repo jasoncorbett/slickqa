@@ -44,25 +44,26 @@ Pages.group("reports").page("testrundetail")
 	$.tmpl(detailtable, {"testrunid": this.pageParameters.positional[0], "includepass": this.pageParameters.query.includepass}).appendTo("#main");
 	for(i in results) {
 		result = results[i];
-		tbldata[tbldata.length] = ["<span id=\"" + result.id + "\" class=\"clickable-individual-result\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>", 
-								   safeReference(result, "component.name", ""),
-								   new Date(result.recorded),
+		tbldata[tbldata.length] = ["<span id=\"" + result.id + "\" class=\"clickable-individual-result\">" + safeReference(result, "testcase.name", 
+                                           safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>", 
+				           safeReference(result, "component.name", ""),
+				           new Date(result.recorded),
 		                           safeReference(result, "testcase.automationId", ""),
-								   safeReference(result, "reason", ""),
-								   safeReference(result, "hostname", ""),
-								   "<img src=\"images/reschedule.png\" id=\"reschedule-" + result.id + "\" class=\"reschedule-result\" alt=\"Reschedule Result\" title=\"Reschedule Result\" />",
+					   safeReference(result, "reason", ""),
+					   safeReference(result, "hostname", ""),
+					   "<img src=\"images/reschedule.png\" id=\"reschedule-" + result.id + "\" class=\"reschedule-result\" alt=\"Reschedule Result\" title=\"Reschedule Result\" />",
 								   "<span class=\"result-status-" + result["status"].replace("_","") + "\">" + result["status"].replace("_", " ") + 
 								   "<img class=\"result-status-image\" src=\"images/status-" + result["status"] + ".png\" /></span>"];
 	}
 	var datatable = $("#trdetailtable").dataTable({aaData: tbldata,
 	                                               aoColumns: [
 	                                                   {"sTitle": "Test Name", "sWidth": "55%", "sType": "html"},
-													   {"sTitle": "Component", "sWidth": "10%"},
+							   {"sTitle": "Component", "sWidth": "10%"},
 	                                                   {"sTitle": "Time Reported", "sWidth": "20%"},
 	                                                   {"sTitle": "Automation ID", "bVisible": false},
 	                                                   {"sTitle": "Reason", "bVisible": false},
 	                                                   {"sTitle": "Hostname", "bVisible": false},
-													   {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "right-justify"},
+							   {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "right-justify"},
 	                                                   {"sTitle": "Result Status", "sWidth": "10%", "sType": "html", "sClass": "right-justify"}],
 	                                               bJQueryUI: true,
 	                                               bAutoWidth: false,
