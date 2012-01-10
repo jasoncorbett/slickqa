@@ -21,13 +21,18 @@ Pages.group("runtests").page("machinestatus").addRequiredTemplate("runtest-view-
                                                            getDuration(new Date().getTime(), safeReference(hoststatus, "currentWork.recorded", 0))
                                                            ];
 			}
-			$("#data-loading").hide();
 			var datatable = $("#hoststatustable").dataTable({aaData: tbldata,
-			                                                 aoColumns: [{"sTitle": "Host Name", "sWidth": "25%", "sType": "html"},
-										     {"sTitle": "Last Check-in", "sWidth": "12.5%"},
-                                                                                     {"sTitle": "Current Test", "sWidth": "12.5%"},
-                                                                                     {"sTitle": "Current Run", "sWidth": "12.5%"},
-                                                                                     {"sTitle": "Run Time", "sWidth": "12.5%"}]
+                                                             aoColumns: [{"sTitle": "Host Name", "sWidth": "25%", "sType": "html"},
+                                                                         {"sTitle": "Last Check-in", "sWidth": "18.75%"},
+                                                                         {"sTitle": "Current Test", "sWidth": "18.75%"},
+                                                                         {"sTitle": "Current Run", "sWidth": "18.75%"},
+                                                                         {"sTitle": "Run Time", "sWidth": "18.75%"}]
+                                                             bJQueryUI: true,
+                                                             bAutoWidth: false,
+                                                             bDeferRender: true,
+                                                             bPaginate: false,
+                                                             sDom: "<\"H\"lfr>tS<\"F\"ip>",
+                                                             sScrollY: "" + ($(document).height() - (4 * $("#pagetitle").height()) -  (3 * $("#titlebar").height())) + "px"
 			});
 			datatable.fnSort([[0, "asc"]]);
 });
