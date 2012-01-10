@@ -26,7 +26,7 @@ Pages.group("runtests").page("machinestatus").addRequiredTemplate("runtest-view-
                                                                          {"sTitle": "Last Check-in", "sWidth": "18.75%"},
                                                                          {"sTitle": "Current Test", "sWidth": "18.75%"},
                                                                          {"sTitle": "Current Run", "sWidth": "18.75%"},
-                                                                         {"sTitle": "Run Time", "sWidth": "18.75%"}]
+                                                                         {"sTitle": "Run Time", "sWidth": "18.75%"}],
                                                              bJQueryUI: true,
                                                              bAutoWidth: false,
                                                              bDeferRender: true,
