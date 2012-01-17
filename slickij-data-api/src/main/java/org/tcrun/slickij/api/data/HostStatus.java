@@ -25,6 +25,13 @@ public class HostStatus implements Serializable
 
 	public Result getCurrentWork()
 	{
+        if(currentWork.getRecorded() != null)
+        {
+            Date now = new Date();
+            int seconds = (int)((now.getTime() - currentWork.getRecorded().getTime())/1000);
+            currentWork.setRunlength(seconds);
+        }
+
 		return currentWork;
 	}
 
