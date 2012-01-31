@@ -682,3 +682,22 @@ a.result-status-CANCELLED:visited {
 .table-full-width {
 	width: 100%;
 }
+
+
+.projectclass
+{
+	height: 100px;
+	width: 30%;
+	
+}
+
+a.project-link:link
+{
+	text-decoration: underline;
+}
+
+
+a.project-link:active,a.project-link:visited
+{
+	text-decoration: underline;
+}
