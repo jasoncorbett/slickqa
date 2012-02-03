@@ -13,11 +13,18 @@ class SlickTestResult(TestResult):
         self.slick = slick
         self.project = project
         self.testRunRef = testRunRef
+        self._results = []
         
         isinstance(slick, SlickAsPy)
         
+    def hasResults(self):
+        return len(self._results) > 0
+        
     def getTestCaseName(self, test):
         return test.shortDescription()
+    
+    def startTestRun(self):
+        self.testStartTime = datetime.now()
 
     def startTest(self, test):
         super(SlickTestResult, self).startTest(test)
@@ -35,40 +42,40 @@ class SlickTestResult(TestResult):
     def addSuccess(self, test):
         super(SlickTestResult, self).addSuccess(test)
         taken = self._getTestTimeTaken(self.testStartTime)
-        self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
-            datetime.now().isoformat(), "PASS", FIN, runLength=taken, hostname=self._getHostname(test))
+        self._results.append(self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
+            datetime.now().isoformat(), "PASS", FIN, runLength=taken, hostname=self._getHostname(test)))
 
     def addError(self, test, err):
         super(SlickTestResult, self).addError(test, err)
         taken = self._getTestTimeTaken(self.testStartTime)
-        self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
-            datetime.now().isoformat(), "BROKEN_TEST", FIN, runLength=taken, hostname=self._getHostname(test))
+        self._results.append(self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
+            datetime.now().isoformat(), "BROKEN_TEST", FIN, runLength=taken, hostname=self._getHostname(test)))
 
     def addFailure(self, test, err):
         super(SlickTestResult, self).addFailure(test, err)
         taken = self._getTestTimeTaken(self.testStartTime)
-        self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)),
-            datetime.now().isoformat(), "FAIL", FIN, runLength=taken, hostname=self._getHostname(test))
+        self._results.append(self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)),
+            datetime.now().isoformat(), "FAIL", FIN, runLength=taken, hostname=self._getHostname(test)))
 
     def addSkip(self, test, reason):
         super(SlickTestResult, self).addSkip(test, reason)
         taken = self._getTestTimeTaken(self.testStartTime)
-        self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
-            datetime.now().isoformat(), "SKIPPED", FIN, runLength=taken, hostname=self._getHostname(test))
+        self._results.append(self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
+            datetime.now().isoformat(), "SKIPPED", FIN, runLength=taken, hostname=self._getHostname(test)))
 
         # TODO: What should we set this result to in slick?
     def addExpectedFailure(self, test, err):
         super(SlickTestResult, self).addExpectedFailure(test, err)
         taken = self._getTestTimeTaken(self.testStartTime)
-        self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
-            datetime.now().isoformat(), "BROKEN_TEST", FIN, runLength=taken, hostname=self._getHostname(test))
+        self._results.append(self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
+            datetime.now().isoformat(), "BROKEN_TEST", FIN, runLength=taken, hostname=self._getHostname(test)))
 
         # TODO: What should we set this result to in slick?
     def addUnexpectedSuccess(self, test):
         super(SlickTestResult, self).addUnexpectedSuccess(test)
         taken = self._getTestTimeTaken(self.testStartTime)
-        self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
-            datetime.now().isoformat(), "FAIL", FIN, runLength=taken, hostname=self._getHostname(test))
+        self._results.append(self.slick.add_result(self.testRunRef, self._getTest(self.getTestCaseName(test)), 
+            datetime.now().isoformat(), "FAIL", FIN, runLength=taken, hostname=self._getHostname(test)))
         
     def _getTestTimeTaken(self, start):
         stop = datetime.now()
@@ -84,7 +91,7 @@ class SlickTestResult(TestResult):
             if hasattr(test.computer, "hostname"):
                 return test.computer.hostname
         else:
-            return None
+            return "None"
         
 
     

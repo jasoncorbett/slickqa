@@ -338,7 +338,7 @@ class SlickAsPy(object):
     
     def add_result(self, testrunRef, testcase, date, resultStatus, runStatus=None, reason=None, attributeDict=None, configRef=None, 
                    configOverride=None, fileList=None, log=None, projectRef=None, componentRef=None, releaseRef=None, buildRef=None, 
-                   runLength=None, extensions=None, history=None):
+                   runLength=None, extensions=None, history=None, hostname=None):
         if not projectRef:
             projectRef = self._get_current_project_ref()
         if not releaseRef:
@@ -347,8 +347,18 @@ class SlickAsPy(object):
             buildRef = self._get_current_build_ref()
         result = {"testrun": self._get_test_run_ref(testrunRef), "config": configRef, "configurationOverride": configOverride, 
                   "testcase": self._get_test_case_ref(testcase), "recorded": date, "status": resultStatus, "project": projectRef, 
-                  "release": releaseRef, "build": buildRef }
+                  "release": releaseRef, "build": buildRef, "log": log, "hostname": hostname}
         return self._safe_post(result, "results")
+    
+    def add_log_entry(self, message, resultId, time=None, level=None, loggername=None, exceptionName=None, exceptionMessage=None, exceptionTraceback=None):
+        if not time:
+            time = datetime.now().isoformat()
+        logEntry = [{"entryTime": time, "level": level, "loggerName": loggername, "message": message, "exceptionClassName": exceptionName, 
+                     "exceptionMessage": exceptionMessage, "exceptionStackTrace":exceptionTraceback}]
+        return self._safe_post(logEntry, "results", resultId, "log")
+    
+    def add_log_entries(self, entries, resultId):
+        return self._safe_post(entries, "results", resultId, "log")
     
 class SlickError(Exception):
     pass
@@ -358,9 +368,17 @@ FAIL = "FAIL"
 
 def main():    
     '''using this to test for now. Test suites to come later...'''
-    from pymongo import Connection
-    db = Connection()
-    db.drop_database("slickij")
+    try:
+        from pymongo import Connection
+        from pymongo.errors import ConnectionFailure
+        db = Connection()
+        db.drop_database("slickij")
+    except ImportError:
+        print "you need to install pymongo"
+        exit(1)
+    except ConnectionFailure:
+        print "There was trouble connecting to the mongo db. Make sure it is installed and running"
+        exit(1)
     
     applePy = SlickAsPy("http://localhost:8080/api")
     slick_project = applePy.add_project("Slickij Developer Project", "A Project to be used by slickij developers to test features.",
@@ -394,10 +412,16 @@ def main():
         #print "\nThe test run is this:"
         #print json.dumps(testrun, indent=2)
         p = PASS
+        logEntry = [{"entryTime": datetime.now().isoformat(), "level": "DEBUG", "loggerName": "slickMe.base", 
+                    "message": "now for something completely different"}, 
+                    {"message": '<a href="http://hal9000.vintela.com/memory_logs/4.0.3.78/2012-01-19T21:49:55.226623/solaris-10.autoqas_info.html">log</a>',
+                     "entryTime": datetime.now().isoformat(), "level": "DEBUG", "loggerName": "slickMe.base"}]
         for tc in tcList:
-            result = applePy.add_result(testrun, tc, datetime.now().isoformat(), p, "FINISHED", "just because")
+            result = applePy.add_result(testrun, tc, datetime.now().isoformat(), p, "FINISHED", "just because", 
+                                        log=logEntry)
             #print "Here is the result to be added:"
             #print json.dumps(result, indent=2)
+            
             if p == PASS:
                 p = FAIL
             else:
