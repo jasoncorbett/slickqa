@@ -1,5 +1,5 @@
 from unittest import TestSuite, util
-from unittest.suite import _isnotsuite,_DebugResult,_ErrorHolder
+from unittest.suite import _isnotsuite,_DebugResult
 
 class SlickTestSuite(TestSuite):
     def __init__(self, tests=(), logger=None):

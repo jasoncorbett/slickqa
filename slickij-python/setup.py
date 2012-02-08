@@ -14,7 +14,7 @@ setup(
     license = "Apache License 2.0",
     keywords = "testing qa results automation",
     url = "http://code.google.com/p/slickqa/",
-    py_modules=['slickApi'],
+    packages = ['slickqa'],
     long_description=read('README'),
     classifiers=[
         "Development Status :: 3 - Alpha",

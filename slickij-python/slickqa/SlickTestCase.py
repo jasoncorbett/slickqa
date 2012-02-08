@@ -1,12 +1,18 @@
-import logging
-from SlickTestRunner import SlickTestRunner
 from unittest import TestCase
-from slickLogging import SlickFormatter,Slicklogger,SlickHandler
+from slickLogging import Slicklogger
 
 class SlickTestCase(TestCase):
     """"""
     logger = None
     isinstance(logger, Slicklogger)
+
+    @classmethod
+    def setUpClass(cls, logger):
+        "Hook method for setting up class fixture before running tests in the class."
+
+    @classmethod
+    def tearDownClass(cls, logger):
+        "Hook method for deconstructing the class fixture after running all tests in the class."
     
     def run(self, result=None, logger=None):
             orig_result = result
@@ -93,9 +99,3 @@ if __name__ == '__main__':
     slick_build = testme.slickCon.add_build("113")
     testme.slickCon.set_default_build(slick_build["id"])
     testme.run(SlickTestCase)
-    
-    
-def install(os):
-    if mac:
-        pass
-    

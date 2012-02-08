@@ -1,10 +1,8 @@
-import time
 import slickLogging
 from slickApi import SlickAsPy, SlickError
 from SlickTestResult import SlickTestResult
 from unittest import TextTestRunner
 from unittest.signals import registerResult
-from unittest import TestSuite
 
 class SlickTestRunner(TextTestRunner):
     """A test runner class that logs results to the Slickqa results database.
