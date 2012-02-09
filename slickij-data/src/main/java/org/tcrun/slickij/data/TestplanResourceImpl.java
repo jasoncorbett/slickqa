@@ -11,21 +11,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import org.bson.types.ObjectId;
 import org.tcrun.slickij.api.TestplanResource;
-import org.tcrun.slickij.api.data.Build;
-import org.tcrun.slickij.api.data.Configuration;
-import org.tcrun.slickij.api.data.ConfigurationOverride;
-import org.tcrun.slickij.api.data.DataDrivenPropertyType;
-import org.tcrun.slickij.api.data.DataExtension;
-import org.tcrun.slickij.api.data.InvalidDataError;
-import org.tcrun.slickij.api.data.Project;
-import org.tcrun.slickij.api.data.Release;
-import org.tcrun.slickij.api.data.Result;
-import org.tcrun.slickij.api.data.ResultStatus;
-import org.tcrun.slickij.api.data.RunStatus;
-import org.tcrun.slickij.api.data.Testcase;
-import org.tcrun.slickij.api.data.Testplan;
-import org.tcrun.slickij.api.data.TestplanRunParameters;
-import org.tcrun.slickij.api.data.Testrun;
+import org.tcrun.slickij.api.data.*;
 import org.tcrun.slickij.api.data.testqueries.NamedTestcaseQuery;
 import org.tcrun.slickij.api.data.dao.ConfigurationDAO;
 import org.tcrun.slickij.api.data.dao.ProjectDAO;
@@ -222,7 +208,26 @@ public class TestplanResourceImpl implements TestplanResource
 							run.setBuild(parameters.getBuild());
 					}
 				}
-			}
+			} else
+            {
+                // try to get the default release and the default build
+                if(project.getDefaultRelease() != null && !project.getDefaultRelease().isEmpty())
+                {
+                    Release release = project.findRelease(project.getDefaultRelease());
+                    if(release != null)
+                    {
+                        run.setRelease(release.createReference());
+                        if(release.getDefaultBuild() != null && !release.getDefaultBuild().isEmpty())
+                        {
+                            Build build = release.findBuild(release.getDefaultBuild());
+                            if(build != null)
+                            {
+                                run.setBuild(build.createReference());
+                            }
+                        }
+                    }
+                }
+            }
 		}
 		m_testrunDAO.save(run);
 		for(Testcase test : testcases)
