@@ -82,6 +82,7 @@ public class ScheduleTestplanPanel extends Panel
 					ConfigurationOverride keyvaluepair = new ConfigurationOverride();
 					keyvaluepair.setKey(key.getValue());
 					keyvaluepair.setValue(value.getValue());
+                    keyvaluepair.setIsRequirement(false);
 					parameters.setOverrides(new ArrayList<ConfigurationOverride>());
 					parameters.getOverrides().add(keyvaluepair);
 				}
