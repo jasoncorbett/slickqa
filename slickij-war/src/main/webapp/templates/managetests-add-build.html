@@ -1,0 +1,19 @@
+{{if includepass}}
+<div class="projectclass1" id="addBuildPage">
+	<h3>Select Release</h3>
+	<select id="releaseList" size="1" >
+		<option value=""></option>
+	</select>
+	<h3>
+ 		Add build to the selected release
+	</h3>
+	<input id="buildName" type="text" name="s" placeholder="Enter the build name..."  class="textboxwidth" align="center"/>
+ 	<input type="button" id="addBuild" value="Add build" />
+ </div>
+ {{else}}
+<div id="emptyList" class="project-link">
+<h3>No release added yet. Go to <a href="#/testmgmt/addrelease" class="project-link">Add Release</a> page to add a release </h3></div>
+{{/if}}
+
+
+
