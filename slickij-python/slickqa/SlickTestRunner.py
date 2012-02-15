@@ -10,11 +10,11 @@ class SlickTestRunner(TextTestRunner):
     It uses the python rest api to communicate.
     """
     def __init__(self, projectName="Slickij Developer Project", testplanName="The plan", 
-                 slickLocation="http://localhost:8080/api", stream=None, descriptions=True,
-                 verbosity=1, failfast=False, buffer=False, resultclass=SlickTestResult):
+                 slickLocation="http://localhost:8080/api", apiuser='tcrunij', apipassword='f00b@r', stream=None, 
+                 descriptions=True, verbosity=1, failfast=False, buffer=False, resultclass=SlickTestResult):
         super(SlickTestRunner, self).__init__(stream, descriptions, verbosity, failfast, buffer, resultclass)
         self.testPlan = testplanName
-        self.slickCon = SlickAsPy(slickLocation)
+        self.slickCon = SlickAsPy(slickLocation, apiuser, apipassword)
         self.project = self.slickCon.get_project_by_name(projectName)
         self.logger = slickLogging.start_logging(testplanName, self.slickCon)
 
