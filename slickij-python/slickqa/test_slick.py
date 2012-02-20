@@ -1,15 +1,15 @@
 import logging
 from SlickTestRunner import SlickTestRunner
 from SlickTestCase import SlickTestCase
-from slickLogging import SlickFormatter,Slicklogger,SlickHandler
+from slickLogging import SlickFormatter,Slicklogger,SlickHandler,start_logging
 from SlickTestSuite import SlickTestSuite
 
 class SlickTest(SlickTestCase):
     """Sample test case"""
     
     @classmethod
-    def setUpClass(cls, logger):
-        logger.debug("in setupclass")
+    def setUpClass(cls):
+        cls.logger.debug("in setupclass")
     
     def test_01(self):
         """test1"""
@@ -28,24 +28,25 @@ class SlickTest(SlickTestCase):
         self.logger.info("in test 4")
     
     @classmethod
-    def tearDownClass(cls, logger):
-        logger.debug("in teardownclass")
+    def tearDownClass(cls):
+        cls.logger.debug("in teardownclass, finally")
     
 if __name__ == '__main__':
     import SlickTestRunner
     import unittest
-    testme = SlickTestRunner.SlickTestRunner()
+    import sys
+    handler = logging.StreamHandler(sys.stdout)
+    logger = start_logging('test1', slickurl="http://10.5.37.16:8080/api", otherhandlers=handler)
+    testme = SlickTestRunner.SlickTestRunner(slickLocation='http://10.5.37.16:8080/api', loggername='test1')
     testme.slickCon.get_project_by_name("Slickij Developer Project")
-    slick_release = testme.slickCon.add_release("1.0.311.311")
+    slick_release = testme.slickCon.add_release("1.0.311.313")
     testme.slickCon.set_default_release(slick_release["id"])
     slick_build = testme.slickCon.add_build("113")
     testme.slickCon.set_default_build(slick_build["id"])
     unittest.loader.TestLoader.suiteClass = SlickTestSuite
+    SlickTest.logger = logger
     tests = unittest.TestLoader().loadTestsFromTestCase(SlickTest)
-    testme.run(tests)
+    result = testme.run(tests)
     
-    
-def install(os):
-    if mac:
-        pass
+    print result
     

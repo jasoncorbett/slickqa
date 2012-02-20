@@ -1,13 +1,13 @@
+import logging
 from unittest import TestSuite, util
 from unittest.suite import _isnotsuite,_DebugResult
 
 class SlickTestSuite(TestSuite):
-    def __init__(self, tests=(), logger=None):
+    def __init__(self, tests=(), loggerName='root'):
         super(SlickTestSuite, self).__init__(tests)
-        self.logger = logger
+        self.logger = logging.getLogger("{}.testsuite".format(loggerName))
         
-    def run(self, result, logger, debug=False):
-        self.logger = logger
+    def run(self, result, debug=False):
         topLevel = False
         if getattr(result, '_testRunEntered', False) is False:
             result._testRunEntered = topLevel = True
@@ -27,7 +27,7 @@ class SlickTestSuite(TestSuite):
                     continue
 
             if not debug:
-                test(result, self.logger)
+                test(result)
             else:
                 test.debug()
 
@@ -36,35 +36,6 @@ class SlickTestSuite(TestSuite):
             self._handleModuleTearDown(result)
             result._testRunEntered = False
         return result
-    
-    def _handleClassSetUp(self, test, result):
-        previousClass = getattr(result, '_previousTestClass', None)
-        currentClass = test.__class__
-        if currentClass == previousClass:
-            return
-        if result._moduleSetUpFailed:
-            return
-        if getattr(currentClass, "__unittest_skip__", False):
-            return
-
-        try:
-            currentClass._classSetupFailed = False
-        except TypeError:
-            # test may actually be a function
-            # so its class will be a builtin-type
-            pass
-
-        setUpClass = getattr(currentClass, 'setUpClass', None)
-        if setUpClass is not None:
-            try:
-                setUpClass(self.logger)
-            except Exception as e:
-                if isinstance(result, _DebugResult):
-                    raise
-                currentClass._classSetupFailed = True
-                className = util.strclass(currentClass)
-                errorName = 'setUpClass (%s)' % className
-                self._addClassOrModuleLevelException(result, e, errorName)        
             
     def _tearDownPreviousClass(self, test, result):
         previousClass = getattr(result, '_previousTestClass', None)
@@ -81,7 +52,7 @@ class SlickTestSuite(TestSuite):
         tearDownClass = getattr(previousClass, 'tearDownClass', None)
         if tearDownClass is not None:
             try:
-                tearDownClass(self.logger)
+                tearDownClass()
             except Exception, e:
                 if isinstance(result, _DebugResult):
                     raise

@@ -1,22 +1,15 @@
+import logging
 from unittest import TestCase
 from slickLogging import Slicklogger
 
 class SlickTestCase(TestCase):
     """"""
     logger = None
+    # for wing ide source assistance and code completion
     isinstance(logger, Slicklogger)
-
-    @classmethod
-    def setUpClass(cls, logger):
-        "Hook method for setting up class fixture before running tests in the class."
-
-    @classmethod
-    def tearDownClass(cls, logger):
-        "Hook method for deconstructing the class fixture after running all tests in the class."
     
-    def run(self, result=None, logger=None):
+    def run(self, result=None):
             orig_result = result
-            self.logger = logger
             if result is None:
                 result = self.defaultTestResult()
                 startTestRun = getattr(result, 'startTestRun', None)

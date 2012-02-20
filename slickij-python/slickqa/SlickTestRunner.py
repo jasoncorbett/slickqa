@@ -1,3 +1,4 @@
+import logging
 import slickLogging
 from slickApi import SlickAsPy, SlickError
 from SlickTestResult import SlickTestResult
@@ -11,13 +12,13 @@ class SlickTestRunner(TextTestRunner):
     """
     def __init__(self, projectName="Slickij Developer Project", testplanName="The plan", 
                  slickLocation="http://localhost:8080/api", apiuser='tcrunij', apipassword='f00b@r', stream=None, 
-                 descriptions=True, verbosity=1, failfast=False, buffer=False, resultclass=SlickTestResult, logger=None):
+                 descriptions=True, verbosity=1, failfast=False, buffer=False, resultclass=SlickTestResult, loggername=None):
         super(SlickTestRunner, self).__init__(stream, descriptions, verbosity, failfast, buffer, resultclass)
         self.testPlan = testplanName
         self.slickCon = SlickAsPy(slickLocation, apiuser, apipassword)
         self.project = self.slickCon.get_project_by_name(projectName)
-        self.logger = logger
-        if not logger:
+        self.logger = logging.getLogger('{}.runner'.format(loggername))
+        if not isinstance(self.logger, slickLogging.Slicklogger):
             self.logger = slickLogging.start_logging(testplanName, self.slickCon)
 
     def _makeSlickResult(self):
@@ -77,7 +78,7 @@ class SlickTestRunner(TextTestRunner):
         if startTestRun is not None:
             startTestRun()
         try:
-            test(result, self.logger)
+            test(result)
         finally:
             stopTestRun = getattr(result, 'stopTestRun', None)
             if stopTestRun is not None:

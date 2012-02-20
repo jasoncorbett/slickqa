@@ -16,17 +16,23 @@ log_levels = {
     TRACE : 'TRACE'
     }
 
-def start_logging(loggerName, slickcon=None, slickurl="http://localhost:8080/api", username="tcrunij", password="f00b@r"):
+def start_logging(loggerName, slickcon=None, slickurl="http://localhost:8080/api", username="tcrunij", 
+                  password="f00b@r", otherhandlers=None):
     setLoggerClass(Slicklogger)
     log = getLogger(loggerName)
     log.setLevel(DEBUG)
     formatter = SlickFormatter()
     if not slickcon:
-        handler = SlickHandler(log.level, slickurl, username, password)
+        handler = SlickHandler(log.level, baseurl=slickurl, username=username, password=password)
     else:
         handler = SlickHandler(log.level, slickcon)
     handler.setFormatter(formatter)
     log.addHandler(handler)
+    if isinstance(otherhandlers, list):
+        for other in otherhandlers:
+            log.addHandler(other)
+    elif otherhandlers:
+        log.addHandler(otherhandlers)
     isinstance(log, Slicklogger)
     return log
 
@@ -78,5 +84,4 @@ class SlickHandler(Handler):
         self._slick_con.add_log_entries(self._log_queue, resultId)
         # clear the queue
         self._log_queue = []
-        
         
