@@ -9,7 +9,7 @@ class SlickTest(SlickTestCase):
     
     @classmethod
     def setUpClass(cls):
-        cls.logger.debug("in setupclass")
+        cls.logger.info("in setupclass")
     
     def test_01(self):
         """test1"""
@@ -29,23 +29,24 @@ class SlickTest(SlickTestCase):
     
     @classmethod
     def tearDownClass(cls):
-        cls.logger.debug("in teardownclass, finally")
+        cls.logger.warn("in teardownclass, finally")
     
 if __name__ == '__main__':
     import SlickTestRunner
     import unittest
     import sys
     handler = logging.StreamHandler(sys.stdout)
-    logger = start_logging('test1', slickurl="http://10.5.37.16:8080/api", otherhandlers=handler)
-    testme = SlickTestRunner.SlickTestRunner(slickLocation='http://10.5.37.16:8080/api', loggername='test1')
+    unittest.loader.TestLoader.suiteClass = SlickTestSuite
+    tests = unittest.TestLoader().loadTestsFromTestCase(SlickTest)    
+    logger = start_logging('test1', slickurl="http://hal9000.vintela.com:8080/slickij/api", otherhandlers=handler)
+    testme = SlickTestRunner.SlickTestRunner(slickLocation="http://hal9000.vintela.com:8080/slickij/api")
     testme.slickCon.get_project_by_name("Slickij Developer Project")
     slick_release = testme.slickCon.add_release("1.0.311.313")
     testme.slickCon.set_default_release(slick_release["id"])
     slick_build = testme.slickCon.add_build("113")
     testme.slickCon.set_default_build(slick_build["id"])
-    unittest.loader.TestLoader.suiteClass = SlickTestSuite
+    testme.setup_test_run(tests)
     SlickTest.logger = logger
-    tests = unittest.TestLoader().loadTestsFromTestCase(SlickTest)
     result = testme.run(tests)
     
     print result

@@ -1,5 +1,6 @@
 import json
 import urllib
+import urlparse
 import httplib2
 from datetime import datetime
 
@@ -15,11 +16,20 @@ class SlickAsPy(object):
         if self.baseurl.endswith('/'):
             self.baseurl = baseurl[0:-1]
             
+    def _fix_uri(self, uri, charset='utf-8'):
+        if isinstance(uri, unicode):
+            uri = uri.encode(charset, 'ignore')
+        scheme, netloc, path, query, fragment = urlparse.urlsplit(uri)
+        path = urllib.quote(path, '/%')
+        query = urllib.quote_plus(query, ':&=')
+        return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
+            
     def _get_url(self, *args, **kwargs):
         if len(kwargs) > 0:
-            return '/'.join([self.baseurl,] + list(args)) + "?" + urllib.urlencode(kwargs)
+            uri = '/'.join([self.baseurl,] + list(args)) + "?" + kwargs
         else:
-            return '/'.join([self.baseurl,] + list(args))
+            uri = '/'.join([self.baseurl,] + list(args))
+        return self._fix_uri(uri)
         
     def _safe_return(self, response, content):
         if response['status'] == "200":
@@ -371,7 +381,7 @@ def main():
     try:
         from pymongo import Connection
         from pymongo.errors import ConnectionFailure
-        db = Connection('10.5.37.16')
+        db = Connection()
         db.drop_database("slickij")
     except ImportError:
         print "you need to install pymongo"
@@ -380,7 +390,7 @@ def main():
         print "There was trouble connecting to the mongo db. Make sure it is installed and running"
         exit(1)
     
-    applePy = SlickAsPy("http://10.5.37.16:8080/api")
+    applePy = SlickAsPy("http://localhost:8080/api")
     slick_project = applePy.add_project("Slickij Developer Projec", "A Project to be used by slickij developers to test features.",
                                       ["basics", "api", "affirmative"], ["tcrunij", "tcrun", "Shell Script", "python unittest"], 
                                       [{"name": "Data Extensions", "code": "dataext"}])

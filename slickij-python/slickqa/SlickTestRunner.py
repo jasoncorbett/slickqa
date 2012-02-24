@@ -12,14 +12,11 @@ class SlickTestRunner(TextTestRunner):
     """
     def __init__(self, projectName="Slickij Developer Project", testplanName="The plan", 
                  slickLocation="http://localhost:8080/api", apiuser='tcrunij', apipassword='f00b@r', stream=None, 
-                 descriptions=True, verbosity=1, failfast=False, buffer=False, resultclass=SlickTestResult, loggername=None):
+                 descriptions=True, verbosity=1, failfast=False, buffer=False, resultclass=SlickTestResult):
         super(SlickTestRunner, self).__init__(stream, descriptions, verbosity, failfast, buffer, resultclass)
         self.testPlan = testplanName
         self.slickCon = SlickAsPy(slickLocation, apiuser, apipassword)
         self.project = self.slickCon.get_project_by_name(projectName)
-        self.logger = logging.getLogger('{}.runner'.format(loggername))
-        if not isinstance(self.logger, slickLogging.Slicklogger):
-            self.logger = slickLogging.start_logging(testplanName, self.slickCon)
 
     def _makeSlickResult(self):
         return self.resultclass(self.project, self.testRunRef, self.slickCon, self.stream, self.descriptions, self.verbosity)
@@ -61,15 +58,17 @@ class SlickTestRunner(TextTestRunner):
 
     def _setTestRunRef(self, testRun):
         self.testRunRef = {"name": testRun["name"], "id": testRun["id"]}
+        
+    # TODO: should the constructor do this? Are we always going to have this information at construction?
+    def setup_test_run(self, test):
+        '''setup the test run so multiple runs can be placed in one test run'''
+        self._checkTests(test)
+        self._checkTestPlan()
+        self._setTestRunRef(self.slickCon.add_test_run(self.testPlan["name"], self.testPlan["id"]))
+        return self.testRunRef['id']
 
     def run(self, test):
         "Run the given test case or test suite."
-        # check to see if all tests exist
-        self._checkTests(test)
-        # check to see if the test plan exists
-        self._checkTestPlan()
-        # create a test run
-        self._setTestRunRef(self.slickCon.add_test_run(self.testPlan["name"], self.testPlan["id"]))
 
         result = self._makeSlickResult()
         registerResult(result)

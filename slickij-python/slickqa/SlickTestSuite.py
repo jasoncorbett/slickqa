@@ -5,6 +5,9 @@ from unittest.suite import _isnotsuite,_DebugResult
 class SlickTestSuite(TestSuite):
     def __init__(self, tests=(), loggerName='root'):
         super(SlickTestSuite, self).__init__(tests)
+        self.set_logger(loggerName)
+        
+    def set_logger(self, loggerName):
         self.logger = logging.getLogger("{}.testsuite".format(loggerName))
         
     def run(self, result, debug=False):

@@ -20,7 +20,9 @@ def start_logging(loggerName, slickcon=None, slickurl="http://localhost:8080/api
                   password="f00b@r", otherhandlers=None):
     setLoggerClass(Slicklogger)
     log = getLogger(loggerName)
-    log.setLevel(DEBUG)
+    for level, levelName in log_levels.iteritems():
+        addLevelName(level, levelName)
+    log.setLevel(INFO)
     formatter = SlickFormatter()
     if not slickcon:
         handler = SlickHandler(log.level, baseurl=slickurl, username=username, password=password)
@@ -55,6 +57,7 @@ class SlickFormatter(Formatter):
             exctype = record.exc_info[0]
             excvalue = record.exc_info[1]
             exctraceback = record.exc_info[2]
+        
         return {"entryTime": now, "level": record.levelname, "loggerName": record.name, "message": record.msg, 
                 "exceptionClassName": exctype, "exceptionMessage": excvalue, "exceptionStackTrace": exctraceback}
     
@@ -80,7 +83,6 @@ class SlickHandler(Handler):
         self._log_queue.append(message)
         
     def end_test(self, resultId):
-        # send the queue to slick with the resultId
         self._slick_con.add_log_entries(self._log_queue, resultId)
         # clear the queue
         self._log_queue = []
