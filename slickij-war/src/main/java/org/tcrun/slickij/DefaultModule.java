@@ -2,8 +2,6 @@ package org.tcrun.slickij;
 
 import com.mongodb.MongoException;
 import java.net.UnknownHostException;
-import org.tcrun.slickij.data.ProjectResourceImpl;
-import org.tcrun.slickij.api.ProjectResource;
 import com.google.code.morphia.Morphia;
 import com.google.code.morphia.Datastore;
 import com.google.inject.AbstractModule;
@@ -17,7 +15,6 @@ import java.util.Enumeration;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tcrun.slickij.api.data.Project;
 import org.tcrun.slickij.core.DataPluginModule;
 
 /**
@@ -27,6 +24,13 @@ import org.tcrun.slickij.core.DataPluginModule;
 public class DefaultModule extends AbstractModule
 {
 	private static Logger logger = LoggerFactory.getLogger(DefaultModule.class);
+    private static Mongo mongo;
+
+    private static synchronized void initMongodb(String hostname) throws UnknownHostException, MongoException
+    {
+        if(mongo == null)
+            mongo = new Mongo(hostname);
+    }
 
 	private List<Module> modules;
 
@@ -79,10 +83,10 @@ public class DefaultModule extends AbstractModule
 	@Override
 	protected void configure()
 	{
-		Mongo mongodb = null;
+        bind(LogResource.class);
 		try
 		{
-			mongodb = new Mongo("127.0.0.1");
+			initMongodb("127.0.0.1");
 		} catch (UnknownHostException ex)
 		{
 			addError(ex);
@@ -92,7 +96,6 @@ public class DefaultModule extends AbstractModule
 		}
 
 		Morphia mapper = new Morphia();
-		mapper.map(Project.class);
 		bind(Morphia.class).toInstance(mapper);
 
 		for (Module module : modules)
@@ -102,7 +105,7 @@ public class DefaultModule extends AbstractModule
 			install(module);
 		}
 
-		Datastore ds = mapper.createDatastore(mongodb, "slickij");
+		Datastore ds = mapper.createDatastore(mongo, "slickij");
 
 		bind(Datastore.class).toInstance(ds);
 	}
