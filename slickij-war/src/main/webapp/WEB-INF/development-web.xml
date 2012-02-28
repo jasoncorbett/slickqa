@@ -84,7 +84,7 @@
 		</init-param>
 		<init-param>
 			<param-name>preProcessors</param-name>
-			<param-value>cssUrlRewriting,bomStripper,semicolonAppender</param-value>
+			<param-value>cssUrlRewriting,semicolonAppender</param-value>
 		</init-param>
 		<init-param>
 			<param-name>postProcessors</param-name>
@@ -92,7 +92,7 @@
 		</init-param>
 		<init-param>
 			<param-name>cacheUpdatePeriod</param-name>
-			<param-value>10</param-value>
+			<param-value>5</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>

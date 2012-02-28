@@ -1,0 +1,19 @@
+<div id="titlebar">
+    <ul id="mainnavigation" class="mainnavigation">
+        <li><a href="#/">S<span class="fakecaps">lick</span> Home</a></li>
+    {{#each groups}}
+        <li id="actiongroup-{{codename}}"><a id="{{codename}}" href="javascript:return false;">{{displayname}}</a></li>
+    {{/each}}
+        <li><a href="dashboards/main">Old Slick</a></li>
+        <li><select id="current-project-select" name="current-project"></select></li>
+    </ul>
+</div>
+<div id="actions">
+{{#each pages}}
+    <div id="{{group}}-pane" class="actions" style="display:none">
+    {{#each pages}}
+        <a href="{{url}}" class="action"><img src="images/action-{{group}}-{{name}}.png" />{{displayname}}</a>
+    {{/each}}
+    </div>
+{{/each}}
+</div>

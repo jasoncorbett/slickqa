@@ -414,5 +414,28 @@ public class Project implements Serializable
 		ref.setName(name);
 		return ref;
 	}
+    
+    public String getDefaultBuildName()
+    {
+        String retval = "Not Set";
+        if(getDefaultRelease() != null && !getDefaultRelease().isEmpty())
+        {
+            Release defRelease = findRelease(getDefaultRelease());
+            if(defRelease != null)
+            {
+                retval = defRelease.getName();
+                if(defRelease.getDefaultBuild() != null && !defRelease.getDefaultBuild().isEmpty())
+                {
+                    Build defBuild = defRelease.findBuild(defRelease.getDefaultBuild());
+                    if(defBuild != null)
+                    {
+                        retval += " Build " + defBuild.getName();
+                    }
+                }
+            }
+        }
+        
+        return retval;
+    }
 
 }

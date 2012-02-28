@@ -1,3 +1,5 @@
 <img src="images/coming-soon.png" />
 <p>Sorry for tricking you, but we wanted to let you know that this page is planned.  If you have any input, please email your local Slick developers.</p>
-<img src="images/easteregg.gif" style="display: ${display}" />
+{{#if parameters.query.easteregg}}
+    <img src="images/easteregg.gif" />
+{{/if}}

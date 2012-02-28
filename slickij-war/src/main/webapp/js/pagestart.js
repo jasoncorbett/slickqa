@@ -1,106 +1,69 @@
 /* loaded after all other javascript */
 
 $(function() {
-	grabTemplate("main-navigation-group", function(grouptemplate) {
-		grabTemplate("main-navigation-groupactions", function(groupactionstemplate) {
-			grabTemplate("main-navigation-action", function(actiontemplate) {
-				for(igroup in Pages.groups)
-				{
-					var group = Pages.groups[igroup];
-					if(group.isVisible)
-					{
-						var groupid = group.name;
-						var groupmenu = $("#actiongroup-" + groupid);
-						var groupmenu = $("#actiongroup-" + groupid);
-						var groupactions = $("#" + groupid + "-pane");
-						if(!groupmenu.length) {
-							groupmenu = $.tmpl(grouptemplate, {groupid: groupid, group: group.displayName}).appendTo("#mainnavigation");
-						}
-						if(!groupactions.length) {
-							groupactions = $.tmpl(groupactionstemplate, {groupid: groupid, group: group.displayName}).appendTo("#actions");
-							for(ipage in group.pages)
-							{
-								page = group.pages[ipage];
-								if(page.isAction)
-								{
-									var icon = "action-" + group.name + "-" + page.name;
-									var actionlink = $.tmpl(actiontemplate, {url: "#/" + group.name + "/" + page.name, icon: icon, displayName: page.displayName}).appendTo(groupactions);
-								}
-							}
-						}
-						
-					}
-				}
+    // Build the main menu
+                var pagenav = [];
+                _.each(SlickPage.StandardNavigationGroups, function(group) {
+                    if(SlickPage.PageGroups[group.codename]) {
+                        var groupobj = {group: group.codename, pages: []};
+                        _.each(SlickPage.PageGroups[group.codename], function(pageview, pagename) {
+                            if(pageview.prototype['navigation']) {
+                                var pageobj = {group: group.codename, name: pagename, displayname: pageview.prototype.name, url: urlOfPage(pageview)};
+                                groupobj.pages[groupobj.pages.length] = pageobj;
+                            }
+                        });
+                        pagenav[pagenav.length] = groupobj;
+                    }
+                });
+                $('#pagenav').html(Handlebars.templates['slicknavigation.html']({groups: SlickPage.StandardNavigationGroups, pages: pagenav}));
+
 				window.onPageChange = function() {
 					$("#main").html("");
 					$("#main-loading").show();
 					$(".actions").hide(250);
 					$(".groupselected").removeClass("groupselected");
 					setSlickTitle(" ");
-					Pages.currentPage = null;
-					Pages.getCurrentPage(); // this kicks it all off
-				}
-				$.address.change(window.onPageChange);
+                    var parts = $.address.pathNames();
+                    if(parts.length == 0)
+                    {
+                        parts = ["dashboards", "main"];
+                    }
+                    if(parts.length >= 2)
+                    {
+                        if(SlickPage.PageGroups[parts[0]])
+                        {
+                            var page = SlickPage.PageGroups[parts[0]][parts[1]];
+                            window.CurrentPage = new page({positional: parts.slice(2), query: queryParametersToObject()});
+                            window.CurrentPage.on("render", function() {
+                                $("#main").append(window.CurrentPage.el);
+                                $("#main-loading").hide();
+                            });
+                            window.CurrentPage.pageStart();
+                        } else
+                        {
+                            //TODO: Not Found Page!
+                        }
+                    } else
+                    {
+                        //TODO: Not Found Page!
+                    }
+				};
 
 				// Load the projects, needs to be done before execution of the page continues.
-				grabTemplate("main-project-dropdown", function(template) {
-					$.ajax({
-						url: "api/projects",
-						type: "GET",
-						dataType: "json",
-						success: function(data) {
-							for(i in data)
-							{
-								var project = data[i];
-								var projElement = $.tmpl(template, project).appendTo("#current-project-select");
-								projElement.data("project", project);
-							}
-							window.getCurrentProject = function() {
-								return $("#current-project-select option:selected").data("project");
-							}
-							$("#current-project-select").change(function(evt) {
-								$(".slick-event-current-project-change").trigger("slick-data-current-project-change", getCurrentProject());
-							});
-							window.onPageChange();
-						}
-					});
+				$.ajax({
+					url: "api/projects",
+					type: "GET",
+					dataType: "json",
+					success: function(data) {
+                        _.each(data, function(project){
+                            $('#current-project-select').append(Handlebars.templates['main-project-dropdown.html'](project));
+                            $('#project-select-' + project.id).data('project', project);
+                        });
+						window.getCurrentProject = function() {
+							return $("#current-project-select option:selected").data("project");
+						};
+                        $.address.change(window.onPageChange);
+                        window.onPageChange();
+					}
 				});
-
-				/*
-				for(i in MainNavigation)
-				{
-					var registration = MainNavigation[i];
-
-					var groupid = registration.group.toLowerCase();
-					groupid = groupid.replace(" ", "");
-					registration["groupid"] = groupid;
-
-					var icon = registration.url;
-					icon = icon.replace(/^#\//, "");
-					icon = icon.replace("/", "-");
-					icon = "action-" + icon;
-					registration["icon"] = icon;
-
-					var groupmenu = $("#actiongroup-" + registration.groupid);
-					var groupactions = $("#" + registration.groupid + "-pane");
-					if(!groupmenu.length) {
-						groupmenu = $.tmpl(grouptemplate, registration).appendTo("#mainnavigation");
-					}
-					if(!groupactions.length) {
-						groupactions = $.tmpl(groupactionstemplate, registration).appendTo("#actions");
-					}
-					var actionlink = $.tmpl(actiontemplate, registration).appendTo(groupactions);
-				}
-				$.routes.dispatcher = function(callback,params,path){
-					$("#main").html("");
-					$(".actions").hide(250);
-					$(".groupselected").removeClass("groupselected");
-					setSlickTitle(" ");
-					callback(params);
-				};
-				$.routes(Routes, true);
-				*/
-			});
-		});
-	});
 });

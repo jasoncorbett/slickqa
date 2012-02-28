@@ -1,0 +1,30 @@
+
+<div id="add-release-box" class="box width-6">
+    <div id="add-release-box-name" class="boxname">Add Release</div>
+    <span id="add-release-box-explanation" class="explanation">Add a new release to the project '{{data.proj.name}}'.</span>
+    <hr class="glowing" />
+    <form action="?">
+        <div class="formline">
+            <label for="add-release-form-name">Name
+                <span class="explanation">The name of the new release</span>
+            </label>
+            <input type="text" name="add-release-form-name" id="add-release-form-name" />
+        </div>
+
+        <div class="formline">
+            <label for="add-release-form-isdefault">Is Default
+                <span class="explanation">Should it be the default release?</span>
+            </label>
+            <input type="checkbox" class="checkbox" name="add-release-form-isdefault" id="add-release-form-isdefault" checked/>
+        </div>
+
+        <div class="formline">
+            <a href="javascript:false;" class="button" id="add-release-form-submit">Add New Release</a>
+        </div>
+    </form>
+</div>
+<div id="add-release-list-box">
+    <table id="add-release-list"></table>
+</div>
+<div class="clear">
+</div>

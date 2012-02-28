@@ -1,0 +1,26 @@
+{{#with data.proj}}
+<div id="project-description-box" class="box width-4 projectclass" >
+	<div class="boxname">Description</div>
+	<div class="boxcontent" id="project-description">{{description}}</div>
+</div>
+
+<div id="project-default-build-box" class="box width-4 projectclass" >
+	<div class="boxname">Default Build</div>
+	<div class="boxcontent" id="project-default-build">{{defaultBuildName}}</div>
+</div>
+
+<div id="project-last-updated-box" class="box width-4 projectclass" >
+	<div class="boxname">Date Last Updated</div>
+	<div class="boxcontent" id="project-last-updated">{{lastUpdatedString}}</div>
+</div>
+
+<div class="clear"></div>
+
+<div class="boxname">Components</div>
+<table class="table-full-width" id="project-component-table"></table>
+{{/with}}
+
+<div align="center" id="project-links">
+    <a href="{{addBuildUrl}}" class="button">Add Build</a>
+    <a href="{{addReleaseUrl}}" class="button">Add Release</a>
+</div>

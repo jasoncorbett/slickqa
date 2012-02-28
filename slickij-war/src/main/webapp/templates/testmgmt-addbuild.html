@@ -1,0 +1,40 @@
+<h2 class="center">Select Release:
+    <select id="add-build-release-select">
+        {{#each data.proj.releases}}
+            {{#if defaultRelease}}
+                <option value="{{id}}" data-release-name="{{name}}" selected>{{name}}</option>
+            {{else}}
+                <option value="{{id}}" data-release-name="{{name}}">{{name}}</option>
+            {{/if}}
+        {{/each}}
+    </select>
+</h2>
+<div id="add-build-box" class="box width-6">
+    <div id="add-build-box-name" class="boxname">Add Build</div>
+    <span id="add-build-box-explanation" class="explanation">Add a new build to the project '{{data.proj.name}}'.</span>
+    <hr class="glowing" />
+    <form action="?">
+        <div class="formline">
+            <label for="add-build-form-name">Name
+                <span class="explanation">The name of the new build</span>
+            </label>
+            <input type="text" name="add-build-form-name" id="add-build-form-name" />
+        </div>
+
+        <div class="formline">
+            <label for="add-build-form-isdefault">Is Default
+                <span class="explanation">Should it be the default build?</span>
+            </label>
+            <input type="checkbox" class="checkbox" name="add-build-form-isdefault" id="add-build-form-isdefault" checked/>
+        </div>
+
+        <div class="formline">
+            <a href="javascript:false;" class="button" id="add-build-form-submit">Add New Build</a>
+        </div>
+    </form>
+</div>
+<div id="add-build-list-box">
+    <table id="add-build-list"></table>
+</div>
+<div class="clear">
+</div>

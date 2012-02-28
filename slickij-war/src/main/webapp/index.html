@@ -29,33 +29,22 @@
 		</script>
 
 		<!-- Main Javascript Setup (everything else is a plugin). -->
-		<script src="js/main.js" type="text/javascript" language="javascript">
+		<script src="js/main.js" type="text/javascript">
 		</script>
 
-		<!-- All the javascript in the js/pages compiled by wro -->
-		<script src="compiled/pages.js" type="text/javascript" language="javascript"></script>
+		<!-- All the javascript in the js/templates compiled by wro -->
+		<script src="compiled/templates.js" type="text/javascript"></script>
 		<!-- All the javascript in the js/views compiled by wro -->
-		<script src="compiled/views.js" type="text/javascript" language="javascript"></script>
+		<script src="compiled/views.js" type="text/javascript"></script>
                 
 
 		<!-- Final Javascript -->
-		<script src="js/pagestart.js" type="text/javascript" language="javascript"></script>
+		<script src="js/pagestart.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<h2 id="pagetitle">Current Slick Title</h2>
-		<div id="titlebar">
-			<ul id="mainnavigation" class="mainnavigation">
-				<li><a href="#/">S<span class="fakecaps">lick</span> Home</a></li>
-				<li id="actiongroup-dashboards" class="actiongroup"><a id="dashboards" href="javascript:return false;">Dashboards</a></li>
-				<li id="actiongroup-testmgmt" class="actiongroup"><a id="testmgmt" href="javascript:return false;">Manage Tests</a></li>
-				<li id="actiongroup-runtests" class="actiongroup"><a id="runtests" href="javascript:return false;">Run Tests</a></li>
-				<li id="actiongroup-reports" class="actiongroup"><a id="reports" href="javascript:return false;">Reports</a></li>
-				<li><a href="dashboards/main">Old Slick</a></li>
-				<li><select id="current-project-select" name="current-project"></select></li>
-			</ul>
-		</div>
-		<div id="actions">
-		</div>
+        <div id="pagenav">
+        </div>
 		<div id="main-loading" class="main">
 			<img src="images/spinner.gif" />Loading...
 		</div>

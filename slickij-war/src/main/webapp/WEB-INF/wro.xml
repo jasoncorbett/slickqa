@@ -6,9 +6,9 @@
 		<css>/css/libraries/**.css</css>
 		<js>/js/libraries/**.js</js>
 	</group>
-	<group name="pages">
-		<js>/js/pages/**.js</js>
-	</group>
+    <group name="templates">
+        <js>/js/templates/**.js</js>
+    </group>
 	<group name="views">
 		<js>/js/views/**.js</js>
 	</group>
