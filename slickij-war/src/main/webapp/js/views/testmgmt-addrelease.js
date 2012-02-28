@@ -22,9 +22,9 @@ var TestManagementAddReleasePage = SlickPage.extend({
         _.each(this.data.proj.releases, function(release) {
             // create the arrays that we need to populate the data table.
             if(this.data.proj.defaultRelease == release.id) {
-                this.releases[this.releases.length] = [release.name, new Date(release.target), '<a href="javascript:false;" data-release-id="' + release.id + '" data-release-name="' + release.name + '" id="defaultRelease" class="defaultRelease">default</a>'];
+                this.releases[this.releases.length] = [release.name, new Date(release.target), '<a href="javascript:;" data-release-id="' + release.id + '" data-release-name="' + release.name + '" id="defaultRelease" class="defaultRelease">default</a>'];
             } else {
-                this.releases[this.releases.length] = [release.name, new Date(release.target), '<a href="javascript:false;" data-release-id="' + release.id + '" data-release-name="' + release.name + '" class="notDefaultRelease">make default</a>'];
+                this.releases[this.releases.length] = [release.name, new Date(release.target), '<a href="javascript:;" data-release-id="' + release.id + '" data-release-name="' + release.name + '" class="notDefaultRelease">make default</a>'];
             }
         }, this);
     },
