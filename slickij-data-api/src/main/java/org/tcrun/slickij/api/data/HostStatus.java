@@ -59,4 +59,9 @@ public class HostStatus implements Serializable
 	{
 		this.lastCheckin = lastCheckin;
 	}
+    
+    public int getSecondsSinceLastCheckin()
+    {
+        return (int)(((new Date()).getTime() - lastCheckin.getTime())/1000);
+    }
 }
