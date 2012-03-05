@@ -71,7 +71,14 @@ public class TestrunResourceImpl implements TestrunResource
 		{
 			try
 			{
-				query.criteria("release.releaseId").equal(new ObjectId(queryParams.getFirst("releaseid")));
+                String releaseId = queryParams.getFirst("releaseid");
+                if(releaseId.equals("null"))
+                {
+                    query.criteria("release").doesNotExist();
+                } else
+                {
+				    query.criteria("release.releaseId").equal(new ObjectId(releaseId));
+                }
 			} catch(RuntimeException ex)
 			{
 				throw new WebApplicationException(ex, Status.BAD_REQUEST);

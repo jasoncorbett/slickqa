@@ -1,0 +1,17 @@
+<h2 class="center">View Testruns for Release:
+    <select id="bytestrun-release-select">
+        {{#if noRelease}}
+            <option value="null" selected>No Release</option>
+        {{else}}
+            <option value="null">No Release</option>
+        {{/if}}
+        {{#each data.proj.releases}}
+            {{#if defaultRelease}}
+                <option value="{{id}}" data-release-name="{{name}}" selected>{{name}}</option>
+            {{else}}
+                <option value="{{id}}" data-release-name="{{name}}">{{name}}</option>
+            {{/if}}
+        {{/each}}
+    </select>
+</h2>
+<table id="trtable" class="table-full-width"></table>
