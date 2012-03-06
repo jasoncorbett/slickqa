@@ -193,8 +193,7 @@ var SlickPage = Backbone.View.extend({
         // ---- Internal methods ----
         pageStart: function() {
             this.data = {};
-            for(var keyName in this.requiredData)
-            {
+            for(var keyName in this.requiredData) {
                 var reqDataObj = this.requiredData[keyName];
                 var url = reqDataObj;
                 if(_.isFunction(reqDataObj))

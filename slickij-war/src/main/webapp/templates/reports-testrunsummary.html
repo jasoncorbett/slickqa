@@ -1,0 +1,30 @@
+<div id="subtitle">
+	<h2 id="subtitle1">{{subtitle1}}</h2>
+	<h2 id="subtitle2">{{subtitle2}}</h2>
+	<div class="clear"></div>
+</div>
+<div id="testrunsummary-chart" class="chart">
+</div>
+<div id="summary">
+    {{#each summarylines}}
+        <div class="summaryline">
+            <a href="#/reports/testrundetail/{{../data.summary.id}}?only={{resultstatus}}" class="summarylinetitle result-status-{{statusclass}}">{{resulttype}}</a>
+            <div class="summarylinenumber">{{numberoftests}}</div>
+            <div class="summarylinepercent">{{percentageoftotal}}</div>
+        </div>
+    {{/each}}
+    <hr />
+    {{#with summarytotal}}
+        <div class="summaryline">
+            <a href="#/reports/testrundetail/{{../data.summary.id}}?only={{resultstatus}}" class="summarylinetitle result-status-{{statusclass}}">{{resulttype}}</a>
+            <div class="summarylinenumber">{{numberoftests}}</div>
+            <div class="summarylinepercent">{{percentageoftotal}}</div>
+        </div>
+    {{/with}}
+</div>
+<div class="clear">
+</div>
+<a class="button" href="#/reports/testrundetail/{{data.summary.id}}">Detailed Results</a>
+<a id="{{data.summary.id}}/reschedule-FAIL" class="button testrun-reschedule-bulk" href="javascript:;">Reschedule Failed Tests</a>
+<a id="{{data.summary.id}}/reschedule-BROKEN_TEST" class="button testrun-reschedule-bulk" href="javascript:;">Reschedule Broken Tests</a>
+
