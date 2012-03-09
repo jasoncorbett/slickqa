@@ -55,7 +55,12 @@ $(function() {
 					type: "GET",
 					dataType: "json",
 					success: function(data) {
-                        _.each(data, function(project){
+                        var default_project = $.cookie('slick_default_project');
+                        _.each(data, function(project) {
+                            if(default_project && default_project == project.id)
+                            {
+                                project.isdefault = true;
+                            }
                             $('#current-project-select').append(Handlebars.templates['main-project-dropdown.html'](project));
                             $('#project-select-' + project.id).data('project', project);
                         });
@@ -64,6 +69,11 @@ $(function() {
 						};
                         $.address.change(window.onPageChange);
                         window.onPageChange();
+
+                        $("#current-project-select").on("change", function() {
+                            $.cookie('slick_default_project', window.getCurrentProject().id);
+                            window.onPageChange();
+                        })
 					}
 				});
 });
