@@ -1,0 +1,11 @@
+<div id="subtitle">
+    <h2 id="subtitle1"></h2>
+    <h2 id="subtitle2"></h2>
+    <div class="clear"></div>
+</div>
+<table id="trdetailtable" class="table-full-width"></table>
+{{#if includepass}}
+<a class="button" href="#/reports/testrundetail/{{data.testrun.id}}">Exclude <span class="slick-result-PASS">PASS</span> Results</a>
+{{else}}
+<a class="button" href="#/reports/testrundetail/{{data.testrun.id}}?includepass=true">Include <span class="slick-result-PASS">PASS</span> Results</a>
+{{/if}}
