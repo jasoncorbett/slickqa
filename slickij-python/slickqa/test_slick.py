@@ -41,9 +41,13 @@ if __name__ == '__main__':
     logger = start_logging('test1', slickurl="http://hal9000.vintela.com:8080/slickij/api", otherhandlers=handler)
     testme = SlickTestRunner.SlickTestRunner(slickLocation="http://hal9000.vintela.com:8080/slickij/api")
     testme.slickCon.get_project_by_name("Slickij Developer Project")
-    slick_release = testme.slickCon.add_release("1.0.311.313")
+    slick_release = testme.slickCon.get_release_by_name("1.0.311.313")
+    if not slick_release:
+        slick_release = testme.slickCon.add_release("1.0.311.313")
     testme.slickCon.set_default_release(slick_release["id"])
-    slick_build = testme.slickCon.add_build("113")
+    slick_build = testme.slickCon.get_build_by_name("113")
+    if not slick_build:
+        slick_build = testme.slickCon.add_build("113")
     testme.slickCon.set_default_build(slick_build["id"])
     testme.setup_test_run(tests)
     SlickTest.logger = logger

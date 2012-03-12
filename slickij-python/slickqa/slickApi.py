@@ -118,7 +118,9 @@ class SlickAsPy(object):
         return self._safe_get("projects", self.current_project["id"], "releases", "default")
     
     def set_default_release(self, releaseId):
-        return self._safe_get("projects", self.current_project["id"], "setdefaultrelease", releaseId)
+        result = self._safe_get("projects", self.current_project["id"], "setdefaultrelease", releaseId)
+        self.current_release = result
+        return result
     
     def delete_release(self, releaseId):
         return self._safe_delete("projects", self.current_project["id"], "releases", releaseId)
@@ -143,6 +145,13 @@ class SlickAsPy(object):
         self.current_build = build
         return build
     
+    def get_build_by_name(self, buildName):
+        builds = self.get_builds()
+        for build in builds:
+            if build["name"] == buildName:
+                return build
+        return None
+    
     def get_default_build(self):
         build = self._safe_get("projects", self.current_project["id"], "releases", self.current_release['id'], "builds", "default")
         self.current_build = build
@@ -152,7 +161,9 @@ class SlickAsPy(object):
         return {'name':self.current_build["name"] ,'buildId': self.current_build["id"]}
     
     def set_default_build(self, buildId):
-        return self._safe_get("projects", self.current_project["id"], "releases", self.current_release['id'], "setdefaultbuild", buildId)
+        build = self._safe_get("projects", self.current_project["id"], "releases", self.current_release['id'], "setdefaultbuild", buildId)
+        self.current_build = build
+        return build
     
     def delete_build(self, buildId):
         return self._safe_delete("projects", self.current_project["id"], "releases", self.current_release['id'], "builds", buildId)
@@ -370,6 +381,19 @@ class SlickAsPy(object):
     def add_log_entries(self, entries, resultId):
         return self._safe_post(entries, "results", resultId, "log")
     
+    def create_stored_file(self, filename, chunksize, uploaddate, mimetype, md5, length):
+        stored_file = {'filename': filename, 'chunkSize': chunksize, 'uploadDate': uploaddate, 
+                       'mimetype': mimetype, 'md5': md5, 'length': length}
+        return self._safe_post(stored_file, "files")
+    
+    def set_file_content(self, file_id, data):
+        # TODO: may have to manipulate the data to get a binary array in JSON
+        return self._safe_post(data, "files", file_id, "content")
+    
+    def add_stored_file(self, filename, chunksize, uploaddate, mimetype, md5, length, data):
+        file_id = self.create_stored_file(filename, chunksize, uploaddate, mimetype, md5, length)
+        return self.set_file_content(file_id, data)
+    
 class SlickError(Exception):
     pass
 
@@ -396,9 +420,11 @@ def main():
                                       [{"name": "Data Extensions", "code": "dataext"}])
     applePy.add_component("HTML Web UI", "web-ui")
     applePy.add_component("REST APIs", "rest")
-    slick_release = applePy.add_release("1.0.0.311")
+    if not applePy.get_release_by_name("1.0.0.311"):
+        slick_release = applePy.add_release("1.0.0.311")
     applePy.set_default_release(slick_release["id"])
-    slick_build = applePy.add_build("311")
+    if not applePy.get_build_by_name("311"):
+        slick_build = applePy.add_build("311")
     applePy.set_default_build(slick_build["id"])
     print slick_project['id']
     try:
