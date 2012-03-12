@@ -6,8 +6,7 @@ var TestManagementTestcasePage = SlickPage.extend({
 
     requiredData: {
         "testcase": function() {
-                //return "api/testcases/" + this.options.positional[0];
-                return "api/testcases/" + "4f59261b423eeea0e000ab1c";
+                return "api/testcases/" + this.options.positional[0];
         }
     },
 
