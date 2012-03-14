@@ -88,11 +88,11 @@
 		</init-param>
 		<init-param>
 			<param-name>postProcessors</param-name>
-			<param-value>cssVariables,yuiCssMin,yuiJsMin</param-value>
+			<param-value>cssVariables</param-value>
 		</init-param>
 		<init-param>
 			<param-name>cacheUpdatePeriod</param-name>
-			<param-value>5</param-value>
+			<param-value>1</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>

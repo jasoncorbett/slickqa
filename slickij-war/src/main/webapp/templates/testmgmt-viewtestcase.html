@@ -1,0 +1,68 @@
+{{#with data.testcase}}
+<div class="box" id="test-case-attributes">
+    <ul class="headerbox">
+        <li class="headerbox">
+            <span class="label">Name -  </span>
+            <span>{{name}}</span>
+        </li>
+        <li class="headerbox">
+            <span class="label">ID - </span>
+            <span>{{id}}</span>
+        </li>
+        <li class="headerbox">
+            <span class="label">Author -  </span>
+            <span>{{author}}</span>
+        </li>
+        <li class="headerbox">
+            <span class="label">Project -  </span>
+            <span>{{project.name}}</span>
+        </li>
+        <li class="headerbox">
+            <span class="label">Purpose - </span>
+            <span>{{purpose}}</span>
+        </li>
+        <li class="headerbox">
+            <span class="label">Attributes - </span>
+            {{#if atributes}}
+                <span>{{attributes}}</span>
+            {{else}}
+                <span>None</span>
+            {{/if}}
+        </li>
+        <li class="headerbox">
+            <span class="label">Requirements - </span>
+            <span>{{requirements}}</span>
+        </li>
+        <li class="headerbox">
+            <span class="label">Extensions - </span>
+            {{#if extensions}}
+                <span>{{extensions}}</span>
+            {{else}}
+                <span>None</span>
+            {{/if}}
+        </li>
+        <li class="headerbox"><span class="label">Tags - </span>
+            <span>{{tags}}</span>
+        </li>
+        <li class="headerbox">
+            <span class="label">Component - </span>
+            <span>{{component.name}}</span>
+        </li>
+        <li class="headerbox">
+            <span class="label">Automated Status - </span>
+            {{#if automated}}
+                <span>Yes</span>
+            {{else}}
+                <span>No</span>
+            {{/if}}
+        </li>
+        <li class="headerbox">
+            <span class="label">Automation Tool - </span>
+            <span>{{automationTool}}</span>
+        </li>
+    </ul>
+</div>
+<div class="clear"></div>
+<div class="boxname">Test Case Steps:</div>
+<table class="table-full-width" id="testcase-detail-table"></table>
+{{/with}}

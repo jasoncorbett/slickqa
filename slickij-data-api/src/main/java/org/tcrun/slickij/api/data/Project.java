@@ -437,5 +437,10 @@ public class Project implements Serializable
         
         return retval;
     }
+    
+    public void setDefaultBuildName(String name)
+    {
+        // do nothing
+    }
 
 }
