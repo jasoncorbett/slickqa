@@ -437,7 +437,12 @@ public class Project implements Serializable
         
         return retval;
     }
-    
+
+    /**
+     * Don't Call this method.  It's here because with the JSON we can't (easily) have a getter and no setter.  This
+     * does not actually set the value, it is a no-op.
+     * @param name Useless value used in JSON serialization
+     */
     public void setDefaultBuildName(String name)
     {
         // do nothing

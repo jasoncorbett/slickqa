@@ -46,7 +46,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
         this.tbldata = [];
         _.each(this.data.results, function(result) {
             this.tbldata[this.tbldata.length] = [
-                "<span id=\"" + result.id + "\" class=\"clickable-individual-result\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>",
+                "<a id=\"" + result.id + "\" href=\"#/reports/result/" + result.id + "\" class=\"modal-link\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>",
                 safeReference(result, "component.name", ""),
                 new Date(result.recorded),
                 safeReference(result, "testcase.automationId", ""),

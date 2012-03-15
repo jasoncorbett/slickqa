@@ -1,0 +1,32 @@
+<div class="box">
+    <span class="fieldName">Test Name: </span><span class="fieldValue">{{data.result.testcase.name}}</span>
+    <span class="fieldName secondItem">Result: </span><span class="result-status-{{data.result.statusClass}} fieldValue">{{data.result.statusName}}</span>
+    <br />
+    {{#if data.result.reason}}
+        <span class="fieldName">Reason: </span><pre>{{data.result.reason}}</pre> <br />
+    {{/if}}
+    {{#if data.result.hostname}}
+        <span class="fieldName">Hostname: </span><span class="fieldValue">{{data.result.hostname}}</span> <br />
+    {{/if}}
+</div>
+<div id="result-tab-page">
+    <ul>
+        <li><a href="#result-tab-logs">Logs</a></li>
+        <li><a href="#result-tab-files">Files</a></li>
+        <li><a href="#result-tab-testcase">Test Case</a></li>
+        <li><a href="#result-tab-environment">Environment</a></li>
+    </ul>
+    <div id="result-tab-logs">
+
+    </div>
+    <div id="result-tab-files">
+
+    </div>
+    <div id="result-tab-testcase">
+
+    </div>
+    <div id="result-tab-environment">
+
+    </div>
+</div>
+

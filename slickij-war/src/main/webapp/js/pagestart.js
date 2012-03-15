@@ -18,35 +18,18 @@ $(function() {
                 $('#pagenav').html(Handlebars.templates['slicknavigation.html']({groups: SlickPage.StandardNavigationGroups, pages: pagenav}));
 
 				window.onPageChange = function() {
+                    $(".ui-dialog-content").dialog("close");
 					$("#main").html("");
 					$("#main-loading").show();
 					$(".actions").hide(250);
 					$(".groupselected").removeClass("groupselected");
 					setSlickTitle(" ");
-                    var parts = $.address.pathNames();
-                    if(parts.length == 0)
-                    {
-                        parts = ["dashboards", "main"];
-                    }
-                    if(parts.length >= 2)
-                    {
-                        if(SlickPage.PageGroups[parts[0]])
-                        {
-                            var page = SlickPage.PageGroups[parts[0]][parts[1]];
-                            window.CurrentPage = new page({positional: parts.slice(2), query: queryParametersToObject()});
-                            window.CurrentPage.on("render", function() {
-                                $("#main").append(window.CurrentPage.el);
-                                $("#main-loading").hide();
-                            });
-                            window.CurrentPage.pageStart();
-                        } else
-                        {
-                            //TODO: Not Found Page!
-                        }
-                    } else
-                    {
-                        //TODO: Not Found Page!
-                    }
+                    window.CurrentPage = getPageFromUrl('#' + $.address.value());
+                    window.CurrentPage.on("render", function() {
+                        $("#main").append(window.CurrentPage.el);
+                        $("#main-loading").hide();
+                    });
+                    window.CurrentPage.pageStart();
 				};
 
 				// Load the projects, needs to be done before execution of the page continues.
@@ -76,4 +59,27 @@ $(function() {
                         })
 					}
 				});
+
+                $("#main").on("click", "a.modal-link", function(event) {
+                    event.preventDefault();
+
+                    // open the linked to page in a dialog instead of in the main window.
+                    var urlOfDialog = $(this).attr("href");
+                    var page = getPageFromUrl(urlOfDialog, {noSetTitle: true});
+                    page.on("render", function() {
+                        $("#main").append(this.el);
+                        $(this.el).dialog({
+                            modal: true,
+                            title: "<a href=\"" + urlOfDialog + "\">" + this.getTitle() + "</a>",
+                            draggable: false,
+                            show: "slide",
+                            width: Math.round($(window).width() * .90),
+                            height: Math.round($(window).height() * .90)
+                        });
+                    }, page);
+                    page.pageStart();
+                    $(page.el).on("dialogclose", function() {
+                        $(page.el).html(""); // wipe it out
+                    });
+                });
 });

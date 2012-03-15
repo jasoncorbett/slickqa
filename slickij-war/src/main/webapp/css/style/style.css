@@ -524,6 +524,7 @@ a.result-status-CANCELLED:visited {
 	box-shadow: #fff 0 0 .15in;
 	background-color: #000;
     border: 1px solid white;
+    padding: .05in;
 }
 
 .width-3 {
@@ -764,4 +765,76 @@ a.notDefaultRelease:visited {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+.fieldName {
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #fff;
+}
+
+.fieldValue {
+    display: inline-block;
+    margin-left: .1in;
+}
+
+.secondItem {
+    margin-left: 2in;
+}
+
+div.fileviewcontainer {
+    padding: 12px 12px 12px 12px;
+    margin: 12px 12px 12px 12px;
+}
+
+div.filelist {
+    float: left;
+    width: 200px;
+    padding: 12px 12px 12px 12px;
+    margin: 12px 12px 12px 12px;
+    background-color: #1B1B1A;
+    border: 4px solid #1B1B1A;
+    border-radius: 9px;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+}
+
+div.fileicon {
+    border-bottom: solid 8px #454545;
+    margin-bottom: 10px;
+}
+
+div.filedisplay {
+    background-color: #1B1B1A;
+    top: 0px;
+    display: inline-block;
+    margin: 12px 12px 12px 12px;
+    padding: 12px 12px 12px 12px;
+    border: 4px solid #1B1B1A;
+    border-radius: 9px;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+}
+
+span.filename {
+    display:block;
+    padding: 0 0 0 0;
+    margin: -4px 0 4px 4px;
+    font-size: x-small;
+    text-transform: uppercase;
+    word-wrap:break-word;
+}
+
+img.file {
+    margin: 4px;
+    width: 75px;
+    height: 75px;
+    border-radius: 9px;
+    -moz-border-radius: 9px;
+    -webkit-border-radius: 9px;
+}
+
+#result-tab-page {
+    margin-top: .1in;
 }
