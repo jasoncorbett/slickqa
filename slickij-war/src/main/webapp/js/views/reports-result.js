@@ -21,7 +21,7 @@ var ReportsResultViewPage = SlickPage.extend({
     },
 
     onReady: function() {
-        this.title = "Result for Test '" + this.data.result.testcase.name + "'";
+        this.title = "'" + this.data.result.testcase.name + "' Result Details";
         this.data.result.statusClass = this.data.result.status.replace("_", "");
         this.data.result.statusName = this.data.result.status.replace("_", " ");
 

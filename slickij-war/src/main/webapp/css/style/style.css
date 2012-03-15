@@ -834,3 +834,7 @@ img.file {
     -moz-border-radius: 9px;
     -webkit-border-radius: 9px;
 }
+
+#result-tab-page {
+    margin-top: .1in;
+}
