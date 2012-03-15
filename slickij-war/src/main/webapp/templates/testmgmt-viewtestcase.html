@@ -1,22 +1,17 @@
 {{#with data.testcase}}
 <div class="box" id="test-case-attributes">
+    <div class="width-6">
     <ul class="headerbox">
         <li class="headerbox">
             <span class="label">Name -  </span>
             <span>{{name}}</span>
         </li>
-        <li class="headerbox">
-            <span class="label">ID - </span>
-            <span>{{id}}</span>
-        </li>
+        {{#if author}}
         <li class="headerbox">
             <span class="label">Author -  </span>
             <span>{{author}}</span>
         </li>
-        <li class="headerbox">
-            <span class="label">Project -  </span>
-            <span>{{project.name}}</span>
-        </li>
+        {{/if}}
         <li class="headerbox">
             <span class="label">Purpose - </span>
             <span>{{purpose}}</span>
@@ -29,20 +24,20 @@
                 <span>None</span>
             {{/if}}
         </li>
+        <li class="headerbox"><span class="label">Tags - </span>
+            <span>{{tags}}</span>
+        </li>
         <li class="headerbox">
             <span class="label">Requirements - </span>
             <span>{{requirements}}</span>
         </li>
+    </ul>
+    </div>
+    <div class="width-6">
+    <ul class="headerbox">
         <li class="headerbox">
-            <span class="label">Extensions - </span>
-            {{#if extensions}}
-                <span>{{extensions}}</span>
-            {{else}}
-                <span>None</span>
-            {{/if}}
-        </li>
-        <li class="headerbox"><span class="label">Tags - </span>
-            <span>{{tags}}</span>
+            <span class="label">Project -  </span>
+            <span>{{project.name}}</span>
         </li>
         <li class="headerbox">
             <span class="label">Component - </span>
@@ -60,7 +55,13 @@
             <span class="label">Automation Tool - </span>
             <span>{{automationTool}}</span>
         </li>
+        <li class="headerbox">
+            <span class="label">Automation ID - </span>
+            <span>{{automationId}}</span>
+        </li>
     </ul>
+    </div>
+    <div class="clear"></div>
 </div>
 <div class="clear"></div>
 <div class="boxname">Test Case Steps:</div>

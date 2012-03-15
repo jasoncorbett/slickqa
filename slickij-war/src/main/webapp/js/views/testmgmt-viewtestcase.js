@@ -37,7 +37,7 @@ var TestManagementViewTestcasePage = SlickPage.extend({
             bDeferRender: true,
             bPaginate: false,
             sDom: "<\"H\"lfr>tS<\"F\"ip>",
-            sScrollY: "" + ($(document).height() - (4 * $("#pagetitle").height()) -  (3 * $("#titlebar").height()) ) + "px"
+            sScrollY: "" + $("#test-case-attributes").height() + "px"
         });
     }
 

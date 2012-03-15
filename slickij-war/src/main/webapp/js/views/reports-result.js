@@ -34,11 +34,22 @@ var ReportsResultViewPage = SlickPage.extend({
     },
 
     onFinish: function() {
-        $("#result-tab-page").tabs();
+        var resultViewPage = this;
+        this.rendered = 0;
+        this.totalSubPages = 4;
+        this.tabApplied = false;
         _.each(this.pages, function(value, key) {
             value.on("render", function() {
                 $("#result-tab-" + key).append(this.el);
+                resultViewPage.rendered++;
+            value.on("finish", function() {
+                if( (!resultViewPage.tabApplied) && resultViewPage.rendered == resultViewPage.totalSubPages) {
+                    $("#result-tab-page").tabs();
+                    resultViewPage.tabApplied = true;
+                }
             }, value);
+
+            });
             value.pageStart();
         }, this);
     }
