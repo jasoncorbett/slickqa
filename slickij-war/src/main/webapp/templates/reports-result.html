@@ -3,7 +3,7 @@
     <span class="fieldName secondItem">Result: </span><span class="result-status-{{data.result.statusClass}} fieldValue">{{data.result.statusName}}</span>
     <br />
     {{#if data.result.reason}}
-        <span class="fieldName">Reason: </span><span class="fieldValue">{{data.result.reason}}</span> <br />
+        <span class="fieldName">Reason: </span><pre>{{data.result.reason}}</pre> <br />
     {{/if}}
     {{#if data.result.hostname}}
         <span class="fieldName">Hostname: </span><span class="fieldValue">{{data.result.hostname}}</span> <br />
