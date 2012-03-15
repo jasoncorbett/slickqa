@@ -2,6 +2,7 @@ var TestManagementViewTestcasePage = SlickPage.extend({
     name: "View Test Case",
     codename: "viewtestcase",
     group: "testmgmt",
+    navigation: false,
 
     requiredData: {
         "testcase": function() {
@@ -24,7 +25,6 @@ var TestManagementViewTestcasePage = SlickPage.extend({
            tabledata[tabledata.length] = [safeReference(steps, "name", ""),
                                           safeReference(steps, "expectedResult", "")];
         });
-        console.log(tabledata);
 
         $("#testcase-detail-table").dataTable({
             aaData: tabledata,
@@ -32,6 +32,7 @@ var TestManagementViewTestcasePage = SlickPage.extend({
                 {"sTitle": "Name", "sWidth": "40%"},
                 {"sTitle": "Expected", "sWidth": "60%"}],
             bJQueryUI: true,
+            bSort: false,
             bAutoWidth: false,
             bDeferRender: true,
             bPaginate: false,
