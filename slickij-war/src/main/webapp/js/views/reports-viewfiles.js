@@ -1,7 +1,7 @@
-var TestManagementTestcasePage = SlickPage.extend({
+var ReportsViewFilesPage = SlickPage.extend({
     name: "Files For Failed Test Cases",
     codename: "viewfiles",
-    group: "testmgmt",
+    group: "reports",
     navigation: false,
 
     requiredData: {
