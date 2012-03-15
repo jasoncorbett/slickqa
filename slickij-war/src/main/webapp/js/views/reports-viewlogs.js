@@ -20,14 +20,14 @@ var ReportViewLogs = SlickPage.extend({
             this.result = this.options.result;
         }
         else {
-            this.result = this.requiredData.result
+            this.result = this.data.result;
         }
     },
 
     onFinish: function() {
         var logEntries = [];
-        _.each(this.result.log, function(index, logEntry){
-            logEntires[index] = [new Date(logEntry.entryTime).format("mm/dd/yy HH:MM:ss"), logEntry.level, logEntry.loggerName,
+        _.each(this.result.log, function(logEntry, index){
+            logEntries[index] = [new Date(logEntry.entryTime).toLocaleTimeString(), logEntry.level, logEntry.loggerName,
             "<pre>" + logEntry.message + logEntry.exceptionClassName + logEntry.exceptionMessage + logEntry.exceptionStackTrace + "</pre>"];
         });
         var datatable = $("#viewlogtable").dataTable({

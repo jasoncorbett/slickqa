@@ -26,7 +26,7 @@ var ReportsResultViewPage = SlickPage.extend({
         this.data.result.statusName = this.data.result.status.replace("_", " ");
 
         this.pages = {
-            logs: new ComingSoonPage({positional: [], query: {}, noSetTitle: true}),
+            logs: new ReportViewLogs({positional: [], query: {}, noSetTitle: true, result: this.data.result}),
             files: new ReportsViewFilesPage({positional: [], query: {}, noSetTitle: true, result: this.data.result}),
             testcase: new TestManagementViewTestcasePage({positional: [this.data.result.testcase.testcaseId], query: {}, noSetTitle: true}),
             environment: new ComingSoonPage({positional: [], query: {}, noSetTitle: true})
