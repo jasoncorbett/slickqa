@@ -1,8 +1,7 @@
-var TestManagementTestcasePage = SlickPage.extend({
+var TestManagementViewTestcasePage = SlickPage.extend({
     name: "View Test Case",
     codename: "viewtestcase",
     group: "testmgmt",
-    navigation: true,
 
     requiredData: {
         "testcase": function() {

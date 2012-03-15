@@ -524,6 +524,7 @@ a.result-status-CANCELLED:visited {
 	box-shadow: #fff 0 0 .15in;
 	background-color: #000;
     border: 1px solid white;
+    padding: .05in;
 }
 
 .width-3 {
@@ -764,4 +765,20 @@ a.notDefaultRelease:visited {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+.fieldName {
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #fff;
+}
+
+.fieldValue {
+    display: inline-block;
+    margin-left: .1in;
+}
+
+.secondItem {
+    margin-left: 2in;
 }

@@ -22,11 +22,91 @@ $(document).ready(function () {
 });
 
 
-// Write a replacement for routesjs (using jquery address):
-//   Use Pages variable
-//   #/group/pagename[/added/to/positional]?query=parameters
-//   write a onhashchange function (cleanup)
-//   div#main and div#mainloading, main doesn't get displayed till all display functions finished
+// TODO: write unit tests for this critical code!
+
+var SlickUrlParser = function(url) {
+    this.url = url;
+    this.query = {};
+    this.pathNames = [];
+    var queryStartIndex = url.indexOf('?');
+    var beforeQuery = url;
+    if(queryStartIndex >= 0) {
+        // no query string
+
+        beforeQuery = url.substring(0, queryStartIndex);
+
+        var afterQuery = "";
+        // make sure we don't try to do a substring when the ? is at the end of the url;
+        if(queryStartIndex < (url.length - 1)) {
+            afterQuery = url.substr(queryStartIndex + 1);
+        }
+
+        // use jsUri's Query parser to do the hard part ;-)
+        var queryObj = new Query(afterQuery);
+        _.each(queryObj.params, function(params) {
+            var key = params[0];
+            var values = queryObj.getParamValues(key);
+            if(values.length > 1) {
+                this.query[key] = values;
+            } else {
+                this.query[key] = queryObj.getParamValue(key);
+            }
+        }, this);
+    }
+
+    var anchorStartIndex = beforeQuery.indexOf('#');
+    if(anchorStartIndex >= 0 && beforeQuery.charAt(anchorStartIndex + 1) === '/') {
+        // make sure #/ isn't the end of the string
+        if(anchorStartIndex < (beforeQuery.length - 2)) {
+            var path = beforeQuery.substr(anchorStartIndex + 2);
+            this.pathNames = path.split('/');
+        }
+    }
+};
+
+function getPageFromUrl(url, options) {
+    if(! options) {
+        // in case they don't pass in any options
+        options = {positional: [], query: {}};
+    }
+    var parser = new SlickUrlParser(url);
+    options.query = parser.query;
+
+    if(parser.pathNames.length > 0) {
+        if(parser.pathNames.length >= 2) {
+            var groupname = parser.pathNames[0];
+            var pagename = parser.pathNames[1];
+            options.positional = parser.pathNames.slice(2);
+            if(SlickPage.PageGroups[groupname] && SlickPage.PageGroups[groupname][pagename]) {
+                var page = SlickPage.PageGroups[groupname][pagename];
+                var instance = null;
+                try {
+                    instance = new page(options);
+                } catch(err) {
+                    options.url = url;
+                    options.error = "Error In Page Start";
+                    options.err = err;
+                    instance = new ErrorPage(options);
+                }
+                return instance;
+            } else
+            {
+                options.url = url;
+                options.parser = parser;
+                return new NotFoundPage(options);
+            }
+
+        } else {
+            options.error = "Bad Url: " + url;
+            options.parser = parser;
+            return new ErrorPage(options);
+        }
+    } else {
+        // there was nothing left of the url, return the *default* page
+        return new DashboardMainView(options);
+    }
+
+}
 
 /**
  * Turn the query parameters into an object mapping.
@@ -177,7 +257,9 @@ var SlickPage = Backbone.View.extend({
             } else if(this['primaryTemplateName']) {
                 this.template(this.primaryTemplateName);
             }
-            setSlickTitle(this.getTitle());
+            if(! this.options.noSetTitle) {
+                setSlickTitle(this.getTitle());
+            }
         },
 
         getTitle: function() {
@@ -275,6 +357,16 @@ SlickPage.extend = function(protoProps, classProps) {
 var ComingSoonPage = SlickPage.extend({
      primaryTemplateName: "coming-soon.html",
      title: "This Page Coming Soon"
+});
+
+var NotFoundPage = SlickPage.extend({
+    primaryTemplateName: "not-found.html",
+    title: "Unknown Page"
+});
+
+var ErrorPage = SlickPage.extend({
+    primaryTemplateName: "error.html",
+    title: "Oh No!"
 });
 
 function urlOfPage(page, positional, query) {
