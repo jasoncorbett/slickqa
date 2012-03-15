@@ -27,7 +27,7 @@ var ReportsResultViewPage = SlickPage.extend({
 
         this.pages = {
             logs: new ComingSoonPage({positional: [], query: {}, noSetTitle: true}),
-            files: new ComingSoonPage({positional: [], query: {}, noSetTitle: true}),
+            files: new ReportsViewFilesPage({positional: [], query: {}, noSetTitle: true, result: this.data.result}),
             testcase: new TestManagementViewTestcasePage({positional: [this.data.result.testcase.testcaseId], query: {}, noSetTitle: true}),
             environment: new ComingSoonPage({positional: [], query: {}, noSetTitle: true})
         };

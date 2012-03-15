@@ -3,23 +3,29 @@ var ReportsViewFilesPage = SlickPage.extend({
     codename: "viewfiles",
     group: "reports",
     navigation: false,
-
-    requiredData: {
-        "results": function() {
-            return "api/results/" + this.options.positional[0];
-        }
-    },
-
+    
     initialize: function() {
+        if(! this.options.result) {
+            this.requiredData = {
+                "results": function() {
+                    return "api/results/" + this.options.positional[0];
+                }
+            };
+        }
         this.on("ready", this.onReady, this);
-        this.on("finish", this.onFinish, this);
+        //this.on("finish", this.onFinish, this);
     },
 
     onReady: function() {
-        this.title = "File List For Testcase: '" + this.data.results.testcase.name + "'";
+        if(this.options.result) {
+            this.result = this.options.result;
+        } else {
+            this.result = this.data.results;
+        }
+        this.title = "File List For Testcase: '" + this.result.testcase.name + "'";
     },
 
-    onFinish: function() {
+/*    onFinish: function() {
         var tabledata = [];
         _.each(this.data.results.files, function(files) {
             tabledata[tabledata.length] = [safeReference(files, "filename", ""),
@@ -41,6 +47,6 @@ var ReportsViewFilesPage = SlickPage.extend({
             sDom: "<\"H\"lfr>tS<\"F\"ip>",
             sScrollY: "" + ($(document).height() - (4 * $("#pagetitle").height()) -  (3 * $("#titlebar").height()) ) + "px"
         });
-    }
+    } */
 
 });
