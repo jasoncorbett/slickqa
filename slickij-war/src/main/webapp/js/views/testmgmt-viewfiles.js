@@ -2,12 +2,11 @@ var TestManagementTestcasePage = SlickPage.extend({
     name: "Files For Failed Test Cases",
     codename: "viewfiles",
     group: "testmgmt",
-    navigation: true,
+    navigation: false,
 
     requiredData: {
         "results": function() {
-            //return "api/results/" + this.options.positional[0];
-            return "api/results/4f5fc2f53677706940bb0702";
+            return "api/results/" + this.options.positional[0];
         }
     },
 
