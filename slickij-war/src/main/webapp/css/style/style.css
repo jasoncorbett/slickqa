@@ -838,3 +838,7 @@ img.file {
 #result-tab-page {
     margin-top: .1in;
 }
+
+.tooltip {
+    word-wrap: break-word;
+}
