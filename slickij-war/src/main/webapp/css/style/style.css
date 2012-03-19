@@ -842,3 +842,7 @@ img.file {
 .tooltip {
     word-wrap: break-word;
 }
+
+.force-wrap {
+    word-wrap: break-word;
+}

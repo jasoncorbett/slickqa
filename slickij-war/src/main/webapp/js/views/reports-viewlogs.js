@@ -46,7 +46,7 @@ var ReportViewLogs = SlickPage.extend({
 
             combinedMessage += "</pre>"
             logEntries[index] = [new Date(logEntry.entryTime).toLocaleTimeString(), logEntry.level,
-                "<span title=\"" + logEntry.loggerName + "\">" + loggername + "</span>", combinedMessage];
+                "<span class=\"force-wrap\" title=\"" + logEntry.loggerName + "\">" + loggername + "</span>", combinedMessage];
         });
         var datatable = $("#viewlogtable").dataTable({
             aaData: logEntries,
