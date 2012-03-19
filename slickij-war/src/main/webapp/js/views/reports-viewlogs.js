@@ -41,7 +41,7 @@ var ReportViewLogs = SlickPage.extend({
                 combinedMessage += logEntry.exceptionStackTrace
             }
             combinedMessage += "</pre>"
-            logEntires[index] = [new Date(logEntry.entryTime)..toLocaleTimeString(), logEntry.level, 
+            logEntires[index] = [new Date(logEntry.entryTime).toLocaleTimeString(), logEntry.level,
                 logEntry.loggerName, combinedMessage];
         });
         var datatable = $("#viewlogtable").dataTable({
