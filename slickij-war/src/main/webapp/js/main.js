@@ -151,19 +151,20 @@ function getDuration(duration) {
     if (duration == 0) {
         return "";
     } else { 
-        var seconds=((duration/1000)%60).toFixed(0);
-        var minutes=((duration/(1000*60))%60).toFixed(0);
-        var hours=((duration/(1000*60*60))%24).toFixed(0);
-        var retval = "";
-        if (hours != 0) {
-            retval = retval + hours + " hours, "; }
-        if (minutes!= 0) {
-            retval = retval + minutes + " minutes, "; }
-        if (seconds != 0) {
-            retval = retval + seconds + " seconds"; }
-        return retval;
-    }
-}
+          var nHours = (duration/3600).toFixed(0);
+          var nTimeInSeconds = (duration%3600).toFixed(0);
+          var nMinutes = (nTimeInSeconds/60).toFixed(0);
+          var nSeconds = (nTimeInSeconds%60).toFixed(0);
+          var retval = "";
+          if (nHours != 0) {
+              retval = retval + nHours + " hours, "; }
+          if (nMinutes != 0) {
+              retval = retval + nMinutes + " minutes, "; }
+          if (nSeconds != 0) {
+              retval = retval + nSeconds + " seconds"; }
+          return retval;
+     }
+};
 
 /**
  * Set the title of the page, and the title element in the page.
