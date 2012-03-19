@@ -846,3 +846,23 @@ img.file {
 .force-wrap {
     word-wrap: break-word;
 }
+
+span.log-level-ERROR {
+    color: #ff0000
+}
+
+span.log-level-WARN {
+    color: #ffac00
+}
+
+span.log-level-INFO {
+    color: #ffffff
+}
+
+span.log-level-DEBUG {
+    color:#dddddd
+}
+
+span.log-level-TRACE {
+    color: #cccccc
+}
