@@ -41,7 +41,7 @@ var ReportViewLogs = SlickPage.extend({
                 combinedMessage += logEntry.exceptionStackTrace
             }
             combinedMessage += "</pre>"
-            logEntires[index] = [new Date(logEntry.entryTime).toLocaleTimeString(), logEntry.level,
+            logEntries[index] = [new Date(logEntry.entryTime).toLocaleTimeString(), logEntry.level,
                 logEntry.loggerName, combinedMessage];
         });
         var datatable = $("#viewlogtable").dataTable({
@@ -56,7 +56,7 @@ var ReportViewLogs = SlickPage.extend({
             bDeferRender: true,
             bPaginate: false,
             sDom: '<"H"lfrT<"clear">>tS<"F"ip>',
-            sScrollY: "" + ($(document).height() - (4 * $("#pagetitle").height()) -  (3 * $("#titlebar").height())) + "px"
+            sScrollY: "" + ($(document).height() - (5 * $("#pagetitle").height()) -  (3 * $("#titlebar").height())) + "px"
         });
         datatable.fnSort([[0, "desc"]]);
     }
