@@ -9,7 +9,7 @@ body {
 }
 
 #titlebar {
-	margin: .1in .7in;
+	margin: .1in .05in;
 	padding: 0;
 	color: white;
 	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#A6000D), to(#650207));

@@ -27,13 +27,27 @@ var ReportViewLogs = SlickPage.extend({
     onFinish: function() {
         var logEntries = [];
         _.each(this.result.log, function(logEntry, index){
-            logEntries[index] = [new Date(logEntry.entryTime).toLocaleTimeString(), logEntry.level, logEntry.loggerName,
-            "<pre>" + logEntry.message + logEntry.exceptionClassName + logEntry.exceptionMessage + logEntry.exceptionStackTrace + "</pre>"];
+            var combinedMessage = "<pre>";
+            if (logEntry.message) {
+                combinedMessage += logEntry.message;
+            }
+            if (logEntry.exceptionClassName) {
+                combinedMessage += logEntry.exceptionClassName;
+            }
+            if (logEntry.exceptionMessage) {
+                combinedMessage += logEntry.exceptionMessage;
+            }
+            if (logEntry.exceptionStackTrace) {
+                combinedMessage += logEntry.exceptionStackTrace
+            }
+            combinedMessage += "</pre>"
+            logEntires[index] = [new Date(logEntry.entryTime).toLocaleTimeString(), logEntry.level,
+                logEntry.loggerName, combinedMessage];
         });
         var datatable = $("#viewlogtable").dataTable({
             aaData: logEntries,
             aoColumns: [
-                {"sTitle": "Date", "sWidth": "6%"},
+                {"sTitle": "Time", "sWidth": "6%"},
                 {"sTitle": "Level", "sWidth": "7%"},
                 {"sTitle": "Logger Name", "sWidth": "7%"},
                 {"sTitle": "Message", "sWidth": "80%"}],
@@ -42,7 +56,7 @@ var ReportViewLogs = SlickPage.extend({
             bDeferRender: true,
             bPaginate: false,
             sDom: '<"H"lfrT<"clear">>tS<"F"ip>',
-            sScrollY: "" + ($(document).height() - (5 * $("#pagetitle").height()) -  (3 * $("#titlebar").height())) + "px"
+            sScrollY: "" + ($(document).height() - (4 * $("#pagetitle").height()) -  (3 * $("#titlebar").height())) + "px"
         });
         datatable.fnSort([[0, "desc"]]);
     }
