@@ -33,7 +33,7 @@ var ReportViewLogs = SlickPage.extend({
         var datatable = $("#viewlogtable").dataTable({
             aaData: logEntries,
             aoColumns: [
-                {"sTitle": "Date", "sWidth": "6%"},
+                {"sTitle": "Time", "sWidth": "6%"},
                 {"sTitle": "Level", "sWidth": "7%"},
                 {"sTitle": "Logger Name", "sWidth": "7%"},
                 {"sTitle": "Message", "sWidth": "80%"}],
