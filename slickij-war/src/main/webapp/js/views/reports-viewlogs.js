@@ -43,8 +43,8 @@ var ReportViewLogs = SlickPage.extend({
 
             var loggernameArray = logEntry.loggerName.split('.');
             var loggername = loggernameArray[loggernameArray.length - 1];
-            var startColor = "<span class=\"log-level-" + logEntry.level + "\">"
-            var endColor = "</span>"
+            var startColor = "<span class=\"log-level-" + logEntry.level + "\">";
+            var endColor = "</span>";
 
             combinedMessage += "</pre>"
             logEntries[index] = [startColor + new Date(logEntry.entryTime).toLocaleTimeString() + endColor, startColor + logEntry.level + endColor,
