@@ -1,18 +1,17 @@
 {{#with result}}
 <div class="clear"></div>
-<div class="boxname">File Viewer:</div>
+<div class="boxname filename">File Viewer:
+    <span id="filename">{{testcase.name}}</span>
+</div>
 <div class="box">
-    <div class="filelist">
-        {{#each files}}
-            <div class="fileicon">
-                <img class="file box" src="/images/htmlicon.png" alt="{{filename}}"/>
-                <span class="label filename">{{filename}}</span>
-            </div>
-        {{/each}}
+    <div id="filelist" class="filelist">
     </div>
-    <div class="filedisplay">
-        <img src="/images/htmlicon.png" alt="test"/>
+        {{#each files}}
+        <div class="filedisplay">
+            <img src="http://localhost:8080/api/files/{{id}}/content/{{filename}}" alt="{{filename}}"/>
+        </div>
+        {{/each}}
+        <!--&lt;!&ndash;<img src="/images/htmlicon.png" alt="test"/>&ndash;&gt;-->
     </div>
 </div>
-
 {{/with}}

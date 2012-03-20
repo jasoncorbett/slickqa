@@ -806,6 +806,7 @@ div.fileicon {
 }
 
 div.filedisplay {
+    display: none;
     background-color: #1B1B1A;
     top: 0px;
     display: inline-block;
@@ -817,7 +818,7 @@ div.filedisplay {
     -webkit-border-radius: 9px;
 }
 
-span.filename {
+a.filename {
     display:block;
     padding: 0 0 0 0;
     margin: -4px 0 4px 4px;
@@ -833,6 +834,11 @@ img.file {
     border-radius: 9px;
     -moz-border-radius: 9px;
     -webkit-border-radius: 9px;
+}
+
+div.filename {
+    font-size: large;
+    margin: 0px 0px 12px 12px;
 }
 
 #result-tab-page {
