@@ -59,9 +59,7 @@ var ReportsViewFilesPage = SlickPage.extend({
                 html += "</div>";
                 //console.log("<pre class=\"prettyprint lang-html\">" /api/files/" + fileId + "/content/" + fileName + "\">" + fileName + "</a>");
             }
-            console.log("jaron is the man");
-            console.log(html);
-            console.log("jaron is the man 2X");
+
             $('#filelist').append(html);
         });
     },
