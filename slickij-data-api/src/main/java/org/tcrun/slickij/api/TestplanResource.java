@@ -72,6 +72,11 @@ public interface TestplanResource
 	@GZIP
 	public List<Testcase> getTestcases(@PathParam("testplanid") String testplanId);
 
+    @Path("/{testplanid}/testcount")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public Integer getTestcaseCount(@PathParam("testplanid") String testplanId);
+
 	@Path("/{testplanid}/extensions")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

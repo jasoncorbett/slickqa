@@ -627,7 +627,7 @@ a.result-status-CANCELLED:visited {
 }
 
 .odd {
-	background-color: #222222;
+	background-color: #262626;
 }
 
 .even {
@@ -843,4 +843,32 @@ div.filename {
 
 #result-tab-page {
     margin-top: .1in;
+}
+
+.tooltip {
+    word-wrap: break-word;
+}
+
+.force-wrap {
+    word-wrap: break-word;
+}
+
+span.log-level-ERROR {
+    color: #ff0000
+}
+
+span.log-level-WARN {
+    color: #ffac00
+}
+
+span.log-level-INFO {
+    color: #ffffff
+}
+
+span.log-level-DEBUG {
+    color:#dddddd
+}
+
+span.log-level-TRACE {
+    color: #cccccc
 }
