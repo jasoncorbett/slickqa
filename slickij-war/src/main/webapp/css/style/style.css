@@ -753,6 +753,12 @@ label .explanation {
     display: block;
 }
 
+.formline select {
+    float: left;
+    margin-left: .1in;
+    margin-top: .13in;
+}
+
 a.notDefaultRelease:link {
     color: #444;
 }
