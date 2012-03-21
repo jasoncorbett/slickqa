@@ -17,6 +17,7 @@ class SlickTest(SlickTestCase):
         self.logger.warn("in test 1")
         self.logger.warn("in test 1")
         self.logger.warn("in test 1")
+        self.logger.info("I'm betting this passes")
     
     def test_02(self):
         """test2"""
@@ -27,6 +28,7 @@ class SlickTest(SlickTestCase):
         self.logger.info("in test 2")
         self.logger.warn("in test 2")
         self.logger.warn("in test 2")
+        self.assertThisIsGoingToBeAnError(WhatDayathink)
     
     def test_03(self):
         """test3"""
@@ -37,7 +39,7 @@ class SlickTest(SlickTestCase):
         self.logger.debug("in test 3")
         self.logger.warn("in test 3")
         self.logger.warn("in test 3")
-        
+        self.assertTrue(False, "this is what a failure looks like")
         
     def test_04(self):
         """test4"""
@@ -52,30 +54,25 @@ class SlickTest(SlickTestCase):
         self.logger.trace("in test 4")
         self.logger.info("in test 4")
         self.logger.error("in test 4")
+        
+    def test_05(self):
+        """test5"""
+        self.logger.warn("I'm going to skip this test")
+        self.skipTest("Skipping cause I said so!")
+        
     
     @classmethod
     def tearDownClass(cls):
         cls.logger.warn("in teardownclass, finally")
     
 if __name__ == '__main__':
-    import SlickTestRunner
     import unittest
     import sys
     handler = logging.StreamHandler(sys.stdout)
     unittest.loader.TestLoader.suiteClass = SlickTestSuite
     tests = unittest.TestLoader().loadTestsFromTestCase(SlickTest)    
     logger = start_logging('test1', slickurl="http://localhost:8080/api", otherhandlers=handler)
-    testme = SlickTestRunner.SlickTestRunner(slickLocation="http://localhost:8080/api")
-    testme.slickCon.get_project_by_name("Slickij Developer Project")
-    slick_release = testme.slickCon.get_release_by_name("1.0.311.315")
-    if not slick_release:
-        slick_release = testme.slickCon.add_release("1.0.311.315")
-    testme.slickCon.set_default_release(slick_release["id"])
-    slick_build = testme.slickCon.get_build_by_name("5")
-    if not slick_build:
-        slick_build = testme.slickCon.add_build("5")
-    testme.slickCon.set_default_build(slick_build["id"])
-    testme.setup_test_run(tests)
+    testme = SlickTestRunner(tests, "1.0.311", "6", slickLocation="http://localhost:8080/api", loggername='test1')
     SlickTest.logger = logger
     tests.set_logger(logger.name)
     result = testme.run(tests)

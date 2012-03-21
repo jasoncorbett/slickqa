@@ -6,20 +6,34 @@ from unittest import TextTestRunner
 from unittest.signals import registerResult
 
 class SlickTestRunner(TextTestRunner):
-    """A test runner class that logs results to the Slickqa results database.
-
+    """
+    A test runner class that logs results to the Slickqa results database.
     It uses the python rest api to communicate.
     """
-    def __init__(self, projectName="Slickij Developer Project", testplanName="The plan", 
+    # TODO: Maybe we should add logging here as well?
+    def __init__(self, tests, release, build, projectName="Slickij Developer Project", testplanName="The plan",
                  slickLocation="http://localhost:8080/api", apiuser='tcrunij', apipassword='f00b@r', stream=None, 
-                 descriptions=True, verbosity=1, failfast=False, buffer=False, resultclass=SlickTestResult):
+                 descriptions=True, verbosity=1, failfast=False, buffer=False, 
+                 resultclass=SlickTestResult, loggername='root'):
         super(SlickTestRunner, self).__init__(stream, descriptions, verbosity, failfast, buffer, resultclass)
+        self.logger_name = loggername
+        self.tests = tests
         self.testPlan = testplanName
         self.slickCon = SlickAsPy(slickLocation, apiuser, apipassword)
         self.project = self.slickCon.get_project_by_name(projectName)
+        self.release = self.slickCon.get_release_by_name(release)
+        if not self.release:
+            self.release = self.slickCon.add_release(release)
+        self.slickCon.set_default_release(self.release['id'])
+        self.build = self.slickCon.get_build_by_name(build)
+        if not self.build:
+            self.build = self.slickCon.add_build(build)
+        self.slickCon.set_default_build(self.build['id'])
+        self.setup_test_run(tests)
 
     def _makeSlickResult(self):
-        return self.resultclass(self.project, self.testRunRef, self.slickCon, self.stream, self.descriptions, self.verbosity)
+        return self.resultclass(self.project, self.testRunRef, self.slickCon, self.stream,
+                                self.descriptions, self.verbosity, self.logger_name)
     
     def _printTests(self, tests):
         for test in tests._tests:
@@ -58,18 +72,16 @@ class SlickTestRunner(TextTestRunner):
 
     def _setTestRunRef(self, testRun):
         self.testRunRef = {"name": testRun["name"], "id": testRun["id"]}
-        
-    # TODO: should the constructor do this? Are we always going to have this information at construction?
+
     def setup_test_run(self, test):
-        '''setup the test run so multiple runs can be placed in one test run'''
+        '''setup the test run so multiple tests can be placed in one test run'''
         self._checkTests(test)
         self._checkTestPlan()
         self._setTestRunRef(self.slickCon.add_test_run(self.testPlan["name"], self.testPlan["id"]))
-        return self.testRunRef['id']
+        #return self.testRunRef['id']
 
     def run(self, test):
-        "Run the given test case or test suite."
-
+        """Run the given test case or test suite."""
         result = self._makeSlickResult()
         registerResult(result)
         result.failfast = self.failfast

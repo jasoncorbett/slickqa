@@ -1,4 +1,5 @@
 import datetime
+import traceback
 from logging import *
 from slickApi import SlickAsPy
 
@@ -54,9 +55,9 @@ class SlickFormatter(Formatter):
         now = self.formatTime(record)
         exctype = excvalue = exctraceback = None
         if record.exc_info:
-            exctype = record.exc_info[0]
-            excvalue = record.exc_info[1]
-            exctraceback = record.exc_info[2]
+            exctype = str(record.exc_info[0])
+            excvalue = str(record.exc_info[1])
+            exctraceback = traceback.format_exc().splitlines()
         
         return {"entryTime": now, "level": record.levelname, "loggerName": record.name, "message": record.msg, 
                 "exceptionClassName": exctype, "exceptionMessage": excvalue, "exceptionStackTrace": exctraceback}

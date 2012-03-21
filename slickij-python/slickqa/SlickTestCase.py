@@ -1,5 +1,7 @@
 import logging
-from unittest import TestCase
+import sys
+from unittest import TestCase, SkipTest
+from unittest.case import _ExpectedFailure, _UnexpectedSuccess
 from slickLogging import Slicklogger
 
 class SlickTestCase(TestCase):
@@ -34,7 +36,7 @@ class SlickTestCase(TestCase):
                 success = False
                 try:
                     self.setUp()
-                except unittest.SkipTest as e:
+                except SkipTest as e:
                     self._addSkip(result, str(e))
                 except Exception:
                     result.addError(self, sys.exc_info())
@@ -42,7 +44,7 @@ class SlickTestCase(TestCase):
                     testMethod()
                 except self.failureException:
                     result.addFailure(self, sys.exc_info())
-                except unittest.case._ExpectedFailure as e:
+                except _ExpectedFailure as e:
                     addExpectedFailure = getattr(result, 'addExpectedFailure', None)
                     if addExpectedFailure is not None:
                         addExpectedFailure(self, e.exc_info)
@@ -50,7 +52,7 @@ class SlickTestCase(TestCase):
                         warnings.warn("TestResult has no addExpectedFailure method, reporting as passes",
                                       RuntimeWarning)
                         result.addSuccess(self)
-                except unittest.case._UnexpectedSuccess:
+                except _UnexpectedSuccess:
                     addUnexpectedSuccess = getattr(result, 'addUnexpectedSuccess', None)
                     if addUnexpectedSuccess is not None:
                         addUnexpectedSuccess(self)
@@ -58,7 +60,7 @@ class SlickTestCase(TestCase):
                         warnings.warn("TestResult has no addUnexpectedSuccess method, reporting as failures",
                                       RuntimeWarning)
                         result.addFailure(self, sys.exc_info())
-                except unittest.SkipTest as e:
+                except SkipTest as e:
                     self._addSkip(result, str(e))
                 except Exception:
                     result.addError(self, sys.exc_info())
