@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
@@ -278,7 +279,16 @@ public class TestplanResourceImpl implements TestplanResource
 		return getTestcases(plan);
 	}
 
-	@Override
+    @Override
+    public Integer getTestcaseCount(@PathParam("testplanid") String testplanId) {
+        Testplan plan = getTestPlan(testplanId);
+        Integer testcount = 0;
+        for(NamedTestcaseQuery query : plan.getQueries())
+            testcount += (int)m_testcaseDAO.countTestsFromTestcaseQuery(query.getQuery());
+        return testcount;
+    }
+
+    @Override
 	public void deleteTestplan(String testplanId)
 	{
 		m_testplanDAO.deleteById(new ObjectId(testplanId));

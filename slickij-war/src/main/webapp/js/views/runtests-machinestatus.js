@@ -29,15 +29,19 @@ var RunTestsMachineStatusPage = SlickPage.extend({
         _.each(this.data.hoststatuses, function(hoststatus) {
            var runTime = "";
            var cancelButton = "";
+           var testcase = "";
+           var testrun = "";
            if (hoststatus.currentWork !== null)
            {
-              runTime = getDuration(safeReference(hoststatus, "secondsSinceLastCheckin", 0));   
+              runTime = getDuration(safeReference(hoststatus, "currentWork.runlength", 0));
+              testcase = "<a href=\"#/reports/result/" + safeReference(hoststatus, "currentWork.id", "") + "\">" + safeReference(hoststatus, "currentWork.testcase.name", "") + "</a>";
+              testrun = "<a href=\"#/reports/testrunsummary/" + safeReference(hoststatus, "currentWork.testrun.testrunId", "") + "\">" + safeReference(hoststatus, "currentWork.testrun.name", "") + "</a>";
               cancelButton = "<button id=\"cancel-" + safeReference(hoststatus, "currentWork.id", "notest") + "\" class=\"cancel-result button\" alt=\"Cancel Result\" title=\"Cancel Result\">Cancel</button>";
            }
            tabledata[tabledata.length] = [safeReference(hoststatus, "hostname", ""),
-                                          new Date(safeReference(hoststatus, "lastCheckin", "")),
-                                          safeReference(hoststatus, "currentWork.testcase.name", ""),
-                                          safeReference(hoststatus, "currentWork.testrun.name", ""),
+                                          getDuration(safeReference(hoststatus, "secondsSinceLastCheckin", 0)),
+                                          testcase,
+                                          testrun,
                                           runTime,
                                           cancelButton,
                                       ];

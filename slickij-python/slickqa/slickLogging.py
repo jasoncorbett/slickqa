@@ -22,7 +22,7 @@ def start_logging(loggerName, slickcon=None, slickurl="http://localhost:8080/api
     log = getLogger(loggerName)
     for level, levelName in log_levels.iteritems():
         addLevelName(level, levelName)
-    log.setLevel(INFO)
+    log.setLevel(TRACE)
     formatter = SlickFormatter()
     if not slickcon:
         handler = SlickHandler(log.level, baseurl=slickurl, username=username, password=password)
