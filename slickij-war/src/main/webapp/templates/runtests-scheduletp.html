@@ -1,6 +1,6 @@
 <div id="schedule-testplan-box" class="box width-8">
-    <div id="schedult-testplan-box-name" class="boxname">Schedule Test Plan</div>
-    <span id="schedule-testplan-box-explanation" class="explanation">Schedule Test Plan for project '{{data.proj.name}}'.</span>
+    <div id="schedult-testplan-box-name" class="boxname">Schedule Test Plan '{{data.tp.name}}'</div>
+    <span id="schedule-testplan-box-explanation" class="explanation">Submitting this form will create empty results for all {{data.testcount}} tests in the plan.</span>
     <hr class="glowing" />
     <form action="?">
         
@@ -18,9 +18,9 @@
         <div class="formline">
             <label for="schedule-testplan-release-select">Release
             </label>
-            <select id="schedule-testplan-release-build-select">
+            <select id="schedule-testplan-release-select">
                 {{#each data.proj.releases}}
-                    <option value="{{id}}">{{name}}</option>
+                    <option data-name="{{name}}" value="{{id}}">{{name}}</option>
                 {{/each}}
             </select>
         </div>
@@ -31,7 +31,7 @@
             </label>
             <select id="schedule-testplan-release-build-select">
                 {{#each data.builds}}
-                    <option value="{{id}}">{{name}}</option>
+                    <option data-name="{{name}}" value="{{id}}">{{name}}</option>
                 {{/each}}
             </select>
         </div>
@@ -39,14 +39,14 @@
          
         
         <div class="formline">
-            <label for="schedule-testplan-config-value">Configuration Value
+            <label for="schedule-testplan-config">Configuration Value
                 <span class="explanation">The configuration value</span>
             </label>
-            <input type="text" name="schedule-testplan-config-value" id="schedule-testplan-config" />
+            <input type="text" name="schedule-testplan-config" id="schedule-testplan-config" />
         </div>
         
         <div class="formline">
-            <label for="schedule-testplan-config-">Configuration
+            <label for="schedule-testplan-config-value">Configuration
                 <span class="explanation">The configuration key</span>
             </label>
             <input type="text" name="schedule-testplan-config-value" id="schedule-testplan-config-value" />

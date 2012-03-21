@@ -11,6 +11,12 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
             },
             config: function() {
                 return "api/configurations";
+            },
+            tp: function() {
+                return "api/testplans/" + this.options.positional[0];
+            },
+            testcount: function() {
+                return "api/testplans/" + this.options.positional[0] + "/testcount";
             }
         };
         this.on("ready", this.onReady, this);
@@ -65,7 +71,45 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
     },
 
     onScheduleTestPlan: function(event) {
-        $.jGrowl("Scheduling test plan now");
+        var runparameters = {
+            config: {
+                name: $("#schedule-testplan-environment-select").data("environmentname"),
+                configId: $("#schedule-testplan-environment-select").val()
+            },
+            release: {
+                name: $("schedule-testplan-release-select").data("name"),
+                releaseId: $("schedule-testplan-release-select").val()
+            },
+            build: {
+                name: $("schedule-testplan-release-build-select").data("name"),
+                buildId: $("schedule-testplan-release-build-select").val()
+            }
+        };
+        if($("#schedule-testplan-config").val()) {
+            runparameters.overrides = [
+                {
+                    isRequirement: false,
+                    key: $("schedule-testplan-config").val(),
+                    value: $("schedule-testplan-config-value").val()
+                }
+            ]
+        }
+
+        $.ajax({
+            url: "api/testplans/" + event.data.page.options.positional[0] + "/run",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(runparameters),
+            success: function(data) {
+                $.address.value("reports/testrunsummary/" + data.id);
+            },
+            error: function() {
+                //TODO: Actually use the page class error method so that it could potentially be logged.
+                $.jGrowl("Unable to schedule test plan.");
+            }
+
+        });
 
     }
 });
