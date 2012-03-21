@@ -3,15 +3,15 @@ var ReportsViewFilesPage = SlickPage.extend({
     codename: "viewfiles",
     group: "reports",
     //TODO: Set this to false
-    navigation: true,
+    navigation: false,
 
     initialize: function() {
         if(! this.options.result) {
             this.requiredData = {
                 "results": function() {
-                    //return "api/results/" + this.options.positional[0];
+                    return "api/results/" + this.options.positional[0];
                     //TODO: Remove this line
-                    return "api/results/4f5fc2f53677706940bb0702";
+                    //return "api/results/4f5fc2f53677706940bb0702";
                 }
             };
         }
@@ -29,10 +29,7 @@ var ReportsViewFilesPage = SlickPage.extend({
     },
 
     onFinish: function() {
-//        $(".file").on("click", { page: this }, this.displayFiles());
-        console.log("build the dang filelist!!");
         this.buildFileList();
-
         prettyPrint();
     },
 
@@ -42,45 +39,65 @@ var ReportsViewFilesPage = SlickPage.extend({
             var mimeType = file.mimetype;
             var fileName = file.filename;
             var fileId   = file.id;
+            var fileContent = "<html><header><title>This is a test!</title></header><body><h1>This is to test pretty files!!!</h1></body></html>";
             var html = "";
+            var html2 = "";
 
             if (mimeType.indexOf("text/html") != -1) {
 
+                //Build the list of files
                 html += "<div class=\"fileicon\">";
                 html += "<img class=\"file box\" src=\"/images/htmlicon.png\" alt=\"" + fileName + "\"/>";
                 html += "<a class=\"label filename\" href=\"/api/files/" + fileId + "/content/" + fileName + "\">" + fileName + "</a>";
                 html += "</div>";
+
+                //Build the file viewer
+                html2 += "<div class=\"filedisplay\" data-fileid=\"" + fileId + "\" data-filename=\"" + fileName + "\">";
+
+                $.ajax({
+                    type: "GET",
+                    url: "api/files/" + fileId + "/content/" + fileName,
+                    dataType: "html",
+                    success: function(html) {
+                        //console.log("Success:" + html);
+                        html2 += "<code id=\"" + fileId + "\" class=\"prettyprint lang-html\" data-fileUrl=\"/api/files/" + fileId + "/content/" + fileName + "\" >" + html + "</code>";
+                    },
+                    error: function() {
+                        html2 += "<code id=\"" + fileId + "\" class=\"prettyprint lang-html\" data-fileUrl=\"/api/files/" + fileId + "/content/" + fileName + "\" >Could not retrieve the file from the server.</code>";
+                    }
+                });
+
+                html2 += "</div>";
+                console.log(html2);
 
             } else if (mimeType.indexOf("image/png") != -1) {
 
                 html += "<div class=\"fileicon\">";
-                html += "<img class=\"file box\" src=\"/images/htmlicon.png\" alt=\"" + fileName + "\"/>";
+                html += "<img class=\"file box\" src=\"/api/files/" + fileId + "/content/" + fileName + "\" alt=\"" + fileName + "\"/>";
                 html += "<a class=\"label filename\" href=\"/api/files/" + fileId + "/content/" + fileName + "\">" + fileName + "</a>";
                 html += "</div>";
-                //console.log("<pre class=\"prettyprint lang-html\">" /api/files/" + fileId + "/content/" + fileName + "\">" + fileName + "</a>");
+
+                //Build the file viewer
+                html2 += "<div class=\"filedisplay\">";
+                html2 += "<img src=\"/api/files/" + fileId + "/content/" + fileName + "\" alt=\"" + fileName + "\"/>";
+                html2 += "</div>";
             }
 
             $('#filelist').append(html);
+            $('#fileviewer').append(html2);
         });
+
     },
 
-    displayFile: function(event) {
-        console.log("testing");
-//        _.each(this.result.files, fucntion(id, filename, mimetype)
-//        {
-//
-//        }
-//        )
-//
-//        );
+    getHtmlFile: function(element, fileName, fileId) {
 
-        //build the contents of hte file display div
-        //if mime type = text/html
-        // render <pre> tags
-        //else mime type = image/png
-        //files.id
-        //page.template(name, filename, $('filedisplaycontainter'));
-        //http://localhost:8080/api/files/{{id}}/content/{{filename}}" alt="{{filename}}
+        $(element).load("api/files/" + fileId + "/content/" + filename, function(response, status, xhr) {
+            if (status == "error") {
+                ($element).append("Could not find file: '" + fileName + "'" + "Error: " + xhr.status + " " + xhr.message);
+                page.error("Could not find file: '" + fileName + "'" + "Error: " + xhr.status + " " + xhr.message);
+            }
+        });
+
     }
 
 });
