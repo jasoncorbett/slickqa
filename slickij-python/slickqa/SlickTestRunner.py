@@ -32,8 +32,7 @@ class SlickTestRunner(TextTestRunner):
         self.setup_test_run(tests)
 
     def _makeSlickResult(self):
-        return self.resultclass(self.project, self.testRunRef, self.slickCon, self.stream,
-                                self.descriptions, self.verbosity, self.logger_name)
+        return self.resultclass(self.project, self.testRunRef, self.slickCon, self.logger_name)
     
     def _printTests(self, tests):
         for test in tests._tests:

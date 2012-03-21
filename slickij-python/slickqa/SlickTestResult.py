@@ -8,9 +8,9 @@ FIN = "FINISHED"
 class SlickTestResult(TestResult):
     """Adds reporting through slick"""
 
-    def __init__(self, project, testRunRef, slick, stream=None, descriptions=None, verbosity=None, loggername='root'):
+    def __init__(self, project, testRunRef, slick, loggername='root'):
         """Constructor"""
-        super(SlickTestResult, self).__init__(stream, descriptions, verbosity)
+        super(SlickTestResult, self).__init__()
         self.slick = slick
         self.project = project
         self.testRunRef = testRunRef
