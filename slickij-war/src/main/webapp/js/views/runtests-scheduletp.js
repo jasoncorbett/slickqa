@@ -94,7 +94,6 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
                 }
             ]
         }
-        $.jGrowl(JSON.stringify(runparameters));
 
         $.ajax({
             url: "api/testplans/" + event.data.page.options.positional[0] + "/run",

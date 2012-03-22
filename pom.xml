@@ -10,7 +10,6 @@
 	<modules>
 		<module>slickij-data-api</module>
 		<module>slickij-data</module>
-        	<module>slickij-web-base</module>
 		<module>slickij-war</module>
 	</modules>
 
