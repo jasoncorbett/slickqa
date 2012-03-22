@@ -10,7 +10,7 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
                 return "api/projects/" + getCurrentProject().id;
             },
             config: function() {
-                return "api/configurations";
+                return "api/configurations?configurationType=ENVIRONMENT";
             },
             tp: function() {
                 return "api/testplans/" + this.options.positional[0];
@@ -68,8 +68,8 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
     onScheduleTestPlan: function(event) {
         var runparameters = {
             config: {
-                name: $("#schedule-testplan-environment-select").data("environmentname"),
-                configId: $("#schedule-testplan-environment-select").val()
+                name: $("#schedule-testplan-environment-select :selected").data("environmentname"),
+                configId: $("#schedule-testplan-environment-select :selected").val()
             },
             release: {
                 name: $("#schedule-testplan-release-select :selected").data("name"),
