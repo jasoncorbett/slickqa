@@ -48,7 +48,7 @@ var ReportsViewFilesPage = SlickPage.extend({
                 //Build the list of files
                 html += "<div class=\"fileicon\">";
                 html += "<img class=\"file box\" src=\"/images/htmlicon.png\" alt=\"" + fileName + "\"/>";
-                html += "<a class=\"label filename\" href=\"/api/files/" + fileId + "/content/" + fileName + "\">" + fileName + "</a>";
+                html += "<a class=\"label filename\" href=\"api/files/" + fileId + "/content/" + fileName + "\">" + fileName + "</a>";
                 html += "</div>";
 
                 //Build the file viewer
@@ -60,10 +60,10 @@ var ReportsViewFilesPage = SlickPage.extend({
                     dataType: "html",
                     success: function(html) {
                         //console.log("Success:" + html);
-                        html2 += "<code id=\"" + fileId + "\" class=\"prettyprint lang-html\" data-fileUrl=\"/api/files/" + fileId + "/content/" + fileName + "\" >" + html + "</code>";
+                        html2 += "<code id=\"" + fileId + "\" class=\"prettyprint lang-html\" data-fileUrl=\"api/files/" + fileId + "/content/" + fileName + "\" >" + html + "</code>";
                     },
                     error: function() {
-                        html2 += "<code id=\"" + fileId + "\" class=\"prettyprint lang-html\" data-fileUrl=\"/api/files/" + fileId + "/content/" + fileName + "\" >Could not retrieve the file from the server.</code>";
+                        html2 += "<code id=\"" + fileId + "\" class=\"prettyprint lang-html\" data-fileUrl=\"api/files/" + fileId + "/content/" + fileName + "\" >Could not retrieve the file from the server.</code>";
                     }
                 });
 
@@ -73,13 +73,13 @@ var ReportsViewFilesPage = SlickPage.extend({
             } else if (mimeType.indexOf("image/png") != -1) {
 
                 html += "<div class=\"fileicon\">";
-                html += "<img class=\"file box\" src=\"/api/files/" + fileId + "/content/" + fileName + "\" alt=\"" + fileName + "\"/>";
-                html += "<a class=\"label filename\" href=\"/api/files/" + fileId + "/content/" + fileName + "\">" + fileName + "</a>";
+                html += "<img class=\"file box\" src=\"api/files/" + fileId + "/content/" + fileName + "\" alt=\"" + fileName + "\"/>";
+                html += "<a class=\"label filename\" href=\"api/files/" + fileId + "/content/" + fileName + "\">" + fileName + "</a>";
                 html += "</div>";
 
                 //Build the file viewer
                 html2 += "<div class=\"filedisplay\">";
-                html2 += "<img src=\"/api/files/" + fileId + "/content/" + fileName + "\" alt=\"" + fileName + "\"/>";
+                html2 += "<img src=\"api/files/" + fileId + "/content/" + fileName + "\" alt=\"" + fileName + "\"/>";
                 html2 += "</div>";
             }
 
