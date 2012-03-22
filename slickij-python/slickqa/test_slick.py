@@ -74,10 +74,10 @@ if __name__ == '__main__':
     unittest.loader.TestLoader.suiteClass = SlickTestSuite
     tests = unittest.TestLoader().loadTestsFromTestCase(SlickTest)    
     logger = start_logging('test1', slickcon, otherhandlers=handler)
-    testme = SlickTestRunner("1.0.311", "6", slickLocation=slickcon, loggername='test1')
+    testme = SlickTestRunner("1.0.311", "6", slickLocation=slickcon)
     SlickTest.logger = logger
     tests.set_logger(logger.name)
-    testme.setup_test_run(tests)
+    testme.setup_test_run(tests, 'test1')
     result = testme.run(tests)
     
     print result

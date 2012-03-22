@@ -73,11 +73,12 @@ class SlickTestRunner(TextTestRunner):
     def _setTestRunRef(self, testRun):
         self.testRunRef = {"name": testRun["name"], "id": testRun["id"]}
 
-    def setup_test_run(self, test):
+    def setup_test_run(self, test, loggername):
         '''setup the test run so multiple tests can be placed in one test run'''
         self._checkTests(test)
         self._checkTestPlan()
         self._setTestRunRef(self.slickCon.add_test_run(self.testPlan["name"], self.testPlan["id"]))
+        self.logger_name = loggername
 
     def run(self, test):
         """Run the given test case or test suite."""
