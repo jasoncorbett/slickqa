@@ -20,7 +20,11 @@
             </label>
             <select id="schedule-testplan-release-select">
                 {{#each data.proj.releases}}
-                    <option data-name="{{name}}" value="{{id}}">{{name}}</option>
+                    {{#if isDefaultRelease}}
+                        <option data-name="{{name}}" value="{{id}}" selected>{{name}}</option>
+                    {{else}}
+                        <option data-name="{{name}}" value="{{id}}">{{name}}</option>
+                    {{/if}}
                 {{/each}}
             </select>
         </div>
@@ -30,9 +34,6 @@
                 <span class="explanation">The release and build to test with</span>
             </label>
             <select id="schedule-testplan-release-build-select">
-                {{#each data.builds}}
-                    <option data-name="{{name}}" value="{{id}}">{{name}}</option>
-                {{/each}}
             </select>
         </div>
                 
