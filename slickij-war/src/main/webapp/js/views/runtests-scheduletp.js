@@ -59,7 +59,7 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
         // trigger onReleaseChange whenever the release dropdown changes
         $("#schedule-testplan-release-build-select").val(this.defaultReleaseId);
         
-        $("#schedule-testplan-release-build-select").on("change", {page: this}, this.onReleaseChange);
+        $("#schedule-testplan-release-select").on("change", {page: this}, this.onReleaseChange);
         
         $("#schedule-testplan-form-submit").on("click", {page: this}, this.onScheduleTestPlan);
     },
@@ -77,23 +77,24 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
                 configId: $("#schedule-testplan-environment-select").val()
             },
             release: {
-                name: $("schedule-testplan-release-select").data("name"),
-                releaseId: $("schedule-testplan-release-select").val()
+                name: $("#schedule-testplan-release-select :selected").data("name"),
+                releaseId: $("#schedule-testplan-release-select :selected").val()
             },
             build: {
-                name: $("schedule-testplan-release-build-select").data("name"),
-                buildId: $("schedule-testplan-release-build-select").val()
+                name: $("#schedule-testplan-release-build-select :selected").data("name"),
+                buildId: $("#schedule-testplan-release-build-select :selected").val()
             }
         };
         if($("#schedule-testplan-config").val()) {
             runparameters.overrides = [
                 {
                     isRequirement: false,
-                    key: $("schedule-testplan-config").val(),
-                    value: $("schedule-testplan-config-value").val()
+                    key: $("#schedule-testplan-config").val(),
+                    value: $("#schedule-testplan-config-value").val()
                 }
             ]
         }
+        $.jGrowl(JSON.stringify(runparameters));
 
         $.ajax({
             url: "api/testplans/" + event.data.page.options.positional[0] + "/run",
