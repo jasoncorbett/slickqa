@@ -64,5 +64,8 @@ class SlickTestSuite(TestSuite):
                 self._addClassOrModuleLevelException(result, e, errorName)
             finally:
                 self.logger.end_test(result._results[-1]["id"])
-                if hasattr(result, 'add_files'):
-                    result.add_files(test)
+                if hasattr(test, 'queued_files') and test.queued_files:
+                    updateMe = result.get_result_by_test_name(test.shortDescription())
+                    updateMe['files'].extend(test.queued_files)
+                    test.clear_queue()
+                    result.update_result(updateMe)

@@ -18,6 +18,9 @@ class SlickTestCase(TestCase):
     @classmethod
     def add_class_file(cls, file_name, mime_type, data, chunksize=None, uploaddate=None, md5=None, length=None):
         cls.queued_files.append((file_name, mime_type, data, chunksize, uploaddate, md5, length))
+        
+    def clear_queue(self):
+        self.queued_files = []
     
     def run(self, result=None):
             orig_result = result

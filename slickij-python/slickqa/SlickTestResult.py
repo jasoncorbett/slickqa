@@ -21,6 +21,14 @@ class SlickTestResult(TestResult):
         
     def hasResults(self):
         return len(self._results) > 0
+    
+    def get_result_by_test_name(self, test_name):
+        for result in self._results:
+            testcase = result.get("testcase")
+            if testcase:
+                testcase_name = testcase.get("name")
+                if testcase_name == test_name:
+                    return result
         
     def getTestCaseName(self, test):
         return test.shortDescription()
@@ -41,6 +49,9 @@ class SlickTestResult(TestResult):
         finally:
             self.testStartTime = datetime.now()
             
+    def update_result(self, result):
+        self.slick.update_result(result['id'], result)
+            
     def add_files(self, test):
         if hasattr(test, "queued_files") and test.queued_files:
             return self._add_files(test.queued_files)            
@@ -60,6 +71,7 @@ class SlickTestResult(TestResult):
             self.testRunRef, self._getTest(test_name), datetime.now().isoformat(), result_name, FIN, 
             fileList=files, runLength=taken, hostname=self._getHostname(test))
         self._results.append(result)
+        test.clear_queue()
         return test_name, taken
 
     def addSuccess(self, test):
