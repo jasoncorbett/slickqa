@@ -40,62 +40,62 @@ class SlickTestResult(TestResult):
             self.addSkip(test, str(se))
         finally:
             self.testStartTime = datetime.now()
+            
+    def add_files(self, test):
+        if hasattr(test, "queued_files") and test.queued_files:
+            return self._add_files(test.queued_files)            
+            
+    def _add_files(self, files):
+        return [self.slick.add_stored_file(*i) for i in files]
+    
+    def _add_result(self, test, parent_function, result_name, arg=None):
+        if arg:
+            parent_function(test, arg)
+        else:
+            parent_function(test)
+        taken = self._getTestTimeTaken(self.testStartTime)
+        test_name = self.getTestCaseName(test)
+        files = self.add_files(test)
+        result = self.slick.add_result(
+            self.testRunRef, self._getTest(test_name), datetime.now().isoformat(), result_name, FIN, 
+            fileList=files, runLength=taken, hostname=self._getHostname(test))
+        self._results.append(result)
+        return test_name, taken
 
     def addSuccess(self, test):
-        super(SlickTestResult, self).addSuccess(test)
-        taken = self._getTestTimeTaken(self.testStartTime)
-        test_name = self.getTestCaseName(test)
-        result = self.slick.add_result(self.testRunRef, self._getTest(test_name), datetime.now().isoformat(),
-                                       "PASS", FIN, runLength=taken, hostname=self._getHostname(test))
-        self.logger.info("Test {} passed in {}".format(test_name, taken))
-        self._results.append(result)
+        super_fun = super(SlickTestResult, self).addSuccess
+        test_name, taken = self._add_result(test, super_fun, "PASS")
+        self.logger.info("{} passed in {}".format(test_name, taken))
 
     def addError(self, test, err):
-        super(SlickTestResult, self).addError(test, err)
-        taken = self._getTestTimeTaken(self.testStartTime)
-        test_name = self.getTestCaseName(test)
-        result = self.slick.add_result(self.testRunRef, self._getTest(test_name), datetime.now().isoformat(),
-                                       "BROKEN_TEST", FIN, runLength=taken, hostname=self._getHostname(test))
-        self.logger.error("Test {} is broken".format(test_name), exc_info=err)
-        self._results.append(result)
+        super_fun = super(SlickTestResult, self).addError
+        test_name, taken = self._add_result(test, super_fun, "BROKEN_TEST", err)
+        self.logger.error("{} is broken".format(test_name), exc_info=err)
 
     def addFailure(self, test, err):
-        super(SlickTestResult, self).addFailure(test, err)
-        taken = self._getTestTimeTaken(self.testStartTime)
-        test_name = self.getTestCaseName(test)
-        result = self.slick.add_result(self.testRunRef, self._getTest(test_name), datetime.now().isoformat(),
-                                       "FAIL", FIN, runLength=taken, hostname=self._getHostname(test))
-        self.logger.error("Test {} Failed in {}".format(test_name, taken), exc_info=err)
-        self._results.append(result)
-
+        super_fun = super(SlickTestResult, self).addFailure
+        test_name, taken = self._add_result(test, super_fun, "FAIL", err) 
+        self.logger.error("{} Failed in {}".format(test_name, taken), exc_info=err)
+        
     def addSkip(self, test, reason):
-        super(SlickTestResult, self).addSkip(test, reason)
-        taken = self._getTestTimeTaken(self.testStartTime)
-        test_name = self.getTestCaseName(test)
-        result = self.slick.add_result(self.testRunRef, self._getTest(test_name), datetime.now().isoformat(),
-                                       "SKIPPED", FIN, runLength=taken, hostname=self._getHostname(test))
-        self.logger.warn("Test {} skipped in {} because {}".format(test_name, taken, reason))
-        self._results.append(result)
+        super_fun = super(SlickTestResult, self).addSkip
+        test_name, taken = self._add_result(test, super_fun, "SKIPPED", reason)
+        self.logger.warn("{} skipped in {} because {}".format(test_name, taken, reason))
+        
 
         # TODO: What should we set this result to in slick?
     def addExpectedFailure(self, test, err):
-        super(SlickTestResult, self).addExpectedFailure(test, err)
-        taken = self._getTestTimeTaken(self.testStartTime)
-        test_name = self.getTestCaseName(test)
-        result = self.slick.add_result(self.testRunRef, self._getTest(test_name), datetime.now().isoformat(),
-                                       "BROKEN_TEST", FIN, runLength=taken, hostname=self._getHostname(test))
-        self.logger.info("Test {} expected failed in {}.".format(test_name, taken), exc_info=err)
-        self._results.append(result)
+        super_fun = super(SlickTestResult, self).addExpectedFailure
+        test_name, taken = self._add_result(test, super_fun, "BROKEN_TEST", err)
+        self.logger.info("{} expected failed in {}.".format(test_name, taken), exc_info=err)
+        
 
         # TODO: What should we set this result to in slick?
     def addUnexpectedSuccess(self, test):
-        super(SlickTestResult, self).addUnexpectedSuccess(test)
-        taken = self._getTestTimeTaken(self.testStartTime)
-        test_name = self.getTestCaseName(test)
-        result = self.slick.add_result(self.testRunRef, self._getTest(test_name), datetime.now().isoformat(),
-                                       "BROKEN_TEST", FIN, runLength=taken, hostname=self._getHostname(test))
-        self.logger.info("Test {} unexpectedly passed in {}".format(test_name, taken))
-        self._results.append(result)
+        super_fun = super(SlickTestResult, self).addUnexpectedSuccess
+        test_name, taken = self._add_result(test, super_fun, "BROKEN_TEST")
+        self.logger.info("{} unexpectedly passed in {}".format(test_name, taken))
+        
         
     def _getTestTimeTaken(self, start):
         stop = datetime.now()
@@ -103,7 +103,12 @@ class SlickTestResult(TestResult):
         return str(timetaken)
     
     def _getTest(self, testcaseName):
-        return self.slick.get_testcases_by_name(testcaseName).pop()
+        testname = self.slick.get_testcases_by_name(testcaseName)
+        if len(testname) > 0:
+            return testname.pop()
+        else:
+            print "{} was not found in slick".format(testcaseName)
+            return testcaseName
     
     def _getHostname(self, test):
         """Override to provide hostname info"""
@@ -113,5 +118,3 @@ class SlickTestResult(TestResult):
         else:
             return "None"
         
-
-    

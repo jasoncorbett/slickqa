@@ -21,7 +21,7 @@ class SlickAsPy(object):
             uri = uri.encode(charset, 'ignore')
         scheme, netloc, path, query, fragment = urlparse.urlsplit(uri)
         path = urllib.quote(path, '/%')
-        query = urllib.quote_plus(query, ':&=')
+        query = urllib.quote(query, ':&=')
         return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
             
     def _get_url(self, *args, **kwargs):
@@ -371,6 +371,9 @@ class SlickAsPy(object):
                   "release": releaseRef, "build": buildRef, "log": log, "hostname": hostname}
         return self._safe_post(result, "results")
     
+    def update_result(self, result_id, updated_result):
+        return self._safe_put(updated_result, "results", result_id)
+    
     def add_log_entry(self, message, resultId, time=None, level=None, loggername=None, exceptionName=None, exceptionMessage=None, exceptionTraceback=None):
         if not time:
             time = datetime.now().isoformat()
@@ -381,7 +384,7 @@ class SlickAsPy(object):
     def add_log_entries(self, entries, resultId):
         return self._safe_post(entries, "results", resultId, "log")
     
-    def create_stored_file(self, filename, chunksize, uploaddate, mimetype, md5, length):
+    def create_stored_file(self, filename, mimetype, chunksize=None, uploaddate=None, md5=None, length=None):
         stored_file = {'filename': filename, 'chunkSize': chunksize, 'uploadDate': uploaddate, 
                        'mimetype': mimetype, 'md5': md5, 'length': length}
         return self._safe_post(stored_file, "files")
@@ -390,9 +393,10 @@ class SlickAsPy(object):
         # TODO: may have to manipulate the data to get a binary array in JSON
         return self._safe_post(data, "files", file_id, "content")
     
-    def add_stored_file(self, filename, chunksize, uploaddate, mimetype, md5, length, data):
-        file_id = self.create_stored_file(filename, chunksize, uploaddate, mimetype, md5, length)
-        return self.set_file_content(file_id, data)
+    def add_stored_file(self, filename, mimetype, data, chunksize=None, uploaddate=None, md5=None, length=None):
+        file_info = self.create_stored_file(filename, chunksize, uploaddate, mimetype, md5, length)
+        self.set_file_content(file_info['id'], data)
+        return file_info
     
 class SlickError(Exception):
     pass

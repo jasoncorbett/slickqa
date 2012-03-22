@@ -63,4 +63,6 @@ class SlickTestSuite(TestSuite):
                 errorName = 'tearDownClass (%s)' % className
                 self._addClassOrModuleLevelException(result, e, errorName)
             finally:
-                self.logger.end_test(result._results[len(result._results)-1]["id"])
+                self.logger.end_test(result._results[-1]["id"])
+                if hasattr(result, 'add_files'):
+                    result.add_files(test)

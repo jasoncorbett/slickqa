@@ -1,4 +1,5 @@
 import logging
+from slickApi import SlickAsPy
 from SlickTestRunner import SlickTestRunner
 from SlickTestCase import SlickTestCase
 from slickLogging import SlickFormatter,Slicklogger,SlickHandler,start_logging
@@ -12,7 +13,7 @@ class SlickTest(SlickTestCase):
         cls.logger.info("in setupclass")
     
     def test_01(self):
-        """test1"""
+        """test1-:bug"""
         self.logger.warn("in test 1")
         self.logger.warn("in test 1")
         self.logger.warn("in test 1")
@@ -68,13 +69,15 @@ class SlickTest(SlickTestCase):
 if __name__ == '__main__':
     import unittest
     import sys
+    slickcon = SlickAsPy("http://localhost:8080/api")
     handler = logging.StreamHandler(sys.stdout)
     unittest.loader.TestLoader.suiteClass = SlickTestSuite
     tests = unittest.TestLoader().loadTestsFromTestCase(SlickTest)    
-    logger = start_logging('test1', slickurl="http://localhost:8080/api", otherhandlers=handler)
-    testme = SlickTestRunner(tests, "1.0.311", "6", slickLocation="http://localhost:8080/api", loggername='test1')
+    logger = start_logging('test1', slickcon, otherhandlers=handler)
+    testme = SlickTestRunner("1.0.311", "6", slickLocation=slickcon, loggername='test1')
     SlickTest.logger = logger
     tests.set_logger(logger.name)
+    testme.setup_test_run(tests)
     result = testme.run(tests)
     
     print result

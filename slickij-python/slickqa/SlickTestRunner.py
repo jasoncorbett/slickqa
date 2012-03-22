@@ -11,15 +11,17 @@ class SlickTestRunner(TextTestRunner):
     It uses the python rest api to communicate.
     """
     # TODO: Maybe we should add logging here as well?
-    def __init__(self, tests, release, build, projectName="Slickij Developer Project", testplanName="The plan",
+    def __init__(self, release, build, projectName="Slickij Developer Project", testplanName="The plan",
                  slickLocation="http://localhost:8080/api", apiuser='tcrunij', apipassword='f00b@r', stream=None, 
                  descriptions=True, verbosity=1, failfast=False, buffer=False, 
                  resultclass=SlickTestResult, loggername='root'):
         super(SlickTestRunner, self).__init__(stream, descriptions, verbosity, failfast, buffer, resultclass)
         self.logger_name = loggername
-        self.tests = tests
         self.testPlan = testplanName
-        self.slickCon = SlickAsPy(slickLocation, apiuser, apipassword)
+        if isinstance(slickLocation, SlickAsPy):
+            self.slickCon = slickLocation
+        else:
+            self.slickCon = SlickAsPy(slickLocation, apiuser, apipassword)
         self.project = self.slickCon.get_project_by_name(projectName)
         self.release = self.slickCon.get_release_by_name(release)
         if not self.release:
@@ -29,7 +31,6 @@ class SlickTestRunner(TextTestRunner):
         if not self.build:
             self.build = self.slickCon.add_build(build)
         self.slickCon.set_default_build(self.build['id'])
-        self.setup_test_run(tests)
 
     def _makeSlickResult(self):
         return self.resultclass(self.project, self.testRunRef, self.slickCon, self.logger_name)
@@ -77,7 +78,6 @@ class SlickTestRunner(TextTestRunner):
         self._checkTests(test)
         self._checkTestPlan()
         self._setTestRunRef(self.slickCon.add_test_run(self.testPlan["name"], self.testPlan["id"]))
-        #return self.testRunRef['id']
 
     def run(self, test):
         """Run the given test case or test suite."""

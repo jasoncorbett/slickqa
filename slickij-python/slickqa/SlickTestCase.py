@@ -2,13 +2,22 @@ import logging
 import sys
 from unittest import TestCase, SkipTest
 from unittest.case import _ExpectedFailure, _UnexpectedSuccess
+from slickApi import SlickAsPy
 from slickLogging import Slicklogger
 
 class SlickTestCase(TestCase):
     """"""
     logger = None
+    queued_files = []
     # for wing ide source assistance and code completion
     isinstance(logger, Slicklogger)
+    
+    def add_file(self, file_name, mime_type, data, chunksize=None, uploaddate=None, md5=None, length=None):
+        self.queued_files.append((file_name, mime_type, data, chunksize, uploaddate, md5, length))
+    
+    @classmethod
+    def add_class_file(cls, file_name, mime_type, data, chunksize=None, uploaddate=None, md5=None, length=None):
+        cls.queued_files.append((file_name, mime_type, data, chunksize, uploaddate, md5, length))
     
     def run(self, result=None):
             orig_result = result
@@ -84,13 +93,3 @@ class SlickTestCase(TestCase):
                     stopTestRun = getattr(result, 'stopTestRun', None)
                     if stopTestRun is not None:
                         stopTestRun()
-    
-if __name__ == '__main__':
-    import SlickTestRunner
-    testme = SlickTestRunner.SlickTestRunner()
-    testme.slickCon.get_project_by_name("Slickij Developer Project")
-    slick_release = testme.slickCon.add_release("1.0.311.311")
-    testme.slickCon.set_default_release(slick_release["id"])
-    slick_build = testme.slickCon.add_build("113")
-    testme.slickCon.set_default_build(slick_build["id"])
-    testme.run(SlickTestCase)
