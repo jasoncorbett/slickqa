@@ -60,7 +60,6 @@ class SlickTest(SlickTestCase):
         """test5"""
         self.logger.warn("I'm going to skip this test")
         self.skipTest("Skipping cause I said so!")
-        
     
     @classmethod
     def tearDownClass(cls):

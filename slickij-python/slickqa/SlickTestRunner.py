@@ -31,6 +31,8 @@ class SlickTestRunner(TextTestRunner):
         if not self.build:
             self.build = self.slickCon.add_build(build)
         self.slickCon.set_default_build(self.build['id'])
+        self._checkTestPlan()
+        self._setTestRunRef(self.slickCon.add_test_run(self.testPlan["name"], self.testPlan["id"]))
 
     def _makeSlickResult(self):
         return self.resultclass(self.project, self.testRunRef, self.slickCon, self.logger_name)
@@ -76,8 +78,6 @@ class SlickTestRunner(TextTestRunner):
     def setup_test_run(self, test, loggername):
         '''setup the test run so multiple tests can be placed in one test run'''
         self._checkTests(test)
-        self._checkTestPlan()
-        self._setTestRunRef(self.slickCon.add_test_run(self.testPlan["name"], self.testPlan["id"]))
         self.logger_name = loggername
 
     def run(self, test):
