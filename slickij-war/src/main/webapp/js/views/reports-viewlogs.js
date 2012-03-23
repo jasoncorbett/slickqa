@@ -47,14 +47,20 @@ var ReportViewLogs = SlickPage.extend({
             var endColor = "</span>";
 
             combinedMessage += "</pre>"
-            logEntries[index] = [startColor + new Date(logEntry.entryTime).toLocaleTimeString() + endColor, startColor + logEntry.level + endColor,
+            var dateString = new Date(logEntry.entryTime).toLocaleTimeString();
+            var milliseconds = new Date(logEntry.entryTime).getMilliseconds().toString();
+            if (milliseconds.length < 3) {
+                milliseconds = Array(4-milliseconds.length).join("0") + milliseconds
+            }
+            dateString += "." + milliseconds;
+            logEntries[index] = [startColor + dateString + endColor, startColor + logEntry.level + endColor,
                 "<span class=\"force-wrap log-level-" + logEntry.level + "\" title=\"" + logEntry.loggerName + "\">" + loggername + endColor, combinedMessage];
         });
         var datatable = $("#viewlogtable").dataTable({
             aaData: logEntries,
             aoColumns: [
-                {"sTitle": "Time", "sWidth": "7%"},
-                {"sTitle": "Level", "sWidth": "7%"},
+                {"sTitle": "Time", "sWidth": "8%"},
+                {"sTitle": "Level", "sWidth": "6%"},
                 {"sTitle": "Logger Name", "sWidth": "18%"},
                 {"sTitle": "Message", "sWidth": "68%"}],
             bJQueryUI: true,
