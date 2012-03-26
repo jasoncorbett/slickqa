@@ -117,6 +117,14 @@ public class TestcaseResourceImpl implements TestcaseResource
 			query.getCriteria().add(crit);
 		}
 
+		if(queryParameters.containsKey("name"))
+		{
+			FieldEquals crit = new FieldEquals();
+			crit.setFieldName("name");
+			crit.setFieldValue(queryParameters.getFirst("name"));
+			query.getCriteria().add(crit);
+		}
+
 		return m_testcaseDAO.findTestsByTestcaseQuery(query);
 	}
 
