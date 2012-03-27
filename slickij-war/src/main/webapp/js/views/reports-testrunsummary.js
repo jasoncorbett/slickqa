@@ -29,6 +29,7 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
             this.subtitle1 = "Testrun for Plan: " + safeReference(this.data.summary, "testplan.name", "?");
         }
         this.subtitle2 = safeReference(this.data.summary, "release.name", "") + " Build " + safeReference(this.data.summary, "build.name", "Unknown");
+        this.subtitle3 = safeReference(this.data.summary, "config.name", "");
 
 
         this.chartdata = new google.visualization.DataTable();
