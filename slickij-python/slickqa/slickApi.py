@@ -397,7 +397,7 @@ class SlickAsPy(object):
         return self._safe_post(data, "files", file_id, "content")
     
     def add_stored_file(self, filename, mimetype, data, chunksize=None, uploaddate=None, md5=None, length=None):
-        file_info = self.create_stored_file(filename, chunksize, uploaddate, mimetype, md5, length)
+        file_info = self.create_stored_file(filename, mimetype, chunksize, uploaddate, md5, length)
         self.set_file_content(file_info['id'], data)
         return file_info
     
