@@ -266,8 +266,11 @@ class SlickAsPy(object):
         print json.dumps(testcaseQuery, indent=2)
         return self._safe_post(testcaseQuery, "testcases", "query")
     
-    def get_testcases_by_name(self, testcaseName):
+    def get_testcases_containing_name(self, testcaseName):
         return self.get_testcases("namecontains", testcaseName)
+
+    def get_testcases_with_name(self, testcaseName):
+        return self.get_testcases("name", testcaseName)
     
     def get_testcases_by_tag(self, tag):
         return self.get_testcases("tag", tag)
@@ -440,7 +443,7 @@ def main():
         tp = applePy.add_test_plan("The plan", queries=[{"query": {"className": "org.tcrun.slickij.api.data.testqueries.ContainsTags", 
             "tagnames": ["basics"]},"name": "All basics"}])
         print tp["id"]
-        searchMe = applePy.get_testcases_by_name("Fred3")
+        searchMe = applePy.get_testcases_with_name("Fred3")
         #searchMe = applePy.get_test_case("Fred3")
         print json.dumps(searchMe, indent=2)
         me = applePy.get_testcases_by_author("me")

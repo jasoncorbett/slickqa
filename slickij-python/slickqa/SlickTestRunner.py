@@ -55,7 +55,7 @@ class SlickTestRunner(TextTestRunner):
             for test in tests._tests:
                 slicktest = None
                 try:
-                    slicktest = self.slickCon.get_testcases_by_name(test.shortDescription())
+                    slicktest = self.slickCon.get_testcases_with_name(test.shortDescription())
                 except SlickError:
                     pass
                 if not slicktest:

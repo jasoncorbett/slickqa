@@ -41,13 +41,17 @@ class SlickTestResult(TestResult):
         testname = self.getTestCaseName(test)
         # TODO: add a parser that will create a test case from docstring?
         try:
-            slickTest = self.slick.get_testcases_by_name(testname)
+            slickTest = self.slick.get_testcases_with_name(testname)
             if not slickTest:
                 self.addSkip(test, "test case {} not found".format(testname))
         except SlickError as se:
             self.addSkip(test, str(se))
         finally:
             self.testStartTime = datetime.now()
+            
+    def stopTest(self, test):
+        super(SlickTestResult, self).stopTest(test)
+        self.add_files(test)
             
     def update_result(self, result):
         self.slick.update_result(result['id'], result)
@@ -115,7 +119,7 @@ class SlickTestResult(TestResult):
         return str(timetaken)
     
     def _getTest(self, testcaseName):
-        testname = self.slick.get_testcases_by_name(testcaseName)
+        testname = self.slick.get_testcases_with_name(testcaseName)
         if len(testname) > 0:
             return testname.pop()
         else:
