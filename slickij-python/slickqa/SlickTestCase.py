@@ -91,7 +91,7 @@ class SlickTestCase(TestCase):
                     result.addSuccess(self)
             finally:
                 result.stopTest(self)
-                self.logger.end_test(result._results[len(result._results)-1]["id"])
+                self.logger.end_test(result.get_last_result_id())
                 if orig_result is None:
                     stopTestRun = getattr(result, 'stopTestRun', None)
                     if stopTestRun is not None:

@@ -62,10 +62,9 @@ class SlickTestSuite(TestSuite):
                 errorName = 'tearDownClass (%s)' % className
                 self._addClassOrModuleLevelException(result, e, errorName)
             finally:
-                # TODO: fix this. need to update the last result with the logs
-                self.logger.end_test(result._results[-1]["id"])
+                self.logger.end_test(result.get_last_result_id())
                 if hasattr(test, 'queued_files') and test.queued_files:
-                    updateMe = result.get_result_by_test_name(test.shortDescription())
+                    updateMe = result.get_last_result()
                     updateMe['files'].extend(test.queued_files)
                     test.clear_queue()
                     result.update_result(updateMe)

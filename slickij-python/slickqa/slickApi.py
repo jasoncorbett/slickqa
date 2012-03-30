@@ -393,6 +393,10 @@ class SlickAsPy(object):
         return self._safe_post(entries, "results", resultId, "log")
     
     def create_stored_file(self, filename, mimetype, chunksize=None, uploaddate=None, md5=None, length=None):
+        if not chunksize:
+            chunksize = len(data)
+        if not length:
+            length = len(data)
         stored_file = {'filename': filename, 'chunkSize': chunksize, 'uploadDate': uploaddate, 
                        'mimetype': mimetype, 'md5': md5, 'length': length}
         return self._safe_post(stored_file, "files")
