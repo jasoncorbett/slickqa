@@ -53,8 +53,12 @@ class SlickTestResult(TestResult):
         super(SlickTestResult, self).stopTest(test)
         files = self.add_files(test)
         last_result = self.get_last_result()
-        last_result['files'].extend(files)
-        self.slick.update_result(last_result)
+        if isinstance(last_result.get('files', None), list):
+            last_result['files'].extend(files)
+        else:
+            last_result['files'] = files
+        self.slick.update_result(last_result['id'], last_result)
+        self._results.append(last_result)
         
     def get_last_result(self):
         """Will remove the result from the list so make sure to add it back if you want to keep it"""

@@ -393,10 +393,6 @@ class SlickAsPy(object):
         return self._safe_post(entries, "results", resultId, "log")
     
     def create_stored_file(self, filename, mimetype, chunksize=None, uploaddate=None, md5=None, length=None):
-        if not chunksize:
-            chunksize = len(data)
-        if not length:
-            length = len(data)
         stored_file = {'filename': filename, 'chunkSize': chunksize, 'uploadDate': uploaddate, 
                        'mimetype': mimetype, 'md5': md5, 'length': length}
         return self._safe_post(stored_file, "files")
@@ -405,6 +401,10 @@ class SlickAsPy(object):
         return self._safe_post_octet_stream(data, "files", file_id, "content")
     
     def add_stored_file(self, filename, mimetype, data, chunksize=None, uploaddate=None, md5=None, length=None):
+        if not chunksize:
+            chunksize = len(data)
+        if not length:
+            length = len(data)
         file_info = self.create_stored_file(filename, mimetype, chunksize, uploaddate, md5, length)
         self.set_file_content(file_info['id'], data)
         return file_info
