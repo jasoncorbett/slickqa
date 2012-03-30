@@ -5,6 +5,7 @@ import httplib2
 from datetime import datetime
 
 json_content = {'Content-Type': 'application/json'}
+STREAM_CONTENT = {'Content-Type': 'application/octet-stream'}
 
 class SlickAsPy(object):
     # TODO: is there a better default url?
@@ -43,6 +44,10 @@ class SlickAsPy(object):
     
     def _safe_post(self, post_data, *args, **kwargs):
         response, content = self.http_connection.request(self._get_url(*args, **kwargs), 'POST', json.dumps(post_data), json_content)
+        return self._safe_return(response, content)
+    
+    def _safe_post_octet_stream(self, post_data, *args, **kwargs):
+        response, content = self.http_connection.request(self._get_url(*args, **kwargs), 'POST', post_data, STREAM_CONTENT)
         return self._safe_return(response, content)
     
     def _safe_delete(self, *args, **kwargs):
@@ -393,8 +398,7 @@ class SlickAsPy(object):
         return self._safe_post(stored_file, "files")
     
     def set_file_content(self, file_id, data):
-        # TODO: may have to manipulate the data to get a binary array in JSON
-        return self._safe_post(data, "files", file_id, "content")
+        return self._safe_post_octet_stream(data, "files", file_id, "content")
     
     def add_stored_file(self, filename, mimetype, data, chunksize=None, uploaddate=None, md5=None, length=None):
         file_info = self.create_stored_file(filename, mimetype, chunksize, uploaddate, md5, length)
