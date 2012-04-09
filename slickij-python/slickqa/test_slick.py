@@ -11,6 +11,7 @@ class SlickTest(SlickTestCase):
     @classmethod
     def setUpClass(cls):
         cls.logger.info("in setupclass")
+        #cls.mac.install()
     
     def test_01(self):
         """test1-:bug"""
@@ -55,15 +56,17 @@ class SlickTest(SlickTestCase):
         self.logger.trace("in test 4")
         self.logger.info("in test 4")
         self.logger.error("in test 4")
+        self.logger.warn("I'm going to skip this test")
+        self.skipTest("Skipping cause I said so!")
         
     def test_05(self):
         """test5"""
-        self.logger.warn("I'm going to skip this test")
-        self.skipTest("Skipping cause I said so!")
+        self.logger.warn("I have a bad feeling about this")
     
     @classmethod
     def tearDownClass(cls):
         cls.logger.warn("in teardownclass, finally")
+        cls.mac.install()
     
 if __name__ == '__main__':
     import unittest

@@ -268,7 +268,7 @@ class SlickAsPy(object):
         return self._safe_delete("testcases", testcaseId)
     
     def get_matching_testcase(self, testcaseQuery):
-        print json.dumps(testcaseQuery, indent=2)
+        #print json.dumps(testcaseQuery, indent=2)
         return self._safe_post(testcaseQuery, "testcases", "query")
     
     def get_testcases_containing_name(self, testcaseName):

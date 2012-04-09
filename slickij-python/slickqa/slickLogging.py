@@ -45,7 +45,15 @@ class Slicklogger(getLoggerClass()):
         
     def end_test(self, resultId):
         '''empties the log queue '''
-        for handler in self.handlers:
+        if self.handlers:
+            self._handle_log(self.handlers, resultId)
+        else:
+            # See if the parent has any handlers
+            if self.parent.handlers:
+                self._handle_log(self.parent.handlers, resultId)
+            
+    def _handle_log(self, handlers, resultId):
+        for handler in handlers:
             if hasattr(handler, "end_test"):
                 handler.end_test(resultId)
 
@@ -54,12 +62,21 @@ class SlickFormatter(Formatter):
     def format(self, record):
         now = self.formatTime(record)
         exctype = excvalue = exctraceback = None
+        try:
+            # TODO: figure out what lang each term is using and decode it
+            message = unicode(record.msg, 'latin_1')
+        except UnicodeDecodeError as de:
+            message = "Error trying to decode. {}".format(traceback.format_exc())
+        except UnicodeEncodeError as ee:
+            message = "Error trying to encode. {}".format(traceback.format_exc())
+        except Exception as e:
+            message = "Some weird error occured. {}".format(traceback.format_exc())
         if record.exc_info:
             exctype = str(record.exc_info[0])
             excvalue = str(record.exc_info[1])
             exctraceback = traceback.format_exc().splitlines()
         
-        return {"entryTime": now, "level": record.levelname, "loggerName": record.name, "message": record.msg, 
+        return {"entryTime": now, "level": record.levelname, "loggerName": record.name, "message": message, 
                 "exceptionClassName": exctype, "exceptionMessage": excvalue, "exceptionStackTrace": exctraceback}
     
     def formatTime(self, record, datefmt=None):
@@ -80,6 +97,7 @@ class SlickHandler(Handler):
         # use the specified format
         message = self.format(record)
         # do we need to add unicode supprt?
+        
         # add to the queue
         self._log_queue.append(message)
         

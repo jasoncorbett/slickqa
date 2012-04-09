@@ -1,6 +1,8 @@
+import sys
 import logging
-from unittest import TestSuite, util
-from unittest.suite import _isnotsuite,_DebugResult
+from unittest import TestSuite, util, case
+from unittest.suite import _isnotsuite,_DebugResult,_ErrorHolder
+from SlickTestResult import SlickTestResult
 
 class SlickTestSuite(TestSuite):
     def __init__(self, tests=(), loggerName='root'):
@@ -38,6 +40,34 @@ class SlickTestSuite(TestSuite):
             self._handleModuleTearDown(result)
             result._testRunEntered = False
         return result
+    
+    def _addClassOrModuleLevelException(self, result, exception, errorName):
+        error = _ErrorHolder(errorName)
+        if isinstance(result, SlickTestResult):
+            # if setup, get future test case
+            if 'setUp' in errorName:
+                test = self._tests[0]
+                if isinstance(exception, case.SkipTest):
+                    result.addSkip(test, 'Just for fun')
+                else:
+                    result.addError(test, sys.exc_info())
+                last_result = result.get_last_result()
+            # if teardown, get last test case
+            else:
+                last_result = result.get_last_result()
+                if isinstance(exception, case.SkipTest):
+                    last_result['status'] = "SKIPPED"
+                else:
+                    last_result['status'] = "BROKEN_TEST"
+                result.logger.error("TearDown failed", exc_info=exception)
+                result.update_result(last_result)
+            self.logger.end_test(last_result['id'])
+        else:
+            addSkip = getattr(result, 'addSkip', None)
+            if addSkip is not None and isinstance(exception, case.SkipTest):
+                addSkip(error, str(exception))
+            else:
+                result.addError(error, sys.exc_info())
             
     def _tearDownPreviousClass(self, test, result):
         previousClass = getattr(result, '_previousTestClass', None)
