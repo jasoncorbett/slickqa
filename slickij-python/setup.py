@@ -7,7 +7,7 @@ def read(fname):
 
 setup(
     name = "slickqa",
-    version = "0.0.323",
+    version = "0.0.324",
     author = "Chris Saxey",
     author_email = "chris.saxey@quest.com",
     description = ("Python interface to Slick QA Results Database"),

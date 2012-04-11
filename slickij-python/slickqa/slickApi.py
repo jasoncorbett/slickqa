@@ -1,4 +1,5 @@
 import json
+import zlib
 import urllib
 import urlparse
 import httplib2
@@ -30,10 +31,13 @@ class SlickAsPy(object):
             uri = '/'.join([self.baseurl,] + list(args)) + "?" + kwargs
         else:
             uri = '/'.join([self.baseurl,] + list(args))
-        return self._fix_uri(uri)
+        url = self._fix_uri(uri)
+        return url
         
     def _safe_return(self, response, content):
         if response['status'] == "200":
+            if hasattr(response, 'Content-Encoding') and response['Content-Encoding'] == 'gzip':
+                content = zlib.decompress(content)
             return json.loads(content)
         else:
             raise SlickError("Response: {}\nContent:{}".format(response, content))
@@ -268,7 +272,6 @@ class SlickAsPy(object):
         return self._safe_delete("testcases", testcaseId)
     
     def get_matching_testcase(self, testcaseQuery):
-        #print json.dumps(testcaseQuery, indent=2)
         return self._safe_post(testcaseQuery, "testcases", "query")
     
     def get_testcases_containing_name(self, testcaseName):
@@ -332,7 +335,6 @@ class SlickAsPy(object):
             queries = [queries]
         testplan = {'name': planName, 'createdBy': createdBy, 'project': project, 'sharedWith': sharedWith, 'isprivate': private, 
                     'queries': queries, 'extensions': extentions}
-        #print json.dumps(testplan, indent=2)
         return self._safe_post(testplan, "testplans")
     
     def update_test_plan(self, testplan):
