@@ -103,7 +103,7 @@ function getPageFromUrl(url, options) {
         }
     } else {
         // there was nothing left of the url, return the *default* page
-        return new DashboardMainView(options);
+        return new AboutSlickPage(options);
     }
 
 }
