@@ -794,9 +794,12 @@ div.fileviewcontainer {
     margin: 12px 12px 12px 12px;
 }
 
+.fileviewer {
+    float: left;
+}
 div.filelist {
     float: left;
-    width: 200px;
+    width: 1in;
     padding: 12px 12px 12px 12px;
     margin: 12px 12px 12px 12px;
     background-color: #1B1B1A;
@@ -811,8 +814,8 @@ div.fileicon {
     margin-bottom: 10px;
 }
 
-div.filedisplay {
-    display: none;
+.filedisplay {
+    display: block;
     background-color: #1B1B1A;
     top: 0px;
     display: inline-block;

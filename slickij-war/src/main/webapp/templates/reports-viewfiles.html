@@ -1,8 +1,33 @@
 {{#with result}}
 <div class="clear"></div>
-<div class="boxname filename">Current File:<span id="filename">{{testcase.name}}</span></div>
-<div class="box">
-    <div id="filelist" class="filelist"></div>
-    <div id="fileviewer"></div>
+<div class="boxname filename">Current File:<span id="filename">{{files.[0].filename}}</span></div>
+<div id="viewfilebox" class="box">
+    <div id="filelist" class="filelist">
+        {{#each files}}
+            <div class="fileicon">
+                <a class="label filename" data-fileid="{{id}}" data-filename="{{filename}}" href="api/files/{{id}}/content/{{filename}}">
+                    {{#if icon}}
+                        <img class="file box" src="{{icon}}" alt="{{filename}}" />
+                    {{/if}}
+                    {{filename}}
+                </a>
+            </div>
+        {{/each}}
+    </div>
+    <div class="fileviewer" id="fileviewer">
+        {{#each files}}
+            {{#if isHtml}}
+                <code class="filedisplay prettyprint lang-html htmldisplay" data-fileName="{{filename}}" id="{{id}}">
+                </code>
+            {{/if}}
+            {{#if isImage}}
+                <div class="filedisplay imagedisplay" id="{{id}}">
+                    <img src="api/files/{{id}}/content/{{filename}}" alt="{{filename}}" />
+                </div>
+            {{/if}}
+        {{/each}}
+    </div>
+
+    <div class="clear"></div>
 </div>
 {{/with}}
