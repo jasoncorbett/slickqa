@@ -80,7 +80,10 @@ public class Project implements Serializable
 
 	public String getId()
 	{
-		return id.toString();
+        if(id == null)
+            return null;
+        else
+		    return id.toString();
 	}
 
 	public void setId(ObjectId id)
@@ -187,11 +190,14 @@ public class Project implements Serializable
 
 	public Release findRelease(String releaseId)
 	{
-		for(Release potential : getReleases())
-		{
-			if(potential.getId().equals(releaseId))
-				return potential;
-		}
+        if(getReleases() != null)
+        {
+		    for(Release potential : getReleases())
+    		{
+    			if(potential.getId().equals(releaseId))
+    				return potential;
+    		}
+        }
 		return null;
 	}
 
@@ -206,11 +212,14 @@ public class Project implements Serializable
 
 	public Release findReleaseByName(String releaseName)
 	{
-		for(Release potential : getReleases())
-		{
-			if(potential.getName().equals(releaseName))
-				return potential;
-		}
+        if(getReleases() != null)
+        {
+    		for(Release potential : getReleases())
+    		{
+    			if(potential.getName().equals(releaseName))
+    				return potential;
+    		}
+        }
 		return null;
 	}
 
@@ -235,6 +244,8 @@ public class Project implements Serializable
 		release.validate();
 		if(findReleaseByName(this.getName()) != null)
 			throw new InvalidDataError("Release", "name", "A this with name '" + this.getName() + "' already exists.");
+        if(getReleases() == null)
+            setReleases(new ArrayList<Release>());
 		getReleases().add(release);
 		return release;
 	}
