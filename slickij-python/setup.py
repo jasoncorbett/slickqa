@@ -5,9 +5,10 @@ from distutils.core import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+#TODO: support pip and dependencies
 setup(
     name = "slickqa",
-    version = "0.0.324",
+    version = "0.1.330",
     author = "Chris Saxey",
     author_email = "chris.saxey@quest.com",
     description = ("Python interface to Slick QA Results Database"),

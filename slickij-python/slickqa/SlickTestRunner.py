@@ -1,4 +1,5 @@
 import logging
+import traceback
 import slickLogging
 from slickApi import SlickAsPy, SlickError
 from SlickTestResult import SlickTestResult
@@ -56,8 +57,8 @@ class SlickTestRunner(TextTestRunner):
                 slicktest = None
                 try:
                     slicktest = self.slickCon.get_testcases_with_name(test.shortDescription())
-                except SlickError:
-                    pass
+                except SlickError as se:
+                    print traceback.format_exc()
                 if not slicktest:
                     # if not, add them?
                     self.slickCon.add_testcase(test.shortDescription(), automated=True)
