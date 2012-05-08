@@ -10,6 +10,7 @@ POST="curl -s -X POST"
 
 PROJECT=`$POST -H 'Content-Type: application/json' -d '{"name": "Slickij Developer Project", "description": "A Project to be used by slickij developers to test features.", "tags": ["basics", "api", "negative"], "automationTools": ["tcrunij", "tcrun", "Shell Script"], "components": [{"name": "Data Extensions", "code": "dataext"}]}' "${SLICKURL}/api/projects" |python -m json.tool |grep '^    .id' |perl -pi -e 's/.*"([0-9a-f]+)".*/$1/'`
 CONFIGID=`curl -s "${SLICKURL}/api/projects/$PROJECT" |python -m json.tool |grep '^        .id' |perl -pi -e 's/.*"([0-9a-f]+)".*/$1/'`
+ENVID=`$POST -H 'Content-Type: application/json' -d '{"name": "Default Environment", "filename": "default.ini", "configurationType": "ENVIRONMENT", "configurationData": {"foo": "bar"}}' "${SLICKURL}/api/configurations"
 DATAEXTCOMP=`curl -s "${SLICKURL}/api/projects/$PROJECT" |python -m json.tool |grep '^            .id' |perl -pi -e 's/.*"([0-9a-f]+)".*/$1/'`
 WEBCOMP=`$POST -H 'Content-Type: application/json' -d '{"name": "HTML Web UI", "code": "web-ui"}' "${SLICKURL}/api/projects/$PROJECT/components" |python -m json.tool |grep '^    .id' |head -1 |perl -pi -e 's/.*"([0-9a-f]+)".*/$1/'`
 RESTCOMP=`$POST -H 'Content-Type: application/json' -d '{"name": "REST APIs", "code": "rest"}' "${SLICKURL}/api/projects/$PROJECT/components" |python -m json.tool |grep '^    .id' |head -1 |perl -pi -e 's/.*"([0-9a-f]+)".*/$1/'`
