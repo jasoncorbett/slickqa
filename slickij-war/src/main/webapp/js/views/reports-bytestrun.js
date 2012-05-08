@@ -37,7 +37,6 @@ var ReportsByTestrunPage = SlickPage.extend({
 
             // get the releases for the release selected (defaultRelease of the project is the default)
             this.addRequiredData("testruns", "api/testruns?projectid=" + data.id + "&releaseid=" + this.defaultReleaseId);
-            console.log(this.requiredData.testruns);
 
             // we could do this step here, or in the onReady
             _.each(data.releases, function(release) {

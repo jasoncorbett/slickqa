@@ -1,0 +1,22 @@
+<h3 class="boxname">{{title}}</h3>
+<hr class="glowing" />
+<div id="dashboardlet-testrunsummary-chart" class="dashboardlet-chart">
+</div>
+<table class="simpletable">
+    {{#each summarylines}}
+    <tr>
+        <td><a href="#/reports/testrundetail/{{../data.summary.id}}?only={{resultstatus}}" class="result-status-{{statusclass}}">{{resulttype}}</a></td>
+        <td>{{numberoftests}}</td>
+        <td>{{percentageoftotal}}</td>
+    </tr>
+    {{/each}}
+    {{#with summarytotal}}
+    <tr>
+        <td><a href="#/reports/testrundetail/{{../data.summary.id}}?only={{resultstatus}}" class="result-status-{{statusclass}}">{{resulttype}}</a></td>
+        <td>{{numberoftests}}</td>
+        <td>{{percentageoftotal}}</td>
+    </tr>
+    {{/with}}
+</table>
+<a class="button" href="#/reports/testrundetail/{{data.summary.id}}">Detailed Results</a>
+

@@ -1,0 +1,5 @@
+table.simpletable, .simpletable tr, .simpletable td {
+    border: 1px solid white;
+    padding: .1in;
+    border-collapse:collapse;
+}

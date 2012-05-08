@@ -94,7 +94,7 @@ public class ResultResourceImpl implements ResultResource
 		}
 		if(!params.containsKey("allfields"))
 		{
-			query.retrievedFields(false, "logs", "build", "release", "project", "testrun", "config");
+			query.retrievedFields(false, "log", "build", "release", "project", "testrun", "config");
 		}
 		//query.order("~recorded");
 

@@ -10,13 +10,30 @@ var DashboardMainView = SlickPage.extend({
     codename: "main",
     name: "Main Dashboard",
     navigation: true,
+    attributes: {
+        id: "dashboardlets-container"
+    },
 
     // Initialize is called
     initialize: function() {
         this.on("ready", this.onready, this);
+        this.on("finish", this.onFinish, this);
     },
 
     onready: function() {
         this.data.project = getCurrentProject();
+        this.dashboardlets = [
+            new MostRecentTestRunSummaryDashboardlet({positional: [], query: {}, noSetTitle: true})
+        ];
+    },
+
+    onFinish: function() {
+        _.each(this.dashboardlets, function(value) {
+            value.on("render", function() {
+                $("#dashboardlets-container").append(this.el);
+            });
+            value.pageStart();
+        }, this);
+
     }
 });

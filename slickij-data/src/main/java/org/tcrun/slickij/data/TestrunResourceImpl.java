@@ -127,7 +127,19 @@ public class TestrunResourceImpl implements TestrunResource
 		if(queryParams.containsKey("name"))
 			query.criteria("name").equal(queryParams.getFirst("name"));
 
-		return query.asList();
+        int limit = 5;
+        if(queryParams.containsKey("limit")) {
+            try
+            {
+                limit = Integer.parseInt(queryParams.getFirst("limit"));
+            } catch(NumberFormatException ex)
+            {
+                throw new WebApplicationException(ex, Status.BAD_REQUEST);
+            }
+        }
+        query.limit(limit);
+
+		return query.order("-dateCreated").asList();
 	}
 
 	@Override
