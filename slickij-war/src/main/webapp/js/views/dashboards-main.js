@@ -20,15 +20,14 @@ var DashboardMainView = SlickPage.extend({
     onready: function() {
         this.data.project = getCurrentProject();
         this.dashboardlets = [
-            new MostRecentTestRunSummaryDashboardlet({positional: [], query: {}, noSetTitle: true})
+            new MostRecentTestRunSummaryDashboardlet({positional: [], query: {}, noSetTitle: true}),
+            new ProjectLinksDashboardlet({positional: [], query: {}, noSetTitle: true})
         ];
     },
 
     onFinish: function() {
         _.each(this.dashboardlets, function(value) {
-            value.on("render", function() {
-                $("#dashboardlets-container").append(this.el);
-            });
+            $("#dashboardlets-container").append(value.el);
             value.pageStart();
         }, this);
 
