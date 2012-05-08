@@ -2,8 +2,9 @@ import logging
 from slickApi import SlickAsPy
 from SlickTestRunner import SlickTestRunner
 from SlickTestCase import SlickTestCase
-from slickLogging import SlickFormatter,Slicklogger,SlickHandler,start_logging
+from slickLogging import SlickFormatter,SlickHandler
 from SlickTestSuite import SlickTestSuite
+from questLogger import newLogger,start_logging
 
 class SlickTest(SlickTestCase):
     """Sample test case"""

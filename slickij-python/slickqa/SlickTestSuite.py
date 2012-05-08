@@ -61,6 +61,7 @@ class SlickTestSuite(TestSuite):
                     last_result['status'] = "BROKEN_TEST"
                 result.logger.error("TearDown failed", exc_info=exception)
                 result.update_result(last_result)
+                result._results.append(last_result)
             self.logger.end_test(last_result['id'])
         else:
             addSkip = getattr(result, 'addSkip', None)

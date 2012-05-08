@@ -2,6 +2,7 @@ import logging
 from slickApi import *
 from unittest import TestResult
 from datetime import datetime, timedelta
+from dateutil.tz import *
 
 FIN = "FINISHED"
 
@@ -33,11 +34,9 @@ class SlickTestResult(TestResult):
     def getTestCaseName(self, test):
         return test.shortDescription()
     
-    def startTestRun(self):
-        self.testStartTime = datetime.now()
-
     def startTest(self, test):
         super(SlickTestResult, self).startTest(test)
+        self.testStartTime = datetime.now(tzlocal())
         testname = self.getTestCaseName(test)
         # TODO: add a parser that will create a test case from docstring?
         try:
@@ -47,7 +46,7 @@ class SlickTestResult(TestResult):
         except SlickError as se:
             self.addSkip(test, str(se))
         finally:
-            self.testStartTime = datetime.now()
+            self.testStartTime = datetime.now(tzlocal())
             
     def stopTest(self, test):
         super(SlickTestResult, self).stopTest(test)
@@ -62,6 +61,7 @@ class SlickTestResult(TestResult):
         
     def get_last_result(self):
         """Will remove the result from the list so make sure to add it back if you want to keep it"""
+        #TODO: would pop_last_result be a better name?
         if self._results:
             return self._results.pop()
         
@@ -69,6 +69,7 @@ class SlickTestResult(TestResult):
         return self._results[-1]['id']
             
     def update_result(self, result):
+        #TODO: should this add the result back to the list of results as well?
         self.slick.update_result(result['id'], result)
             
     def add_files(self, test):
@@ -86,8 +87,8 @@ class SlickTestResult(TestResult):
         taken = self._getTestTimeTaken(self.testStartTime)
         test_name = self.getTestCaseName(test)
         result = self.slick.add_result(
-            self.testRunRef, self._getTest(test_name), datetime.now().isoformat(), result_name, FIN, 
-            runLength=taken, hostname=self._getHostname(test))
+            self.testRunRef, self._getTest(test_name), datetime.now(tzlocal()).strftime('%a, %m %b %Y %H:%M:%S %Z'), 
+            result_name, FIN, runLength=taken, hostname=self._getHostname(test))
         self._results.append(result)
         test.clear_queue()
         return test_name, taken
@@ -128,7 +129,7 @@ class SlickTestResult(TestResult):
         
         
     def _getTestTimeTaken(self, start):
-        stop = datetime.now()
+        stop = datetime.now(tzlocal())
         timetaken = stop - start
         return str(timetaken)
     
