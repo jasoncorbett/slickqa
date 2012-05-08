@@ -10,9 +10,6 @@ var DashboardMainView = SlickPage.extend({
     codename: "main",
     name: "Main Dashboard",
     navigation: true,
-    attributes: {
-        id: "dashboardlets-container"
-    },
 
     // Initialize is called
     initialize: function() {
