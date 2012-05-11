@@ -10,6 +10,8 @@ import java.util.List;
 public class TestplanRunParameters implements Serializable
 {
 	private ConfigurationReference config;
+	
+	private ConfigurationReference runtimeOptions;
 
 	private ReleaseReference release;
 
@@ -36,7 +38,17 @@ public class TestplanRunParameters implements Serializable
 	{
 		this.config = config;
 	}
+	
+	public ConfigurationReference getRuntimeOptions() 
+	{
+		return runtimeOptions;
+	}
 
+	public void setRuntimeOptions(ConfigurationReference runtimeOptions) 
+	{
+		this.runtimeOptions = runtimeOptions;
+	}
+	
 	public List<ConfigurationOverride> getOverrides()
 	{
 		return overrides;

@@ -34,6 +34,10 @@ public class Testrun implements Serializable
 	private ConfigurationReference config;
 
 	@Embedded
+	private ConfigurationReference runtimeOptions;
+
+	
+	@Embedded
 	private ProjectReference project;
 
 	@Property
@@ -57,6 +61,16 @@ public class Testrun implements Serializable
 	public void setConfig(ConfigurationReference config)
 	{
 		this.config = config;
+	}
+
+	public ConfigurationReference getRuntimeOptions()
+	{
+		return runtimeOptions;
+	}
+
+	public void setRuntimeOptions(ConfigurationReference runtimeOptions)
+	{
+		this.runtimeOptions = runtimeOptions;
 	}
 
 	@JsonIgnore

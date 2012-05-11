@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
@@ -190,6 +191,32 @@ public class TestplanResourceImpl implements TestplanResource
 			Configuration config = m_configDAO.findConfigurationByReference(parameters.getConfig());
 			if(config != null)
 				run.setConfig(parameters.getConfig());
+			else
+				throw new NotFoundError(Configuration.class);
+		}
+		if(parameters.getRuntimeOptions() != null)
+		{
+			Configuration config = m_configDAO.findConfigurationByReference(parameters.getRuntimeOptions());
+			if(config != null)
+			{
+				run.setRuntimeOptions(parameters.getRuntimeOptions());
+				Boolean isRequirement = false;
+				for(Map.Entry<String, String> entry : config.getConfigurationData().entrySet())
+				{
+					String key = entry.getKey();
+					String value = entry.getValue();
+					//add the config as a configuration override
+					ConfigurationOverride override = new  ConfigurationOverride();
+					override.setKey(key);
+					override.setValue(value);
+					override.setIsRequirement(isRequirement); //isRequirement is false
+					//setting the parameters' overrides: these will be set in the results as well
+					if(parameters.getOverrides() == null)
+						parameters.setOverrides(new ArrayList<ConfigurationOverride>());
+					parameters.getOverrides().add(override);
+				}
+				
+			}
 			else
 				throw new NotFoundError(Configuration.class);
 		}
