@@ -398,6 +398,14 @@ public class ResultResourceImpl implements ResultResource
 		return retval;
 	}
 
+    @Override
+    public Result deleteResult(String resultId)
+    {
+        Result result = getResult(resultId);
+        m_resultDAO.delete(result);
+        return result;
+    }
+
 	@Override
 	public Integer addToLog(String resultId, List<LogEntry> logaddon)
 	{

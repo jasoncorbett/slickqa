@@ -1,13 +1,7 @@
 package org.tcrun.slickij.api;
 
 import java.util.List;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -39,6 +33,11 @@ public interface ResultResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
 	public Result getResult(@PathParam("resultid") String resultId);
+
+    @Path("/{resultid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @DELETE
+    public Result deleteResult(@PathParam("resultid") String resultId);
 
 	@Path("/{resultid}")
 	@Produces(MediaType.APPLICATION_JSON)
