@@ -127,8 +127,8 @@ public class TestrunResourceImpl implements TestrunResource
 		if(queryParams.containsKey("name"))
 			query.criteria("name").equal(queryParams.getFirst("name"));
 
-        int limit = 5;
         if(queryParams.containsKey("limit")) {
+            int limit = 5;
             try
             {
                 limit = Integer.parseInt(queryParams.getFirst("limit"));
@@ -136,8 +136,8 @@ public class TestrunResourceImpl implements TestrunResource
             {
                 throw new WebApplicationException(ex, Status.BAD_REQUEST);
             }
+            query.limit(limit);
         }
-        query.limit(limit);
 
 		return query.order("-dateCreated").asList();
 	}
