@@ -402,6 +402,18 @@ public class ResultResourceImpl implements ResultResource
     public Result deleteResult(String resultId)
     {
         Result result = getResult(resultId);
+
+        if(result.getHostname() != null && !result.getHostname().equals(""))
+        {
+            // update the host status
+            HostStatus host = m_hoststatusDAO.get(result.getHostname());
+            if(host.getCurrentWork() != null && host.getCurrentWork().getId().equals(result.getId()))
+            {
+                host.setCurrentWork(null);
+                m_hoststatusDAO.save(host);
+            }
+        }
+
         m_resultDAO.delete(result);
         return result;
     }
