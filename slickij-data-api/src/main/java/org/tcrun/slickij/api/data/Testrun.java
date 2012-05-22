@@ -13,12 +13,14 @@ import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  *
  * @author jcorbett
  */
 @Entity("testruns")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Testrun implements Serializable
 {
 	@Id
