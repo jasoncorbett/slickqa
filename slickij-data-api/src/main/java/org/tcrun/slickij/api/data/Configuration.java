@@ -1,11 +1,11 @@
 package org.tcrun.slickij.api.data;
 
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
-import com.google.code.morphia.annotations.PostLoad;
-import com.google.code.morphia.annotations.Property;
+import com.google.code.morphia.annotations.*;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.bson.types.ObjectId;
 
@@ -88,7 +88,46 @@ public class Configuration implements Serializable
 	{
 		if(getConfigurationData() == null)
 			setConfigurationData(new HashMap<String, String>());
+        List<String> keysToReplace = new ArrayList<String>();
+        for(String key : configurationData.keySet())
+        {
+            if(key.contains("{@}"))
+            {
+                keysToReplace.add(key);
+            }
+        }
+
+        for(String key : keysToReplace)
+        {
+
+            String value = configurationData.get(key);
+            configurationData.remove(key);
+            String newkey = key.replace("{@}", ".");
+            configurationData.put(newkey, value);
+        }
+
 	}
+
+    @PrePersist
+    public void prePersist()
+    {
+        List<String> keysToReplace = new ArrayList<String>();
+        for(String key : configurationData.keySet())
+        {
+            if(key.contains("."))
+            {
+                keysToReplace.add(key);
+            }
+        }
+
+        for(String key : keysToReplace)
+        {
+            String value = configurationData.get(key);
+            configurationData.remove(key);
+            String newkey = key.replace(".", "{@}");
+            configurationData.put(newkey, value);
+        }
+    }
 
 	public void validate() throws InvalidDataError
 	{
