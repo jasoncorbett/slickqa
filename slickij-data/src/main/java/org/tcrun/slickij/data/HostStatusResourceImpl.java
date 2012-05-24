@@ -29,7 +29,7 @@ public class HostStatusResourceImpl implements HostStatusResource
 		cutoff.add(Calendar.MINUTE, (-1 * lastReportWithinMinutes));
 		Query<HostStatus> query = m_hoststatusDAO.createQuery();
 		query.or(query.criteria("lastCheckin").greaterThanOrEq(cutoff.getTime()),
-				 query.criteria("currentWork").notEqual(null));
+				 query.criteria("currentWork").exists());
 		return query.asList();
 	}
 
