@@ -111,6 +111,11 @@ public class Configuration implements Serializable
     @PrePersist
     public void prePersist()
     {
+        if(configurationData == null)
+        {
+            configurationData = new HashMap<String, String>();
+        }
+
         List<String> keysToReplace = new ArrayList<String>();
         for(String key : configurationData.keySet())
         {
