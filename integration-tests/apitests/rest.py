@@ -71,24 +71,19 @@ class RestApi(object):
         if stream:
             content_type = STREAM_CONTENT
         good_content = None
-        # sometimes we get bad content back from the server
-        # this is a hack to fix that
-        for i in range(5):
-            if GET in method:
-                response, content = self.http_connection.request(url)
-            elif POST in method:
-                response, content = self.http_connection.request(url, POST, data, content_type)
-            elif PUT in method:
-                response, content = self.http_connection.request(url, PUT, data, content_type)
-            elif DELETE in method:
-                response, content = self.http_connection.request(url, DELETE)
-            try:
-                good_content = self._safe_return(response, content)
-            except RestError as se:
-                raise
-            except:
-                print 'Here is the content recieved from the server: {}'.format(content)
-            if good_content or good_content is None:
-                return good_content
-        raise RestError("Tried connecting 5 times to {} {} \nData: {}\nResponse: {}\nContent: {}".format(url, method, data, response, content))
-                
+        if GET in method:
+            response, content = self.http_connection.request(url)
+        elif POST in method:
+            response, content = self.http_connection.request(url, POST, data, content_type)
+        elif PUT in method:
+            response, content = self.http_connection.request(url, PUT, data, content_type)
+        elif DELETE in method:
+            response, content = self.http_connection.request(url, DELETE)
+        try:
+            good_content = self._safe_return(response, content)
+        except RestError as se:
+            raise
+        except:
+            print 'Here is the content recieved from the server: {}'.format(content)
+        return good_content
+

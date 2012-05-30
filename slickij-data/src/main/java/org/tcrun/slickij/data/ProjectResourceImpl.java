@@ -407,7 +407,10 @@ public class ProjectResourceImpl implements ProjectResource
 		Project project = m_projectDAO.get(new ObjectId(projectId));
 		if(project == null)
 			throw new WebApplicationException(Status.NOT_FOUND);
-		return project.getAutomationTools();
+        if(project.getAutomationTools() == null)
+            return new ArrayList<String>();
+        else
+		    return project.getAutomationTools();
 	}
 
 	@Override
