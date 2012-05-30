@@ -1,6 +1,8 @@
 package org.tcrun.slickij.data;
 
 import com.google.code.morphia.query.Query;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonParser;
 import org.tcrun.slickij.api.data.DataExtension;
 import org.tcrun.slickij.api.data.dao.ConfigurationDAO;
 import org.tcrun.slickij.api.data.dao.ProjectDAO;
@@ -106,15 +108,39 @@ public class ProjectResourceImpl implements ProjectResource
 	public Project changeProjectName(String id, String name)
 	{
 		Project project = getProjectById(id);
+        if(name.startsWith("\"") && name.endsWith("\""))
+        {
+            name = jsonDecodeString(name);
+        }
 		project.setName(name);
 		m_projectDAO.save(project);
 		return project;
 	}
 
+    private String jsonDecodeString(String jsonstring)
+    {
+        String retval = "";
+        JsonFactory jsonFactory = new JsonFactory();
+        try
+        {
+            JsonParser parser = jsonFactory.createJsonParser(jsonstring);
+            parser.nextToken();
+            retval = parser.getText();
+        } catch(Exception e)
+        {
+            throw new WebApplicationException(e, Status.BAD_REQUEST);
+        }
+        return retval;
+    }
+
 	@Override
 	public Project changeProjectDescription(String id, String description)
 	{
 		Project project = getProjectById(id);
+        if(description.startsWith("\"") && description.endsWith("\""))
+        {
+            description = jsonDecodeString(description);
+        }
 		project.setDescription(description);
 		m_projectDAO.save(project);
 		return project;

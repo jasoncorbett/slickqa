@@ -1,8 +1,7 @@
 __author__ = 'jcorbett'
 
 import unittest
-import slumber
-import json
+from rest import RestApi
 
 
 class ProjectTest(unittest.TestCase):
@@ -11,18 +10,38 @@ class ProjectTest(unittest.TestCase):
     """
 
     def setUp(self):
-        self.api = slumber.API("http://localhost:9090/api")
+        self.api = RestApi("http://localhost:9090/api")
+
+    def create_project(self):
+        return self.api.post({"name": "Another Project"}, "projects")
 
     def test_add_delete(self):
         """Add and Delete Project"""
-        proj = json.loads(self.api.projects.post({"name": "Another Project"}))
+        proj = self.create_project()
         self.assertTrue(proj is not None)
         self.assertTrue(proj["id"] is not None)
-        self.api.projects(proj["id"]).delete()
+        self.api.delete("projects", proj["id"])
         deleted = False
         try:
-            self.api.projects(proj["id"]).get()
+            self.api.get("projects", proj["id"])
         except:
             deleted = True
 
         self.assertTrue(deleted)
+
+    def test_update_description(self):
+        """Add and Update a Project with a description"""
+        proj = self.create_project()
+        self.assertTrue("description" not in proj or proj["description"] is None)
+
+        newproj = self.api.put("A description", "projects", proj["id"], "description")
+
+        self.assertEqual(proj["id"], newproj["id"])
+        self.assertEqual(proj["name"], newproj["name"])
+        self.assertEqual(u"A description", newproj["description"])
+
+        self.api.delete("projects", proj["id"])
+
+
+
+
