@@ -42,6 +42,17 @@ class ProjectTest(unittest.TestCase):
 
         self.api.delete("projects", proj["id"])
 
+    def test_update_name(self):
+        """Add and Update a Project with a different name"""
+        proj = self.create_project()
+
+        newproj = self.api.put("A new name", "projects", proj["id"], "name")
+
+        self.assertEqual(proj["id"], newproj["id"])
+        self.assertEqual(u"A new name", newproj["name"])
+
+        self.api.delete("projects", proj["id"])
+
 
 
 
