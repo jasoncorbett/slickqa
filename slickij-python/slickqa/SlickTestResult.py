@@ -52,12 +52,14 @@ class SlickTestResult(TestResult):
         super(SlickTestResult, self).stopTest(test)
         files = self.add_files(test)
         last_result = self.get_last_result()
-        if isinstance(last_result.get('files', None), list):
-            last_result['files'].extend(files)
-        else:
-            last_result['files'] = files
+        if files:
+            if isinstance(last_result.get('files', None), list):
+                last_result['files'].extend(files)
+            else:
+                last_result['files'] = files
         self.slick.update_result(last_result['id'], last_result)
         self._results.append(last_result)
+        test.clear_queue() 
         
     def get_last_result(self):
         """Will remove the result from the list so make sure to add it back if you want to keep it"""
@@ -86,9 +88,10 @@ class SlickTestResult(TestResult):
             parent_function(test)
         taken = self._getTestTimeTaken(self.testStartTime)
         test_name = self.getTestCaseName(test)
+        files = self.add_files(test)
         result = self.slick.add_result(
             self.testRunRef, self._getTest(test_name), datetime.now(tzlocal()).strftime('%a, %m %b %Y %H:%M:%S %Z'), 
-            result_name, FIN, runLength=taken, hostname=self._getHostname(test))
+            result_name, FIN, fileList=files, runLength=taken, hostname=self._getHostname(test))
         self._results.append(result)
         test.clear_queue()
         return test_name, taken

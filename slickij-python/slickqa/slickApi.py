@@ -406,9 +406,11 @@ class SlickAsPy(object):
             releaseRef = self._get_current_release_ref()
         if not buildRef:
             buildRef = self._get_current_build_ref()
+        if not isinstance(fileList, list) and fileList:
+            fileList = [fileList]
         result = {"testrun": self._get_test_run_ref(testrunRef), "config": configRef, "configurationOverride": configOverride, 
                   "testcase": self._get_test_case_ref(testcase), "recorded": date, "status": resultStatus, "project": projectRef, 
-                  "release": releaseRef, "build": buildRef, "log": log, "hostname": hostname}
+                  "release": releaseRef, "build": buildRef, "log": log, "hostname": hostname, "files": fileList}
         return self._safe_post(result, "results")
 
     def update_result(self, result_id, updated_result):
