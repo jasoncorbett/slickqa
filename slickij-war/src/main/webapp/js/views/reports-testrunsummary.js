@@ -13,6 +13,9 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
     requiredData: {
         "summary": function() {
             return SlickUrlBuilder.testrun.getSummary(this.options.positional[0]);
+        },
+        rundata: function() {
+            return "api/testruns/" + this.options.positional[0];
         }
     },
 
@@ -30,9 +33,9 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
         }
         this.subtitle2 = safeReference(this.data.summary, "release.name", "") + " Build " + safeReference(this.data.summary, "build.name", "Unknown");
         this.subtitle3 = safeReference(this.data.summary, "config.name", "");
-
-
-        this.chartdata = new google.visualization.DataTable();
+        this.subtitle4 = "Runtime Options: " + safeReference(this.data.rundata, "runtimeOptions.name", "");
+		this.dateCreated = "Date Created: " + new Date(this.data.rundata.dateCreated);
+		this.chartdata = new google.visualization.DataTable();
         this.chartdata.addColumn('string', 'Result Type');
         this.chartdata.addColumn('number', 'Number of Results');
         var resultTypeCount = 0;
