@@ -6,6 +6,7 @@ import httplib2
 import traceback
 from dateutil.tz import *
 from datetime import datetime
+import slick_utilities
 
 json_content = {'Content-Type': 'application/json'}
 STREAM_CONTENT = {'Content-Type': 'application/octet-stream'}
@@ -185,7 +186,12 @@ class SlickAsPy(object):
         return build
 
     def get_build_by_name(self, buildName):
-        builds = self.get_builds()
+        builds = []
+        try:
+            builds = self.get_builds()
+        except SlickError:
+            pass
+            
         for build in builds:
             if build["name"] == buildName:
                 return build
@@ -409,7 +415,7 @@ class SlickAsPy(object):
         if not isinstance(fileList, list) and fileList:
             fileList = [fileList]
         result = {"testrun": self._get_test_run_ref(testrunRef), "config": configRef, "configurationOverride": configOverride, 
-                  "testcase": self._get_test_case_ref(testcase), "recorded": date, "status": resultStatus, "project": projectRef, 
+                  "testcase": self._get_test_case_ref(testcase), "recorded": date, "status": resultStatus, "runstatus" : runStatus, "project": projectRef, 
                   "release": releaseRef, "build": buildRef, "log": log, "hostname": hostname, "files": fileList}
         return self._safe_post(result, "results")
 
@@ -418,7 +424,7 @@ class SlickAsPy(object):
 
     def add_log_entry(self, message, resultId, time=None, level=None, loggername=None, exceptionName=None, exceptionMessage=None, exceptionTraceback=None):
         if not time:
-            time = datetime.now(tzlocal()).strftime('%a, %m %b %Y %H:%M:%S %Z')
+            time = slick_utilities.get_date()
         logEntry = [{"entryTime": time, "level": level, "loggerName": loggername, "message": message, "exceptionClassName": exceptionName, 
                      "exceptionMessage": exceptionMessage, "exceptionStackTrace":exceptionTraceback}]
         return self._safe_post(logEntry, "results", resultId, "log")
@@ -497,16 +503,16 @@ def main():
         #print "\nThe current test plans are:\n"
         #print json.dumps(testplans, indent=2)
         testrun = applePy.add_test_run(
-            "testrun{}".format(datetime.now(tzlocal()).strftime('%a, %m %b %Y %H:%M:%S %Z')), tp["id"])
+            "testrun{}".format(slick_utilities.get_date()), tp["id"])
         #print "\nThe test run is this:"
         #print json.dumps(testrun, indent=2)
         p = PASS
-        logEntry = [{"entryTime": datetime.now(tzlocal()).strftime('%a, %m %b %Y %H:%M:%S %Z'), "level": "DEBUG", "loggerName": "slickMe.base", 
+        logEntry = [{"entryTime": slick_utilities.get_date(), "level": "DEBUG", "loggerName": "slickMe.base", 
                      "message": "now for something completely different"}, 
                     {"message": '<a href="http://hal9000.vintela.com/memory_logs/4.0.3.78/2012-01-19T21:49:55.226623/solaris-10.autoqas_info.html">log</a>',
-                     "entryTime": datetime.now(tzlocal()).strftime('%a, %m %b %Y %H:%M:%S %Z'), "level": "DEBUG", "loggerName": "slickMe.base"}]
+                     "entryTime": slick_utilities.get_date(), "level": "DEBUG", "loggerName": "slickMe.base"}]
         for tc in tcList:
-            result = applePy.add_result(testrun, tc, datetime.now(tzlocal()).strftime('%a, %m %b %Y %H:%M:%S %Z'), p, "FINISHED", "just because", 
+            result = applePy.add_result(testrun, tc, slick_utilities.get_date(), p, "FINISHED", "just because", 
                                         log=logEntry)
             #print "Here is the result to be added:"
             #print json.dumps(result, indent=2)

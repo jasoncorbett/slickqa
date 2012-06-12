@@ -3,25 +3,27 @@ from slickApi import *
 from unittest import TestResult
 from datetime import datetime, timedelta
 from dateutil.tz import *
+import slick_utilities
 
 FIN = "FINISHED"
 
 class SlickTestResult(TestResult):
     """Adds reporting through slick"""
 
-    def __init__(self, project, testRunRef, slick, loggername='root'):
+    def __init__(self, project, testRunRef, slick, loggername='root', not_tested_results=[]):
         """Constructor"""
         super(SlickTestResult, self).__init__()
         self.slick = slick
         self.project = project
         self.testRunRef = testRunRef
-        self._results = []
+        self._results = not_tested_results
         self.logger = logging.getLogger('{}.result'.format(loggername))
+        self.completed_tests = []
         
         isinstance(slick, SlickAsPy)
         
     def hasResults(self):
-        return len(self._results) > 0
+        return len(self.completed_tests) > 0
     
     def get_result_by_test_name(self, test_name):
         for result in self._results:
@@ -58,17 +60,17 @@ class SlickTestResult(TestResult):
             else:
                 last_result['files'] = files
         self.slick.update_result(last_result['id'], last_result)
-        self._results.append(last_result)
+        self.completed_tests.append(last_result)
         test.clear_queue() 
         
     def get_last_result(self):
         """Will remove the result from the list so make sure to add it back if you want to keep it"""
         #TODO: would pop_last_result be a better name?
-        if self._results:
-            return self._results.pop()
+        if self.completed_tests:
+            return self.completed_tests.pop()
         
     def get_last_result_id(self):
-        return self._results[-1]['id']
+        return self.completed_tests[-1]['id']
             
     def update_result(self, result):
         #TODO: should this add the result back to the list of results as well?
@@ -82,6 +84,7 @@ class SlickTestResult(TestResult):
         return [self.slick.add_stored_file(*i) for i in files]
     
     def _add_result(self, test, parent_function, result_name, arg=None):
+        # TODO: Optimize this with an ordered dictionary
         if arg:
             parent_function(test, arg)
         else:
@@ -89,10 +92,27 @@ class SlickTestResult(TestResult):
         taken = self._getTestTimeTaken(self.testStartTime)
         test_name = self.getTestCaseName(test)
         files = self.add_files(test)
-        result = self.slick.add_result(
-            self.testRunRef, self._getTest(test_name), datetime.now(tzlocal()).strftime('%a, %m %b %Y %H:%M:%S %Z'), 
-            result_name, FIN, fileList=files, runLength=taken, hostname=self._getHostname(test))
-        self._results.append(result)
+        
+        # Get the test case result from the test case name 
+        test_result = self.get_result_by_test_name(test_name)
+        
+        # Update current result with latest test information. A slick result can be seen in result.java
+        test_result["status"] = result_name
+        test_result["runstatus"] = "FINISHED"
+        #test_result["runlength"] = int(taken)
+        test_result["recorded"] = self.testStartTime.strftime('%a, %m %b %Y %H:%M:%S %Z')
+        test_result["files"] = files
+        test_result["hostname"] = self._getHostname(test)
+        
+        self.update_result(test_result)
+        self.completed_tests.append(test_result)
+        
+        # Old way
+        #result = self.slick.add_result(
+            #self.testRunRef, self._getTest(test_name), slick_utilities.get_date(), 
+            #result_name, FIN, fileList=files, runLength=taken, hostname=self._getHostname(test))
+        #self._results.append(result)
+        
         test.clear_queue()
         return test_name, taken
 
