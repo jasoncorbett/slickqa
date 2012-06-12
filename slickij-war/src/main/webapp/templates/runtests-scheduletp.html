@@ -40,17 +40,14 @@
          
         
         <div class="formline">
-            <label for="schedule-testplan-config">Configuration Value
-                <span class="explanation">The configuration value</span>
+            <label for="schedule-testplan-runtimeoptions-select">Runtime Options
+                <span class="explanation">The runtime options to test with</span>
             </label>
-            <input type="text" name="schedule-testplan-config" id="schedule-testplan-config" />
-        </div>
-        
-        <div class="formline">
-            <label for="schedule-testplan-config-value">Configuration
-                <span class="explanation">The configuration key</span>
-            </label>
-            <input type="text" name="schedule-testplan-config-value" id="schedule-testplan-config-value" />
+            <select id="schedule-testplan-runtimeoptions-select">
+                {{#each data.runtimeOptions}}
+                    <option value="{{id}}" data-runtimeoptionsname="{{name}}">{{name}}</option>
+                {{/each}}
+            </select>
         </div>
         
         <div class="formline">
