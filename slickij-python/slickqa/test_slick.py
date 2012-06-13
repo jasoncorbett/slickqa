@@ -15,7 +15,22 @@ class SlickTest(SlickTestCase):
         #cls.mac.install()
     
     def test_01(self):
-        """test1-:bug"""
+        """Test Name 1
+        Author: Jared
+        Purpose: Test the slick api
+        Attributes: Test Attributes 
+        Tags: test1, stuff
+        Requirments: Slick installed and running 
+        Project: slickqa
+        Component: Slick Test Case 
+        
+        Steps:
+        1. Log a message 
+        2. Log another message 
+        3. Log more messages
+        4. Log a warn message
+        5. Assume we pass
+        """
         self.logger.warn("in test 1")
         self.logger.warn("in test 1")
         self.logger.warn("in test 1")

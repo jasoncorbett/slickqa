@@ -6,14 +6,18 @@ from slickqa.SlickTestSuite import SlickTestSuite
 # You can run this file and it will run the tests.
 
 class SlickTest(SlickTestCase):
-    """Sample test case"""
+    """Sample test case
+    Author: Jared Jorgensen
+    """
     
     @classmethod
     def setUpClass(cls, logger):
         logger.debug("in setupclass")
     
     def test_01(self):
-        """test1"""
+        """test1
+        Author: Jared Jorgensen
+        """
         self.logger.warn("in test 1")
     
     def test_02(self):

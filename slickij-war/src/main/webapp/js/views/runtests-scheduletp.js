@@ -17,6 +17,9 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
             },
             testcount: function() {
                 return "api/testplans/" + this.options.positional[0] + "/testcount";
+            },
+            runtimeOptions: function() {
+                return "api/configurations?configurationType=RUNTIME_OPTIONS";
             }
         };
         this.on("ready", this.onReady, this);
@@ -78,9 +81,14 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
             build: {
                 name: $("#schedule-testplan-release-build-select :selected").data("name"),
                 buildId: $("#schedule-testplan-release-build-select :selected").val()
-            }
+            },
+            runtimeOptions: {
+            	name: $("#schedule-testplan-runtimeoptions-select :selected").data("runtimeoptionsname"),
+            	configId: $("#schedule-testplan-runtimeoptions-select :selected").val()
+            },
+            
         };
-        if($("#schedule-testplan-config").val()) {
+        /*if($("#schedule-testplan-config").val()) {
             runparameters.overrides = [
                 {
                     isRequirement: false,
@@ -88,7 +96,7 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
                     value: $("#schedule-testplan-config-value").val()
                 }
             ]
-        }
+        }*/
 
         $.ajax({
             url: "api/testplans/" + event.data.page.options.positional[0] + "/run",

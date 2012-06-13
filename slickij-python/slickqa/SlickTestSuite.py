@@ -46,6 +46,7 @@ class SlickTestSuite(TestSuite):
         if isinstance(result, SlickTestResult):
             # if setup, get future test case
             if 'setUp' in errorName:
+                # TODO: Make this set the first test case in the test class to 0
                 test = self._tests[0]
                 if isinstance(exception, case.SkipTest):
                     result.addSkip(test, 'Just for fun')
