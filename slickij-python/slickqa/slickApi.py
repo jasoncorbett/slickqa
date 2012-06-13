@@ -416,7 +416,7 @@ class SlickAsPy(object):
             fileList = [fileList]
         result = {"testrun": self._get_test_run_ref(testrunRef), "config": configRef, "configurationOverride": configOverride, 
                   "testcase": self._get_test_case_ref(testcase), "recorded": date, "status": resultStatus, "runstatus" : runStatus, "project": projectRef, 
-                  "release": releaseRef, "build": buildRef, "log": log, "hostname": hostname, "files": fileList}
+                  "release": releaseRef, "build": buildRef, "log": log, "hostname": hostname, "files": fileList, "runlength": runLength}
         return self._safe_post(result, "results")
 
     def update_result(self, result_id, updated_result):

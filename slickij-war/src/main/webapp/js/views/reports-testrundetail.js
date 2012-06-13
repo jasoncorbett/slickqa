@@ -46,13 +46,14 @@ var ReportsTestRunDetailPage = SlickPage.extend({
         this.tbldata = [];
         _.each(this.data.results, function(result) {
             this.tbldata[this.tbldata.length] = [
+                "<img src=\"images/reschedule.png\" id=\"reschedule-" + result.id + "\" class=\"reschedule-result\" alt=\"Reschedule Result\" title=\"Reschedule Result\" />",
                 "<a id=\"" + result.id + "\" href=\"#/reports/result/" + result.id + "\" class=\"modal-link\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>",
                 safeReference(result, "component.name", ""),
                 new Date(result.recorded),
+                result.runlength/1000.0,
                 safeReference(result, "testcase.automationId", ""),
                 safeReference(result, "reason", ""),
                 safeReference(result, "hostname", ""),
-                "<img src=\"images/reschedule.png\" id=\"reschedule-" + result.id + "\" class=\"reschedule-result\" alt=\"Reschedule Result\" title=\"Reschedule Result\" />",
                 "<span class=\"result-status-" + result["status"].replace("_","") + "\">" + result["status"].replace("_", " ") + "<img class=\"result-status-image\" src=\"images/status-" + result["status"] + ".png\" /></span>"
             ];
         }, this);
@@ -62,14 +63,15 @@ var ReportsTestRunDetailPage = SlickPage.extend({
         var datatable = $("#trdetailtable").dataTable({
             aaData: this.tbldata,
             aoColumns: [
+                {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "center"},
                 {"sTitle": "Test Name", "sWidth": "55%", "sType": "html"},
                 {"sTitle": "Component", "sWidth": "10%"},
-                {"sTitle": "Time Reported", "sWidth": "10%"},
+                {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": false},
+                {"sTitle": "Test Duration", "sWidth": "10%", "sClass": "center"},
                 {"sTitle": "Automation ID", "bVisible": false},
                 {"sTitle": "Reason", "bVisible": false},
-                {"sTitle": "Hostname", "sWidth": "10%"},
-                {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "right-justify"},
-                {"sTitle": "Result Status", "sWidth": "10%", "sType": "html", "sClass": "right-justify"}],
+                {"sTitle": "Hostname", "sWidth": "10%", "sClass": "center"},
+                {"sTitle": "Result Status", "sWidth": "10%", "sType": "html", "sClass": "center"}],
             bJQueryUI: true,
             bAutoWidth: false,
             bDeferRender: true,
@@ -78,7 +80,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
             sScrollY: "" + ($(document).height() - (5 * $("#pagetitle").height()) -  (4 * $("#titlebar").height())) + "px",
             oTableTools: {"sSwfPath": "media/swf/copy_cvs_xls_pdf.swf"}
         });
-        datatable.fnSort([[2, "desc"]]);
+        datatable.fnSort([[3, "asc"]]);
 
 
         $(".reschedule-result").on("click", function() {
