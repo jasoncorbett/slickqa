@@ -99,7 +99,7 @@ class SlickTestResult(TestResult):
         # Update current result with latest test information. A slick result can be seen in result.java
         test_result["status"] = result_name
         test_result["runstatus"] = "FINISHED"
-        #test_result["runlength"] = taken
+        test_result["runlength"] = taken
         test_result["recorded"] = self.testStartTime.strftime('%a, %m %b %Y %H:%M:%S %Z')
         test_result["files"] = files
         test_result["hostname"] = self._getHostname(test)
@@ -142,19 +142,21 @@ class SlickTestResult(TestResult):
         super_fun = super(SlickTestResult, self).addExpectedFailure
         test_name, taken = self._add_result(test, super_fun, "BROKEN_TEST", err)
         self.logger.info("{} expected failed in {}.".format(test_name, taken), exc_info=err)
-        
-
+    
         # TODO: What should we set this result to in slick?
     def addUnexpectedSuccess(self, test):
         super_fun = super(SlickTestResult, self).addUnexpectedSuccess
         test_name, taken = self._add_result(test, super_fun, "BROKEN_TEST")
         self.logger.info("{} unexpectedly passed in {}".format(test_name, taken))
         
-        
     def _getTestTimeTaken(self, start):
         stop = datetime.now(tzlocal())
         timetaken = stop - start
-        return str(timetaken)
+        
+        # Convert the seconds in to milliseconds 
+        millisec = timetaken.total_seconds() * 1000
+        
+        return int(millisec)
     
     def _getTest(self, testcaseName):
         testname = self.slick.get_testcases_with_name(testcaseName)

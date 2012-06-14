@@ -98,12 +98,15 @@ class SlickTestRunner(TextTestRunner):
             tp = self.slickCon.get_test_plan(self.testPlan)
         except SlickError:
             # if not, create it? This assumes too much. Should we make them pass in the whole test plan?
-            tp = None
-            if not tp:
-                self.testPlan = self.slickCon.add_test_plan(self.testPlan, queries=[
-                        {"query": {"className": "org.tcrun.slickij.api.data.testqueries.ContainsTags",
-                                   "tagnames": [self.testPlan]},"name": self.testPlan}])
-        self.testPlan = tp
+            self.testPlan = self.slickCon.add_test_plan(self.testPlan, queries=[
+                    {"query": {"className": "org.tcrun.slickij.api.data.testqueries.ContainsTags",
+                               "tagnames": [self.testPlan]},"name": self.testPlan}])
+        if not tp:
+            self.testPlan = self.slickCon.add_test_plan(self.testPlan, queries=[
+                {"query": {"className": "org.tcrun.slickij.api.data.testqueries.ContainsTags",
+                           "tagnames": [self.testPlan]},"name": self.testPlan}])
+        else:
+            self.testPlan = tp
 
     def _setTestRunRef(self, testRun):
         self.testRunRef = {"name": testRun["name"], "id": testRun["id"]}
