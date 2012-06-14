@@ -2,6 +2,10 @@
     <span class="fieldName">Test Name: </span><span class="fieldValue">{{data.result.testcase.name}}</span>
     <span class="fieldName secondItem">Result: </span><span class="result-status-{{data.result.statusClass}} fieldValue">{{data.result.statusName}}</span>
     <br />
+    <span class="fieldName">Recorded: </span><span class="fieldValue">{{data.result.recordedTimeString}}</span>
+    <br />
+    <span class="fieldName">Test Duration: </span><span class="fieldValue">{{data.result.runlengthString}}</span>
+    <br />
     {{#if data.result.reason}}
         <span class="fieldName">Reason: </span><pre>{{data.result.reason}}</pre> <br />
     {{/if}}
