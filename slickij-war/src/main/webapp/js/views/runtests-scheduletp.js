@@ -81,13 +81,15 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
             build: {
                 name: $("#schedule-testplan-release-build-select :selected").data("name"),
                 buildId: $("#schedule-testplan-release-build-select :selected").val()
-            },
-            runtimeOptions: {
+            }
+        };
+
+        if($("#schedule-testplan-runtimeoptions-select :selected").val() != "NONE") {
+            runparameters.runtimeOptions = {
             	name: $("#schedule-testplan-runtimeoptions-select :selected").data("runtimeoptionsname"),
             	configId: $("#schedule-testplan-runtimeoptions-select :selected").val()
-            },
-            
-        };
+            }
+        }
         /*if($("#schedule-testplan-config").val()) {
             runparameters.overrides = [
                 {
