@@ -50,7 +50,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
                 "<a id=\"" + result.id + "\" href=\"#/reports/result/" + result.id + "\" class=\"modal-link\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>",
                 safeReference(result, "component.name", ""),
                 new Date(result.recorded),
-                result.runlength/1000.0,
+                getDurationMilliseconds(result.runlength),
                 safeReference(result, "testcase.automationId", ""),
                 safeReference(result, "reason", ""),
                 safeReference(result, "hostname", ""),

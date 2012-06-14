@@ -164,8 +164,27 @@ function getDuration(duration) {
               retval = retval + nSeconds + " seconds"; }
           return retval;
      }
-};
+}
 
+function getDurationMilliseconds(duration) {
+    if (duration == 0) {
+        return "";
+    } else {
+        var nHours = (duration/3600000).toFixed(0);
+        var nTimeInSeconds = (duration%3600000).toFixed(0);
+        var nMinutes = (nTimeInSeconds/60000).toFixed(0);
+        var nSeconds = ((nTimeInSeconds%60000)/1000).toFixed(3);
+        var retval = "";
+        if (nHours != 0) {
+            retval = retval + nHours + " hours, "; }
+        if (nMinutes != 0) {
+            retval = retval + nMinutes + " minutes, "; }
+        if (nSeconds != 0) {
+            retval = retval + nSeconds + " seconds"; }
+        return retval;
+    }
+
+}
 /**
  * Set the title of the page, and the title element in the page.
  * 
