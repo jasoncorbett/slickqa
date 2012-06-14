@@ -84,6 +84,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
 
 
         $(".reschedule-result").on("click", function() {
+            $(".tooltip").remove();
             var resultid = $(this).attr("id");
             resultid = resultid.replace("reschedule-","");
             $.ajax({url: "api/results/" + resultid + "/reschedule",
