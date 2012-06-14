@@ -24,6 +24,9 @@ var ReportsResultViewPage = SlickPage.extend({
         this.title = "'" + this.data.result.testcase.name + "' Result Details";
         this.data.result.statusClass = this.data.result.status.replace("_", "");
         this.data.result.statusName = this.data.result.status.replace("_", " ");
+        this.data.result.recordedTime = new Date(this.data.result.recorded);
+        this.data.result.recordedTimeString = this.data.result.recordedTime.toLocaleString();
+        this.data.result.runlengthString = getDurationMilliseconds(this.data.result.runlength);
 
         this.pages = {
             logs: new ReportViewLogs({positional: [], query: {}, noSetTitle: true, result: this.data.result}),

@@ -88,13 +88,16 @@ public class TestrunDAOImpl extends BasicDAO<Testrun, ObjectId> implements Testr
 		condition.put("testrun.testrunId", run.getObjectId());
 		BasicDBObject initial = new BasicDBObject();
 		initial.put("count", 0);
-		String reduce = "function(obj, prev) { prev.count++;}";
+        initial.put("totaltime", 0);
+		String reduce = "function(obj, prev) { prev.count++; prev.totaltime += obj.runlength; }";
 
 		DBObject resultsObject = resultsCol.group(key, condition, initial, reduce);
 		List<DBObject> results = (List<DBObject>)resultsObject;
+        summary.setTotalTime(0);
 		for(DBObject statuscount : results)
 		{
 			summary.getResultsByStatus().put((String)statuscount.get("status"), new Long( String.format("%.0f", (Double)statuscount.get("count"))));
+            summary.setTotalTime(summary.getTotalTime() + ((Double)statuscount.get("totaltime")).intValue());
 		}
 
 		return summary;

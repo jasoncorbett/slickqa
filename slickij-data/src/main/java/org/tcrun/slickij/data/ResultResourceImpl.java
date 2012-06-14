@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.management.relation.RelationSupport;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
@@ -129,23 +130,16 @@ public class ResultResourceImpl implements ResultResource
 			result.setStatus(update.getStatus());
 			if(update.getRunstatus() == null && update.getStatus() != ResultStatus.NO_RESULT)
 				update.setRunstatus(RunStatus.FINISHED);
-			if(update.getRecorded() == null && update.getStatus() != ResultStatus.NO_RESULT)
-			{
-				update.setRecorded(new Date());
-				if(result.getRecorded() != null)
-				{
-					// set the runlength to the difference between the recorded times / 1000 (to get rid of milliseconds).
-					update.setRunlength((int) ((update.getRecorded().getTime() - result.getRecorded().getTime()) / 1000));
-				}
-			}
+            if(update.getRecorded() == null && update.getStatus() != ResultStatus.NO_RESULT)
+                update.setRecorded(new Date());
 		}
 		if(update.getRunstatus() != null)
 		{
 			result.setRunstatus(update.getRunstatus());
 			if(update.getRunstatus() == RunStatus.FINISHED)
-			{
-				if(update.getRunlength() != 0 && result.getRecorded() != null)
-					update.setRunlength((int)(result.getRecorded().getTime() - (new Date()).getTime()) / 1000);
+            {
+				if(update.getRunlength() == 0 && result.getRecorded() != null)
+					update.setRunlength((int)((new Date()).getTime() - result.getRecorded().getTime()));
 				if(result.getHostname() != null)
 				{
 					HostStatus hoststatus = m_hoststatusDAO.get(result.getHostname());
@@ -233,6 +227,8 @@ public class ResultResourceImpl implements ResultResource
 			result.setReason(update.getReason());
 		if(update.getRecorded() != null)
 			result.setRecorded(update.getRecorded());
+        if(update.getRunlength() != 0)
+            result.setRunlength(update.getRunlength());
 		if(update.getTestcase() != null)
 		{
 			Testcase test = m_testcaseDAO.findTestcaseByReference(update.getTestcase());
