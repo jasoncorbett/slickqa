@@ -27,6 +27,7 @@ public class TestRunSummary extends Testrun implements Serializable
 
 	private Map<String, Long> resultsByStatus;
 	private List<String> statusListOrdered;
+    private int totalTime;
 	private TestplanReference testplan;
 
 	public TestRunSummary(Testrun run, TestplanReference ref)
@@ -93,4 +94,11 @@ public class TestRunSummary extends Testrun implements Serializable
 		return testplan;
 	}
 
+    public int getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(int totalTime) {
+        this.totalTime = totalTime;
+    }
 }

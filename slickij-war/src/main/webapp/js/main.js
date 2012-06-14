@@ -172,7 +172,7 @@ function getDurationMilliseconds(duration) {
     } else {
         var nHours = (duration/3600000).toFixed(0);
         var nTimeInSeconds = (duration%3600000).toFixed(0);
-        var nMinutes = (nTimeInSeconds/60000).toFixed(0);
+        var nMinutes = Math.floor(nTimeInSeconds/60000);
         var nSeconds = ((nTimeInSeconds%60000)/1000).toFixed(3);
         var retval = "";
         if (nHours != 0) {
