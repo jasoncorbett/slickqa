@@ -88,7 +88,7 @@
 		</init-param>
 		<init-param>
 			<param-name>postProcessors</param-name>
-			<param-value>cssVariables,yuiCssMin,yuiJsMin</param-value>
+			<param-value>cssVariables</param-value>
 		</init-param>
 		<init-param>
 			<param-name>cacheUpdatePeriod</param-name>
