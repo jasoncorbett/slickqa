@@ -41,18 +41,53 @@ class SlickTestSuite(TestSuite):
             result._testRunEntered = False
         return result
     
-    def _addClassOrModuleLevelException(self, result, exception, errorName):
+    def _handleClassSetUp(self, test, result):
+        previousClass = getattr(result, '_previousTestClass', None)
+        currentClass = test.__class__
+        if currentClass == previousClass:
+            return
+        if result._moduleSetUpFailed:
+            return
+        if getattr(currentClass, "__unittest_skip__", False):
+            return
+
+        try:
+            currentClass._classSetupFailed = False
+        except TypeError:
+            # test may actually be a function
+            # so its class will be a builtin-type
+            pass
+
+        setUpClass = getattr(currentClass, 'setUpClass', None)
+        if setUpClass is not None:
+            try:
+                setUpClass()
+            except Exception as e:
+                if isinstance(result, _DebugResult):
+                    raise
+                currentClass._classSetupFailed = True
+                className = util.strclass(currentClass)
+                errorName = 'setUpClass (%s)' % className
+                self._addClassOrModuleLevelException(result, e, errorName, test)
+    
+    def _addClassOrModuleLevelException(self, result, exception, errorName, test=None):
         error = _ErrorHolder(errorName)
         if isinstance(result, SlickTestResult):
             # if setup, get future test case
             if 'setUp' in errorName:
                 # TODO: Make this set the first test case in the test class to 0
-                test = self._tests[0]
+                if not test:
+                    test = self._tests[0]
+                
+                result.startTest(test)
+                result.stopTest(test)
+                
                 if isinstance(exception, case.SkipTest):
                     result.addSkip(test, 'Just for fun')
                 else:
                     result.addError(test, sys.exc_info())
                 last_result = result.get_last_result()
+            
             # if teardown, get last test case
             else:
                 last_result = result.get_last_result()

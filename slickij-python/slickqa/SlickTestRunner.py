@@ -121,7 +121,7 @@ class SlickTestRunner(TextTestRunner):
         # 1. Creat a result in slick for each test that we will run
         self.not_tested_result_list = []
         for test in self.testsFromSlick:
-            self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), "NOT_TESTED", "TO_BE_RUN"))
+            self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), "NOT_TESTED", "TO_BE_RUN", hostname=loggername))
         
         # 2. Pass the result to the corrisponding test case 
         

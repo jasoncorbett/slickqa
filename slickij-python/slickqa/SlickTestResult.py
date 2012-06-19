@@ -38,7 +38,6 @@ class SlickTestResult(TestResult):
     
     def startTest(self, test):
         super(SlickTestResult, self).startTest(test)
-        self.testStartTime = datetime.now(tzlocal())
         testname = self.getTestCaseName(test)
         # TODO: add a parser that will create a test case from docstring?
         try:
@@ -53,7 +52,14 @@ class SlickTestResult(TestResult):
     def stopTest(self, test):
         super(SlickTestResult, self).stopTest(test)
         files = self.add_files(test)
-        last_result = self.get_last_result()
+        if test._classSetupFailed:
+            name = test.shortDescription()
+            for r in self._results:
+                if r["testcase"]["name"] == name:
+                    last_result = r
+        else:   
+            last_result = self.get_last_result()
+            
         if files:
             if isinstance(last_result.get('files', None), list):
                 last_result['files'].extend(files)
@@ -89,7 +95,13 @@ class SlickTestResult(TestResult):
             parent_function(test, arg)
         else:
             parent_function(test)
-        taken = self._getTestTimeTaken(self.testStartTime)
+            
+        # We need to set the value of skipped tests to something other than zero, otherwise we get a crazy value like 365 hours.
+        if result_name in ["SKIPPED"]:
+            taken = 1
+        else:
+            taken = self._getTestTimeTaken(self.testStartTime)
+            
         test_name = self.getTestCaseName(test)
         files = self.add_files(test)
         
