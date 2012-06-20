@@ -7,7 +7,9 @@ from SlickTestSuite import SlickTestSuite
 from questLogger import newLogger,start_logging
 
 class SlickTest(SlickTestCase):
-    """Sample test case"""
+    """Sample test case
+    Author: Jared Jorgensen
+    """
     
     @classmethod
     def setUpClass(cls):
@@ -16,20 +18,19 @@ class SlickTest(SlickTestCase):
     
     def test_01(self):
         """Test Name 1
-        Author: Jared
         Purpose: Test the slick api
         Attributes: Test Attributes 
-        Tags: test1, stuff
-        Requirments: Slick installed and running 
-        Project: slickqa
+        Tags: test1, test2
+        Requirements: Slick installed and running 
         Component: Slick Test Case 
         
         Steps:
-        1. Log a message 
-        2. Log another message 
-        3. Log more messages
-        4. Log a warn message
-        5. Assume we pass
+        1. Log a message: Should log a message
+        2. Log another message: Should log another message
+        3. Log more messages: Should log more 
+        4. Log a warn message: Should log a warn message
+        5. Assume we pass: We should get a pass
+        6. New step: I'm Back
         """
         self.logger.warn("in test 1")
         self.logger.warn("in test 1")
@@ -37,47 +38,47 @@ class SlickTest(SlickTestCase):
         self.logger.warn("in test 1")
         self.logger.info("I'm betting this passes")
     
-    def test_02(self):
-        """test2"""
-        self.logger.error("in test 2")
-        self.logger.warn("in test 2")
-        self.logger.info("in test 2")
-        self.logger.debug("in test 2")
-        self.logger.info("in test 2")
-        self.logger.warn("in test 2")
-        self.logger.warn("in test 2")
-        self.assertThisIsGoingToBeAnError(WhatDayathink)
+    #def test_02(self):
+        #"""test2"""
+        #self.logger.error("in test 2")
+        #self.logger.warn("in test 2")
+        #self.logger.info("in test 2")
+        #self.logger.debug("in test 2")
+        #self.logger.info("in test 2")
+        #self.logger.warn("in test 2")
+        #self.logger.warn("in test 2")
+        #self.assertThisIsGoingToBeAnError(WhatDayathink)
     
-    def test_03(self):
-        """test3"""
-        self.logger.info("in test 3")
-        self.logger.info("in test 3")
-        self.logger.info("in test 3")
-        self.logger.debug("in test 3")
-        self.logger.debug("in test 3")
-        self.logger.warn("in test 3")
-        self.logger.warn("in test 3")
-        self.assertTrue(False, "this is what a failure looks like")
+    #def test_03(self):
+        #"""test3"""
+        #self.logger.info("in test 3")
+        #self.logger.info("in test 3")
+        #self.logger.info("in test 3")
+        #self.logger.debug("in test 3")
+        #self.logger.debug("in test 3")
+        #self.logger.warn("in test 3")
+        #self.logger.warn("in test 3")
+        #self.assertTrue(False, "this is what a failure looks like")
         
-    def test_04(self):
-        """test4"""
-        self.logger.info("in test 4")
-        self.logger.info("in test 4")
-        self.logger.info("in test 4")
-        self.logger.warn("in test 4")
-        self.logger.warn("in test 4")
-        self.logger.error("in test 4")
-        self.logger.error("in test 4")
-        self.logger.debug("in test 4")
-        self.logger.trace("in test 4")
-        self.logger.info("in test 4")
-        self.logger.error("in test 4")
-        self.logger.warn("I'm going to skip this test")
-        self.skipTest("Skipping cause I said so!")
+    #def test_04(self):
+        #"""test4"""
+        #self.logger.info("in test 4")
+        #self.logger.info("in test 4")
+        #self.logger.info("in test 4")
+        #self.logger.warn("in test 4")
+        #self.logger.warn("in test 4")
+        #self.logger.error("in test 4")
+        #self.logger.error("in test 4")
+        #self.logger.debug("in test 4")
+        #self.logger.trace("in test 4")
+        #self.logger.info("in test 4")
+        #self.logger.error("in test 4")
+        #self.logger.warn("I'm going to skip this test")
+        #self.skipTest("Skipping cause I said so!")
         
-    def test_05(self):
-        """test5"""
-        self.logger.warn("I have a bad feeling about this")
+    #def test_05(self):
+        #"""test5"""
+        #self.logger.warn("I have a bad feeling about this")
     
     @classmethod
     def tearDownClass(cls):

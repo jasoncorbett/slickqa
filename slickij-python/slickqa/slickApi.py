@@ -92,9 +92,8 @@ class SlickAsPy(object):
                 return good_content
         raise SlickError("Tried connecting 5 times to {} {} \nData: {}\nResponse: {}\nContent: {}".format(url, method, data, response, content))
                 
-
     def _get_current_project_ref(self):
-        return {'name':self.current_project["name"] ,'id': self.current_project["id"]}
+        return {'name':self.current_project["name"], 'id': self.current_project["id"]}
 
     def add_project(self, name, description, tag_list, automation_tool_list, component_list):
         project = {"name": name, "description": description, "tags": tag_list, "automationTools": automation_tool_list, "components":component_list}
@@ -298,6 +297,8 @@ class SlickAsPy(object):
                      stabilityRating=None, tags=None, component=None, dataDriven=None):
         if project == None:
             project = self._get_current_project_ref()
+        if component != None:
+            component = self._get_current_component_ref()
         testcase = {'name': name, 'purpose': purpose, 'requirements': requirements, 'steps': steps, 'author': author, 'attributes': attributes,
                     'automated': automated, 'automationPriority': automationPriority, 'automationTool': automationTool, 
                     'automationConfiguration': automationConfiguration, 'automationId': automationId, 'automationKey': automationKey, 
