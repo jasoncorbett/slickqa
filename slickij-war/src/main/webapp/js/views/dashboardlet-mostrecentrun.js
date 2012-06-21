@@ -37,9 +37,9 @@ var MostRecentTestRunSummaryDashboardlet = SlickPage.extend({
 
     onReady: function() {
         $(this.el).addClass("box width-5");
-        this.title = this.data.summary.name;
+        this.title = "Most Recent Testrun: " + this.data.summary.name;
         if(this.data.summary.testplanId) {
-            this.title = "Testrun for Plan: " + safeReference(this.data.summary, "testplan.name", "?");
+            this.title = "Most Recent Testrun: " + safeReference(this.data.summary, "testplan.name", "?");
         }
 
         this.chartdata = new google.visualization.DataTable();
