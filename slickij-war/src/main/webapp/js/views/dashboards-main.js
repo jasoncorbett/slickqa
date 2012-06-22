@@ -21,7 +21,8 @@ var DashboardMainView = SlickPage.extend({
         this.data.project = getCurrentProject();
         this.dashboardlets = [
             new MostRecentTestRunSummaryDashboardlet({positional: [], query: {}, noSetTitle: true}),
-            new ProjectLinksDashboardlet({positional: [], query: {}, noSetTitle: true})
+            new ProjectLinksDashboardlet({positional: [], query: {}, noSetTitle: true}),
+            new ThreeMostRecentTestrunsDashboardlet({positional: [], query: {}, noSetTitle: true})
         ];
     },
 

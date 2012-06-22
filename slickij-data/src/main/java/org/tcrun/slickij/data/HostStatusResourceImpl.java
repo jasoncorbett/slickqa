@@ -30,6 +30,7 @@ public class HostStatusResourceImpl implements HostStatusResource
 		Query<HostStatus> query = m_hoststatusDAO.createQuery();
 		query.or(query.criteria("lastCheckin").greaterThanOrEq(cutoff.getTime()),
 				 query.criteria("currentWork").exists());
+        query.retrievedFields(false, "currentWork.log");
 		return query.asList();
 	}
 
