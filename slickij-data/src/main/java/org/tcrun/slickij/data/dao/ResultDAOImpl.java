@@ -1,5 +1,9 @@
 package org.tcrun.slickij.data.dao;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import org.tcrun.slickij.api.data.*;
 import org.tcrun.slickij.api.data.dao.ResultDAO;
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.dao.BasicDAO;
@@ -10,11 +14,6 @@ import com.google.inject.Inject;
 import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
-import org.tcrun.slickij.api.data.Result;
-import org.tcrun.slickij.api.data.ResultStatus;
-import org.tcrun.slickij.api.data.RunStatus;
-import org.tcrun.slickij.api.data.TestRunParameter;
-import org.tcrun.slickij.api.data.Testrun;
 
 /**
  *
@@ -74,4 +73,31 @@ public class ResultDAOImpl extends BasicDAO<Result, ObjectId> implements ResultD
 
 		return null;
 	}
+
+    @Override
+    public ResultGroupSummary getSummary(ResultQuery query) {
+        ResultGroupSummary summary = new ResultGroupSummary();
+        summary.setResultQuery(query);
+
+        DBCollection resultsCol = ds.getCollection(Result.class);
+        BasicDBObject key = new BasicDBObject();
+        key.put("status", true);
+        BasicDBObject condition = new BasicDBObject();
+        query.addToDBObject(condition);
+        BasicDBObject initial = new BasicDBObject();
+        initial.put("count", 0);
+        initial.put("totaltime", 0);
+        String reduce = "function(obj, prev) { prev.count++; prev.totaltime += obj.runlength; }";
+
+        DBObject resultsObject = resultsCol.group(key, condition, initial, reduce);
+        List<DBObject> results = (List<DBObject>)resultsObject;
+        summary.setTotalTime(0);
+        for(DBObject statuscount : results)
+        {
+            summary.getResultsByStatus().put((String)statuscount.get("status"), new Long( String.format("%.0f", (Double)statuscount.get("count"))));
+            summary.setTotalTime(summary.getTotalTime() + ((Double)statuscount.get("totaltime")).intValue());
+        }
+
+        return summary;
+    }
 }

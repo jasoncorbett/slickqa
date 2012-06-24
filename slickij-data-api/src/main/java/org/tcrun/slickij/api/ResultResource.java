@@ -8,6 +8,7 @@ import javax.ws.rs.core.UriInfo;
 import org.jboss.resteasy.annotations.GZIP;
 import org.tcrun.slickij.api.data.LogEntry;
 import org.tcrun.slickij.api.data.Result;
+import org.tcrun.slickij.api.data.ResultGroupSummary;
 import org.tcrun.slickij.api.data.TestRunParameter;
 /**
  *
@@ -22,6 +23,11 @@ public interface ResultResource
 	@GET
 	@GZIP
 	public List<Result> getMatchingResults(@Context UriInfo uriInfo);
+
+    @Path("/summary/bybuild/{buildid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    public ResultGroupSummary getResultGroupSummaryByBuild(@PathParam("buildid") String buildid);
 
 	@Path("/nextToBeRun")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -66,5 +72,4 @@ public interface ResultResource
 	@Consumes(MediaType.APPLICATION_JSON)
 	@POST
 	public Integer addToLog(@PathParam("resultid") String resultId, List<LogEntry> logaddon);
-
 }

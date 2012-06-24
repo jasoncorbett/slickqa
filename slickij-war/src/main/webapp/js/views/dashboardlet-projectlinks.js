@@ -11,7 +11,7 @@ var ProjectLinksDashboardlet = SlickPage.extend({
     group: "dashboardlet",
 
     attributes: {
-        class: "box width-5"
+        class: "box width-8"
     },
 
     requiredData: {

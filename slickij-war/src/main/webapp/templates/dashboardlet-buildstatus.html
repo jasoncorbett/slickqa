@@ -1,0 +1,7 @@
+<h3 class="boxname">{{title}}</h3>
+<hr class="glowing" />
+Summary of all results for build <span style="font-weight: bold">{{data.project.defaultBuildName}}</span><br />
+{{#each statuses}}
+    <span class="result-status-{{statusclass}}"><span style="font-weight: bold">{{resulttype}}</span>: {{numberoftests}}, {{percentageoftotal}}</span><br />
+{{/each}}
+Total: {{data.summary.total}}

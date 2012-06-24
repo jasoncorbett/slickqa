@@ -7,28 +7,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.management.relation.RelationSupport;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import org.bson.types.ObjectId;
 import org.tcrun.slickij.api.ResultResource;
-import org.tcrun.slickij.api.data.Build;
-import org.tcrun.slickij.api.data.Component;
-import org.tcrun.slickij.api.data.Configuration;
-import org.tcrun.slickij.api.data.HostStatus;
-import org.tcrun.slickij.api.data.InvalidDataError;
-import org.tcrun.slickij.api.data.LogEntry;
-import org.tcrun.slickij.api.data.LogLevel;
-import org.tcrun.slickij.api.data.Project;
-import org.tcrun.slickij.api.data.Release;
-import org.tcrun.slickij.api.data.Result;
-import org.tcrun.slickij.api.data.ResultStatus;
-import org.tcrun.slickij.api.data.RunStatus;
-import org.tcrun.slickij.api.data.StoredFile;
-import org.tcrun.slickij.api.data.TestRunParameter;
-import org.tcrun.slickij.api.data.Testcase;
-import org.tcrun.slickij.api.data.Testrun;
+import org.tcrun.slickij.api.data.*;
 import org.tcrun.slickij.api.data.dao.ConfigurationDAO;
 import org.tcrun.slickij.api.data.dao.HostStatusDAO;
 import org.tcrun.slickij.api.data.dao.ProjectDAO;
@@ -424,6 +410,22 @@ public class ResultResourceImpl implements ResultResource
 		m_resultDAO.save(result);
 		return result.getLog().size();
 	}
+
+    @Override
+    public ResultGroupSummary getResultGroupSummaryByBuild(@PathParam("buildid") String buildid) {
+        ObjectId buildId = null;
+        try
+        {
+            buildId = new ObjectId(buildid);
+        } catch(RuntimeException ex)
+        {
+            throw new WebApplicationException(ex, Status.BAD_REQUEST);
+        }
+        BuildReference ref = new BuildReference();
+        ref.setBuildId(buildId);
+        BuildResultQuery query = new BuildResultQuery(ref);
+        return m_resultDAO.getSummary(query);
+    }
 
     @Override
     public Result cancelResult(String resultid, String reason)

@@ -11,7 +11,6 @@ var DashboardMainView = SlickPage.extend({
     name: "Main Dashboard",
     navigation: true,
 
-    // Initialize is called
     initialize: function() {
         this.on("ready", this.onready, this);
         this.on("finish", this.onFinish, this);
@@ -21,8 +20,8 @@ var DashboardMainView = SlickPage.extend({
         this.data.project = getCurrentProject();
         this.dashboardlets = [
             new MostRecentTestRunSummaryDashboardlet({positional: [], query: {}, noSetTitle: true}),
-            new ProjectLinksDashboardlet({positional: [], query: {}, noSetTitle: true}),
-            new ThreeMostRecentTestrunsDashboardlet({positional: [], query: {}, noSetTitle: true})
+            new ThreeMostRecentTestrunsDashboardlet({positional: [], query: {}, noSetTitle: true}),
+            new BuildStatusDashboardlet({positional: [], query: {}, noSetTitle: true})
         ];
     },
 
