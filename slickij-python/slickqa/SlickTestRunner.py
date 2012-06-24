@@ -63,36 +63,74 @@ class SlickTestRunner(TextTestRunner):
                     slicktest = self.slickCon.get_testcases_with_name(test.shortDescription())
                 except SlickError as se:
                     print traceback.format_exc()
-                if not slicktest:
-                    # if not, add them?
+                #if not slicktest:
+                    ## if not, add them?
                     
-                    # Parse the data and add it to add test. This will populate the testcase
-                    #self._parseTestCaseInfo(test)
+                    ## Parse the data and add it to add test. This will populate the testcase
+                    #values = self._parseTestCaseInfo(test)
+                    ##slicktest = self.slickCon.add_testcase(test.shortDescription(), automated=True)
+                    ##self.testsFromSlick.append(slicktest)
                     
-                    slicktest = self.slickCon.add_testcase(test.shortDescription(), automated=True)
-                    self.testsFromSlick.append(slicktest)
-                    
-                else:
-                    # If we find multiple tests with the same name, we will run the last one it finds. Tests need a unique name 
-                    if isinstance(slicktest, list):
-                        slicktest = slicktest.pop()
+                #else:
+                    ## If we find multiple tests with the same name, we will run the last one it finds. Tests need a unique name 
+                    #if isinstance(slicktest, list):
+                        #slicktest = slicktest.pop()
                         
-                    self.testsFromSlick.append(slicktest)
+                # I am going to add the test everytime because the steps could have changed. 
+                values = self._parseTestCaseInfo(test)
+                slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["Author"], purpose=values["Purpose"],
+                                                       tags=values["Tags"], requirements=values["Requirements"], 
+                                                       steps=values["Steps"], automated=True)
+                self.testsFromSlick.append(slicktest)
                     
     def _parseTestCaseInfo(self, test):
-        foundValues = {}
+        foundValues = {"Author":"API", "Purpose":None, "Attributes":None, 
+                       "Tags":[], "Requirements":None, "Component":None,
+                       "Steps": [{'name': "Testcase", 'expectedResult': "Coming Soon"}]}
+
+        # Set Author if it is found in the main doc string
         testInfo = test.__doc__
+        if testInfo:
+            testInfoLines = testInfo.splitlines()
+            for line in testInfoLines:
+                if "Author:" in line:
+                    foundValues["Author"] = line.replace("Author:", "").strip()
+            
+        # Now look at individual test cases for other info
+        testInfo = test._testMethodDoc
         testInfoLines = testInfo.splitlines()
-        
         for line in testInfoLines:
             # Expecting the values to be formatted like 'Author: Jared' Each value on its own line except for test steps
             if "Author:" in line:
                 foundValues["Author"] = line.replace("Author:", "").strip()
+            
             elif "Purpose:" in line:
                 foundValues["Purpose"] = line.replace("Purpose:", "").strip()
+            
+            elif "Attributes" in line:
+                foundValues["Attributes"] = line.replace("Attributes:", "").strip()
+            
+            # Tags need to be a list of strings. Value needs to be separated with a ","
+            elif "Tags" in line:
+                foundValues["Tags"] = line.replace("Tags:", "").strip()
+                foundValues["Tags"] = foundValues["Tags"].split(",")
+            
+            elif "Requirements" in line:
+                foundValues["Requirements"] = line.replace("Requirements:", "").strip()
+            
+            elif "Component" in line:
+                foundValues["Component"] = line.replace("Component:", "").strip()
+            
+            # Steps needs to be a list of step object. [{'name': 'testName', 'expectedResult': 'outcome'}]
+            elif "Steps" in line:
+                foundValues["Steps"] = []
+                for step in testInfoLines:
+                    testStep = re.search('([0-9]+.\s+[^\r\n]+):\s+([^\r\n]+)', step)
+                    if testStep:
+                        foundValues["Steps"].append({"name": testStep.group(1), "expectedResult": testStep.group(2)})
+                        
+        return foundValues
                 
-        
-
     def _checkTestPlan(self):
         try:
             tp = self.slickCon.get_test_plan(self.testPlan)
@@ -121,7 +159,7 @@ class SlickTestRunner(TextTestRunner):
         # 1. Creat a result in slick for each test that we will run
         self.not_tested_result_list = []
         for test in self.testsFromSlick:
-            self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), "NOT_TESTED", "TO_BE_RUN"))
+            self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), "NOT_TESTED", "TO_BE_RUN", hostname=loggername))
         
         # 2. Pass the result to the corrisponding test case 
         
