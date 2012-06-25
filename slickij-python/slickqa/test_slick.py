@@ -22,7 +22,6 @@ class SlickTest(SlickTestCase):
         Attributes: Test Attributes 
         Tags: test1, test2
         Requirements: Slick installed and running 
-        Component: Slick Test Case 
         
         Steps:
         1. Log a message: Should log a message
