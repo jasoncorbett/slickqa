@@ -41,6 +41,12 @@ var ReportsTestRunDetailPage = SlickPage.extend({
     },
 
     onReady: function() {
+        if (this.data.testplan) {
+            this.title = this.data.testplan.name + " Detailed Results";
+        } else {
+            this.title = this.data.testrun.name + " Detailed Results";
+        }
+
         this.includepass = (this.options.query && this.options.query.includepass);
 
         this.tbldata = [];

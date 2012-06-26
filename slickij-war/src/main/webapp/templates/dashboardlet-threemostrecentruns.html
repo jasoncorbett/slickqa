@@ -1,7 +1,7 @@
 <h3 class="boxname">{{title}}</h3>
 <hr class="glowing" />
 {{#each theruns}}
-    <a href="#/reports/testrunsummary/{{id}}">{{name}}</a>
+    <a href="#/reports/testrunsummary/{{id}}">{{name}} -- {{datestring}}</a>
     <br />
     <a href="#/reports/testrundetail/{{id}}?only=PASS" class="result-status-PASS">Pass: {{resultsByStatus.PASS}}</a>
     <a href="#/reports/testrundetail/{{id}}?only=FAIL" class="result-status-FAIL">Fail: {{resultsByStatus.FAIL}}</a>

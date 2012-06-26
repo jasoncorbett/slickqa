@@ -32,9 +32,14 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
             this.subtitle1 = "Testrun for Plan: " + safeReference(this.data.summary, "testplan.name", "?");
         }
         this.subtitle2 = safeReference(this.data.summary, "release.name", "") + " Build " + safeReference(this.data.summary, "build.name", "Unknown");
-        this.subtitle3 = safeReference(this.data.summary, "config.name", "");
-        this.subtitle4 = "Runtime Options: " + safeReference(this.data.rundata, "runtimeOptions.name", "");
-		this.dateCreated = "Date Created: " + new Date(this.data.rundata.dateCreated);
+        if (this.data.summary.config) {
+            this.subtitle3 = safeReference(this.data.summary, "config.name", "");
+        }
+        if (this.data.rundata.runtimeOptions) {
+            this.subtitle4 = "Runtime Options: " + safeReference(this.data.rundata, "runtimeOptions.name", "");
+        }
+        this.dateCreated = (new Date(this.data.rundata.dateCreated)).toLocaleDateString();
+		this.timeCreated = (new Date(this.data.rundata.dateCreated)).toLocaleTimeString();
 		this.chartdata = new google.visualization.DataTable();
         this.chartdata.addColumn('string', 'Result Type');
         this.chartdata.addColumn('number', 'Number of Results');
