@@ -73,7 +73,8 @@ class SlickTestRunner(TextTestRunner):
                 values = self._parseTestCaseInfo(test)
                 slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["Author"], purpose=values["Purpose"],
                                                        tags=values["Tags"], requirements=values["Requirements"], 
-                                                       steps=values["Steps"], automated=True, component=values["Component"])
+                                                       steps=values["Steps"], automated=True, 
+                                                       component=values["Component"], automationTool=values["Automation Tool"])
                 self.testsFromSlick.append(slicktest)
                 
     def _checkTestsOld(self, tests):
@@ -106,6 +107,7 @@ class SlickTestRunner(TextTestRunner):
                 
                 # Get all tests with this name and then delete them first 
                 try:
+                    # Call the update after comparing the testcase 
                     allTestsWithName = self.slickCon.get_testcases_with_name(testName)
                     for foundTest in allTestsWithName:
                         self.slickCon.delete_testcase(foundTest["id"])
@@ -116,12 +118,14 @@ class SlickTestRunner(TextTestRunner):
                 values = self._parseTestCaseInfo(test)
                 slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["Author"], purpose=values["Purpose"],
                                                        tags=values["Tags"], requirements=values["Requirements"], 
-                                                       steps=values["Steps"], component=values["Component"], automated=True)
+                                                       steps=values["Steps"], component=values["Component"], 
+                                                       automationTool=values["Automation Tool"], automated=True)
                 self.testsFromSlick.append(slicktest)
                     
     def _parseTestCaseInfo(self, test):
         foundValues = {"Author":"API", "Purpose":None, "Attributes":None, 
                        "Tags":[], "Requirements":None, "Component":None,
+                       "Automation Tool": None,
                        "Steps": [{'name': "Testcase", 'expectedResult': "Coming Soon"}]}
 
         # Set Author if it is found in the main doc string
@@ -131,6 +135,9 @@ class SlickTestRunner(TextTestRunner):
             for line in testInfoLines:
                 if "Author:" in line:
                     foundValues["Author"] = line.replace("Author:", "").strip()
+                elif "Automation Tool" in line:
+                    foundValues["Automation Tool"] = line.replace("Automation Tool:", "").strip()
+                    
             
         # Now look at individual test cases for other info
         testInfo = test._testMethodDoc
@@ -169,6 +176,9 @@ class SlickTestRunner(TextTestRunner):
                     self.slickCon.add_component(foundValues["Component"])
                 
                 foundValues["Component"] = {"name": foundValues["Component"]}
+                
+            elif "Automation Tool" in line:
+                foundValues["Automation Tool"] = line.replace("Automation Tool:", "").strip()
             
             # Steps needs to be a list of step object. [{'name': 'testName', 'expectedResult': 'outcome'}]
             elif "Steps" in line:
@@ -208,12 +218,13 @@ class SlickTestRunner(TextTestRunner):
         # 1. Creat a result in slick for each test that we will run
         self.not_tested_result_list = []
         for test in self.testsFromSlick:
+            component = test["component"]
+            if isinstance(component, list):
+                component = component.pop()
             self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), 
-                                                                        "NOT_TESTED", "TO_BE_RUN", 
-                                                                        componentRef=test["component"], hostname=loggername))
+                                                                        "NOT_TESTED", "TO_BE_RUN", componentRef=component, hostname=loggername))
         
         # 2. Pass the result to the corrisponding test case 
-        
         # 3. Change result to update instead of add (This will be done in the result class)
         
     def run(self, test):

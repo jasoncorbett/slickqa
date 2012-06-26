@@ -420,6 +420,9 @@ class SlickAsPy(object):
 
     def update_result(self, result_id, updated_result):
         return self._safe_put(updated_result, "results", result_id)
+    
+    def update_testcase(self, testcase_id, updated_testcase):
+        return self._safe_put(updated_testcase, "testcases", testcase_id)
 
     def add_log_entry(self, message, resultId, time=None, level=None, loggername=None, exceptionName=None, exceptionMessage=None, exceptionTraceback=None):
         if not time:
