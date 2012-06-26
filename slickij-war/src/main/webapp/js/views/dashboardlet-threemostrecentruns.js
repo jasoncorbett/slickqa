@@ -44,6 +44,7 @@ var ThreeMostRecentTestrunsDashboardlet = SlickPage.extend({
             var key = "summary" + i;
             if(_.has(this.data, key)) {
                 var summary = this.data[key];
+                summary.datestring = (new Date(summary.dateCreated)).toLocaleDateString();
                 summary.name = safeReference(summary, "testplan.name", summary.name);
                 _.each(["PASS", "FAIL", "BROKEN_TEST"], function(resulttype) {
                     if(!_.has(summary.resultsByStatus, resulttype)) {
