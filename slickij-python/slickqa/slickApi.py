@@ -297,8 +297,6 @@ class SlickAsPy(object):
                      stabilityRating=None, tags=None, component=None, dataDriven=None):
         if project == None:
             project = self._get_current_project_ref()
-        if component != None:
-            component = self._get_current_component_ref()
         testcase = {'name': name, 'purpose': purpose, 'requirements': requirements, 'steps': steps, 'author': author, 'attributes': attributes,
                     'automated': automated, 'automationPriority': automationPriority, 'automationTool': automationTool, 
                     'automationConfiguration': automationConfiguration, 'automationId': automationId, 'automationKey': automationKey, 
@@ -403,7 +401,7 @@ class SlickAsPy(object):
 
     def _get_test_case_ref(self, testcase):
         return {"name": testcase['name'], "testcaseId": testcase['id']}
-
+        
     def add_result(self, testrunRef, testcase, date, resultStatus, runStatus=None, reason=None, attributeDict=None, configRef=None, 
                    configOverride=None, fileList=None, log=None, projectRef=None, componentRef=None, releaseRef=None, buildRef=None, 
                    runLength=None, extensions=None, history=None, hostname=None):
@@ -417,7 +415,7 @@ class SlickAsPy(object):
             fileList = [fileList]
         result = {"testrun": self._get_test_run_ref(testrunRef), "config": configRef, "configurationOverride": configOverride, 
                   "testcase": self._get_test_case_ref(testcase), "recorded": date, "status": resultStatus, "runstatus" : runStatus, "project": projectRef, 
-                  "release": releaseRef, "build": buildRef, "log": log, "hostname": hostname, "files": fileList, "runlength": runLength}
+                  "release": releaseRef, "build": buildRef, "log": log, "hostname": hostname, "files": fileList, "runlength": runLength, "component": componentRef}
         return self._safe_post(result, "results")
 
     def update_result(self, result_id, updated_result):

@@ -59,6 +59,30 @@ class SlickTestRunner(TextTestRunner):
         if hasattr(tests, "_tests"):
             for test in tests._tests:
                 slicktest = None
+                # Get all tests with this name and then delete them first 
+                try:
+                    allTestsWithName = self.slickCon.get_testcases_with_name(test.shortDescription())
+                except SlickError:
+                    allTestsWithName = []
+                                    
+                if isinstance(allTestsWithName, list):
+                    if len(allTestsWithName) >=1:
+                        for foundTest in allTestsWithName:
+                            self.slickCon.delete_testcase(foundTest["id"])
+            
+                values = self._parseTestCaseInfo(test)
+                slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["Author"], purpose=values["Purpose"],
+                                                       tags=values["Tags"], requirements=values["Requirements"], 
+                                                       steps=values["Steps"], automated=True, component=values["Component"])
+                self.testsFromSlick.append(slicktest)
+                
+    def _checkTestsOld(self, tests):
+        self.testsFromSlick = []
+        #all_tests = self._get_tests(tests)
+        #for testsuite in all_tests:
+        if hasattr(tests, "_tests"):
+            for test in tests._tests:
+                slicktest = None
                 try:
                     slicktest = self.slickCon.get_testcases_with_name(test.shortDescription())
                 except SlickError as se:
@@ -77,10 +101,22 @@ class SlickTestRunner(TextTestRunner):
                         #slicktest = slicktest.pop()
                         
                 # I am going to add the test everytime because the steps could have changed. 
+                # Delete old test first, Need to get test names from the doc string
+                testName = self._getTestCaseName(test._testMethodDoc)
+                
+                # Get all tests with this name and then delete them first 
+                try:
+                    allTestsWithName = self.slickCon.get_testcases_with_name(testName)
+                    for foundTest in allTestsWithName:
+                        self.slickCon.delete_testcase(foundTest["id"])
+                except SlickError:
+                    print "I found no test cases" 
+                    pass
+            
                 values = self._parseTestCaseInfo(test)
                 slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["Author"], purpose=values["Purpose"],
                                                        tags=values["Tags"], requirements=values["Requirements"], 
-                                                       steps=values["Steps"], automated=True)
+                                                       steps=values["Steps"], component=values["Component"], automated=True)
                 self.testsFromSlick.append(slicktest)
                     
     def _parseTestCaseInfo(self, test):
@@ -119,13 +155,26 @@ class SlickTestRunner(TextTestRunner):
                 foundValues["Requirements"] = line.replace("Requirements:", "").strip()
             
             elif "Component" in line:
+                # We need to see if component exists. If not add it? Yeah sure I will add it 
                 foundValues["Component"] = line.replace("Component:", "").strip()
+                try:
+                    components = self.slickCon.get_components()
+                except SlickError:
+                    components = []
+                    
+                componentNames = []
+                for component in components:                    
+                    componentNames.append(component["name"])
+                if foundValues["Component"] not in componentNames:
+                    self.slickCon.add_component(foundValues["Component"])
+                
+                foundValues["Component"] = {"name": foundValues["Component"]}
             
             # Steps needs to be a list of step object. [{'name': 'testName', 'expectedResult': 'outcome'}]
             elif "Steps" in line:
                 foundValues["Steps"] = []
                 for step in testInfoLines:
-                    testStep = re.search('([0-9]+.\s+[^\r\n]+):\s+([^\r\n]+)', step)
+                    testStep = re.search('([^\r\n]+\s+[^\r\n]+);\s+([^\r\n]+)', step)
                     if testStep:
                         foundValues["Steps"].append({"name": testStep.group(1), "expectedResult": testStep.group(2)})
                         
@@ -159,7 +208,9 @@ class SlickTestRunner(TextTestRunner):
         # 1. Creat a result in slick for each test that we will run
         self.not_tested_result_list = []
         for test in self.testsFromSlick:
-            self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), "NOT_TESTED", "TO_BE_RUN", hostname=loggername))
+            self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), 
+                                                                        "NOT_TESTED", "TO_BE_RUN", 
+                                                                        componentRef=test["component"], hostname=loggername))
         
         # 2. Pass the result to the corrisponding test case 
         
