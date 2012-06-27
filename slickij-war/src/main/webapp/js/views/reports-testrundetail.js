@@ -83,7 +83,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
             bDeferRender: true,
             bPaginate: false,
             sDom: '<"H"lfrT<"clear">>tS<"F"ip>',
-            sScrollY: "" + ($(document).height() - (5 * $("#pagetitle").height()) -  (4 * $("#titlebar").height())) + "px",
+            sScrollY: "" + $(window).height() - $("#header").height() - (3 * $("#footer").height()) - (2 * $("#footer-reload-button").height()) + "px",
             oTableTools: {"sSwfPath": "media/swf/copy_cvs_xls_pdf.swf"}
         });
         datatable.fnSort([[3, "asc"]]);
