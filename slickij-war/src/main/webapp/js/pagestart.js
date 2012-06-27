@@ -52,6 +52,18 @@ $(function() {
 						};
                         $.address.change(window.onPageChange);
                         window.onPageChange();
+                        $("#footer-reload-button").on("click", function() {
+                            window.onPageChange();
+                        });
+                        $("#footer-reload-select").on("change", function() {
+                            if(window.interval) {
+                                clearInterval(window.interval);
+                            }
+                            var reloadevery = $("#footer-reload-select :selected").val();
+                            if(reloadevery != "NoAutoReload") {
+                                window.interval = setInterval(window.onPageChange, 1000 * reloadevery)
+                            }
+                        });
 
                         $("#current-project-select").on("change", function() {
                             $.cookie('slick_default_project', window.getCurrentProject().id);

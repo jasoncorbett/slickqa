@@ -60,7 +60,7 @@ var RunTestsMachineStatusPage = SlickPage.extend({
             bDeferRender: true,
             bPaginate: false,
             sDom: "<\"H\"lfr>tS<\"F\"ip>",
-            sScrollY: "" + ($(document).height() - (4 * $("#pagetitle").height()) -  (3 * $("#titlebar").height()) - (2 * $("h2.center").height())) + "px"
+            sScrollY: "" + $("#content").height() - $("#content-bottom-pad").height() - $("#header").height() - $("#footer").height() + "px"
         });
         
         $(".cancel-result").on("click", function() {

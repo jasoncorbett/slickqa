@@ -1,3 +1,12 @@
+html {
+    height:100%; /* fix height to 100% for IE */
+    max-height:100%; /* fix height for other browsers */
+    padding:0; /*remove padding */
+    margin:0; /* remove margins */
+    border:0; /* remove borders */
+    overflow:hidden; /*get rid of scroll bars in IE */
+}
+
 
 body {
 	/*font-family: "Lucida Grande", "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;*/
@@ -5,7 +14,35 @@ body {
 	font-weight: 300;
 	margin: 0px;
 	padding: 0px;
+    border:0; /* remove borders */
 	background: black;
+    height:100%; /* fix height to 100% for IE */
+    max-height:100%; /* fix height for other browsers */
+    overflow:hidden; /*get rid of scroll bars in IE */
+}
+
+#content {
+    display:block; /* set up as a block */
+    height:100%; /* set height to full page */
+    max-height:100%;
+    overflow:auto; /* add scroll bars as required */
+    position:relative; /* set up relative positioning so that z-index will work */
+}
+
+#footer {
+    position: absolute;
+    bottom: -1px;
+    width: 100%;
+    height: .8in;
+    background: rgba(0,0,0,.6);
+    z-index:1; /* allocate a suitable z-index */
+    color: #d3d2d2;
+    clear: both;
+    border-top: 1px solid #444;
+}
+
+#content-bottom-pad {
+    height: 1.5in;
 }
 
 #titlebar {
@@ -281,10 +318,6 @@ body {
 	margin-bottom: .1in;
 }
 
-#footer {
-	clear: both;
-}
-
 #actions {
 	margin: 0 .1in;
 }
@@ -385,6 +418,19 @@ body {
     padding: 5px 30px;
 	margin: .05in;
 	display: inline-block;
+}
+
+.button:link {
+    text-decoration: none;
+}
+
+.button:visited {
+    text-decoration: none;
+}
+
+.button:hover {
+    font-weight: bolder;
+    color: white;
 }
 
 .clear {
