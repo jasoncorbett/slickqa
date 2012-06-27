@@ -9,6 +9,7 @@ from questLogger import newLogger,start_logging
 class SlickTest(SlickTestCase):
     """Sample test case
     Author: Jared Jorgensen
+    Automation Tool: webdriver
     """
     
     @classmethod
