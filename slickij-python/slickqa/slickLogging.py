@@ -167,7 +167,8 @@ class SlickHandler(Handler):
         
     def end_test(self, resultId):
         if self._log_queue:
-            self._slick_con.add_log_entries(self._log_queue, resultId)
+            if resultId:
+                self._slick_con.add_log_entries(self._log_queue, resultId)
             # clear the queue
             self._log_queue = []
         

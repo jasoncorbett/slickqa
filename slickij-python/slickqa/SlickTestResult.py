@@ -76,7 +76,8 @@ class SlickTestResult(TestResult):
             return self.completed_tests.pop()
         
     def get_last_result_id(self):
-        return self.completed_tests[-1]['id']
+        if self.completed_tests != []:
+            return self.completed_tests[-1]['id']
             
     def update_result(self, result):
         #TODO: should this add the result back to the list of results as well?
@@ -108,16 +109,17 @@ class SlickTestResult(TestResult):
         # Get the test case result from the test case name 
         test_result = self.get_result_by_test_name(test_name)
         
-        # Update current result with latest test information. A slick result can be seen in result.java
-        test_result["status"] = result_name
-        test_result["runstatus"] = "FINISHED"
-        test_result["runlength"] = taken
-        test_result["recorded"] = self.testStartTime.strftime('%a, %m %b %Y %H:%M:%S %Z')
-        test_result["files"] = files
-        test_result["hostname"] = self._getHostname(test)
-        
-        self.update_result(test_result)
-        self.completed_tests.append(test_result)
+        if test_result:
+            # Update current result with latest test information. A slick result can be seen in result.java
+            test_result["status"] = result_name
+            test_result["runstatus"] = "FINISHED"
+            test_result["runlength"] = taken
+            test_result["recorded"] = self.testStartTime.strftime('%a, %m %b %Y %H:%M:%S %Z')
+            test_result["files"] = files
+            test_result["hostname"] = self._getHostname(test)
+            
+            self.update_result(test_result)
+            self.completed_tests.append(test_result)
         
         # Old way
         #result = self.slick.add_result(
