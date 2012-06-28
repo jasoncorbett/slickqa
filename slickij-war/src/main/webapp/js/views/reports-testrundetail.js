@@ -12,6 +12,9 @@ var ReportsTestRunDetailPage = SlickPage.extend({
 
     initialize: function() {
         this.requiredData = {
+            "summary": function() {
+                return SlickUrlBuilder.testrun.getSummary(this.options.positional[0]);
+            },
             testrun: function() {
                 return SlickUrlBuilder.testrun.getTestrun(this.options.positional[0]);
             },
@@ -46,6 +49,17 @@ var ReportsTestRunDetailPage = SlickPage.extend({
         } else {
             this.title = this.data.testrun.name + " Detailed Results";
         }
+
+        // this section sets up data needed by the template
+        this.subtitle1 = (new Date(this.data.testrun.dateCreated)).toLocaleDateString();
+        this.subtitle2 = safeReference(this.data.summary, "release.name", "") + " Build " + safeReference(this.data.summary, "build.name", "Unknown");
+        if (this.data.summary.config) {
+            this.subtitle3 = safeReference(this.data.summary, "config.name", "");
+        }
+        if (this.data.testrun.runtimeOptions) {
+            this.subtitle4 = "Runtime Options: " + safeReference(this.data.testrun , "runtimeOptions.name", "");
+        }
+        this.timeCreated = (new Date(this.data.testrun.dateCreated)).toLocaleTimeString();
 
         this.includepass = (this.options.query && this.options.query.includepass);
 
