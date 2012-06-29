@@ -18,19 +18,19 @@ class SlickTest(SlickTestCase):
         #cls.mac.install()
     
     def test_01(self):
-        """Test Name 1
-        Purpose: Test the slick api
+        """Test Name One
+        Purpose: Test the api of slick
         Attributes: Test Attributes 
-        Tags: test1, test2
-        Requirements: Slick installed and running 
+        Tags: api test, test api, slick
+        Requirements: A good version of slick
         
         Steps:
-        1. Log a message: Should log a message
-        2. Log another message: Should log another message
-        3. Log more messages: Should log more 
-        4. Log a warn message: Should log a warn message
-        5. Assume we pass: We should get a pass
-        6. New step: I'm Back
+        a. Log a message; Should log a message
+        b. Log another message; Should log another message
+        c. Log more messages; Should log more 
+        d. Log a warn message; Should log a warn message
+        e. Assume we pass; We should get a pass
+        f. New step; I'm Back
         """
         self.logger.warn("in test 1")
         self.logger.warn("in test 1")
@@ -96,7 +96,7 @@ if __name__ == '__main__':
     testme = SlickTestRunner("1.0.311", "6", slickLocation=slickcon)
     SlickTest.logger = logger
     tests.set_logger(logger.name)
-    testme.setup_test_run(tests, 'test1')
+    testme.setup_test_run(tests, None)
     result = testme.run(tests)
     
     print result
