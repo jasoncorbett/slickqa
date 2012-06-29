@@ -51,8 +51,61 @@ class SlickTestRunner(TextTestRunner):
                 return self._get_tests(tests._tests)
             else:
                 return tests._tests
-
+            
     def _checkTests(self, tests):
+        self.testsFromSlick = []
+        #all_tests = self._get_tests(tests)
+        #for testsuite in all_tests:
+        if hasattr(tests, "_tests"):
+            for test in tests._tests:
+                slicktest = None
+                # Get all tests with this name and then delete them first 
+                try:
+                    allTestsWithName = self.slickCon.get_testcases_with_name(test.shortDescription())
+                except SlickError:
+                    allTestsWithName = []
+            
+                values = self._parseTestCaseInfo(test)
+                
+                if allTestsWithName == []:
+                    slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["Author"], purpose=values["Purpose"],
+                                                           tags=values["Tags"], requirements=values["Requirements"], 
+                                                           steps=values["Steps"], automated=True, 
+                                                           component=values["Component"], automationTool=values["Automation Tool"])
+                else:
+                    if isinstance(allTestsWithName, list):
+                        updatedTest = {}
+                        slicktest = allTestsWithName.pop()
+                        
+                        # I need to compare values now 
+                        if slicktest["author"] != values["Author"]:
+                            updatedTest["author"] = values["Author"]
+                            
+                        if slicktest["automationTool"] != values["Automation Tool"]:
+                            updatedTest["automationTool"] = values["Automation Tool"]
+                            
+                        if slicktest["component"] != values["Component"]:
+                            updatedTest["component"] = values["Component"]
+                            
+                        if slicktest["purpose"] != values["Purpose"]:
+                            updatedTest["purpose"] = values["Purpose"]
+                            
+                        if slicktest["requirements"] != values["Requirements"]:
+                            updatedTest["requirements"] = values["Requirements"]
+                            
+                        if slicktest["steps"] != values["Steps"]:
+                            updatedTest["steps"] = values["Steps"]
+                            
+                        if slicktest["tags"] != values["Tags"]:
+                            updatedTest["tags"] = values["Tags"]
+                            
+                    # if there is update info then we will update the test
+                    if updatedTest != {}:
+                        slicktest = self.slickCon.update_testcase(slicktest["id"], updatedTest)
+                    
+                self.testsFromSlick.append(slicktest)
+
+    def _checkTestsOrg(self, tests):
         self.testsFromSlick = []
         #all_tests = self._get_tests(tests)
         #for testsuite in all_tests:
