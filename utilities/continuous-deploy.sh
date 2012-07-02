@@ -49,5 +49,8 @@ then
     fi
 
     echo "Deploying slickij.war to ${LOCAL_SLICKIJ_WAR}"
-    mv slickij.war "${LOCAL_SLICKIJ_WAR}"   
+    mv slickij.war "${LOCAL_SLICKIJ_WAR}"
+	echo "Calling update REST call"
+	sleep 10
+	curl -X PUT "${LOCAL_SLICKIJ_URL}/api/updates
 fi
