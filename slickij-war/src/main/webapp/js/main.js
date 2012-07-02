@@ -17,7 +17,11 @@ $(document).ready(function () {
 			$("#actiongroup-" + $(this).attr("id")).addClass("groupselected");
 			$(showid).show(250);
 		}
-		return false;
+        if ($(this).hasAttribute("href")) {
+            return true;
+        } else {
+		    return false;
+        }
 	});
 });
 

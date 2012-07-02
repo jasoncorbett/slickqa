@@ -41,6 +41,11 @@ body {
     border-top: 1px solid #444;
 }
 
+#logo {
+    height: 1in;
+    float: left;
+}
+
 #content-bottom-pad {
     height: 2in;
 }
@@ -195,10 +200,16 @@ body {
 }
 
 #pagetitle {
-	margin: 0;
-	margin-top: .1in;
-	text-align: center;
+    margin: .1in 0 0;
+    float: none;
+    text-align: center;
 	color: white;
+    height: .6in;
+    width: 100%;
+    background-image: url("../../images/Slick.png");
+    background-repeat: no-repeat;
+    background-size: auto 1.2in;
+    background-position: left top;
 }
 
 #breadcrumbs a:last-child {
@@ -1251,6 +1262,7 @@ a.notDefaultRelease:visited {
 }
 
 .center {
+    display: block;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -1363,4 +1375,16 @@ span.log-level-DEBUG {
 
 span.log-level-TRACE {
     color: #cccccc
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.slick-logo {
+    width: 5.5in;
 }
