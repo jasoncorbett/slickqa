@@ -1262,12 +1262,17 @@ a.notDefaultRelease:visited {
 }
 
 .center {
-    display: block;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
 
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
 .fieldName {
     display: inline-block;
     font-size: 1.2em;
