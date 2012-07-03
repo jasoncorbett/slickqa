@@ -73,8 +73,8 @@ class SlickTestRunner(TextTestRunner):
                                                            steps=values["Steps"], automated=True, 
                                                            component=values["Component"], automationTool=values["Automation Tool"])
                 else:
+                    updatedTest = {}
                     if isinstance(allTestsWithName, list):
-                        updatedTest = {}
                         slicktest = allTestsWithName.pop()
                         
                         # I need to compare values now 
@@ -271,9 +271,14 @@ class SlickTestRunner(TextTestRunner):
         # 1. Creat a result in slick for each test that we will run
         self.not_tested_result_list = []
         for test in self.testsFromSlick:
-            component = test["component"]
+            component = None
+            if isinstance(test, dict):
+                if test["component"]:
+                    component = test["component"]
+
             if isinstance(component, list):
                 component = component.pop()
+                
             self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), 
                                                                         "NOT_TESTED", "TO_BE_RUN", componentRef=component, hostname=loggername))
         
