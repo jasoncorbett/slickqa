@@ -80,7 +80,7 @@ public class TestrunDAOImpl extends BasicDAO<Testrun, ObjectId> implements Testr
 			tpref = new TestplanReference(plan);
 		}
 
-		TestRunSummary summary = new TestRunSummary(run, tpref);
+		TestRunSummary summary = new TestRunSummary();
 		DBCollection resultsCol = ds.getCollection(Result.class);
 		BasicDBObject key = new BasicDBObject();
 		key.put("status", true);
@@ -88,16 +88,14 @@ public class TestrunDAOImpl extends BasicDAO<Testrun, ObjectId> implements Testr
 		condition.put("testrun.testrunId", run.getObjectId());
 		BasicDBObject initial = new BasicDBObject();
 		initial.put("count", 0);
-        initial.put("totaltime", 0);
-		String reduce = "function(obj, prev) { prev.count++; prev.totaltime += obj.runlength; }";
+		String reduce = "function(obj, prev) { prev.count++; }";
 
 		DBObject resultsObject = resultsCol.group(key, condition, initial, reduce);
 		List<DBObject> results = (List<DBObject>)resultsObject;
         summary.setTotalTime(0);
 		for(DBObject statuscount : results)
 		{
-			summary.getResultsByStatus().put((String)statuscount.get("status"), new Long( String.format("%.0f", (Double)statuscount.get("count"))));
-            summary.setTotalTime(summary.getTotalTime() + ((Double)statuscount.get("totaltime")).intValue());
+			summary.getResultsByStatus().put((String) statuscount.get("status"), new Long(String.format("%.0f", (Double) statuscount.get("count"))));
 		}
 
 		return summary;
@@ -120,4 +118,43 @@ public class TestrunDAOImpl extends BasicDAO<Testrun, ObjectId> implements Testr
 			updateOps.unset("reason");
 			ds.update(updateQuery, updateOps);
 	}
+
+    @Override
+    public void addNewResultStatusToRun(ObjectId testrunid, ResultStatus status)
+    {
+        Query<Testrun> updateQuery = createQuery();
+        updateQuery.criteria("id").equal(testrunid);
+        UpdateOperations<Testrun> updateOps = ds.createUpdateOperations(Testrun.class);
+        updateOps.inc("summary.resultsByStatus." + status.toString());
+        ds.update(updateQuery, updateOps);
+    }
+
+    @Override
+    public void changeResultStatus(ObjectId testrunid, ResultStatus old, ResultStatus newStatus)
+    {
+        Query<Testrun> updateQuery = createQuery();
+        updateQuery.criteria("id").equal(testrunid);
+        UpdateOperations<Testrun> updateOps = ds.createUpdateOperations(Testrun.class);
+        updateOps.dec("summary.resultsByStatus." + old.toString());
+        updateOps.inc("summary.resultsByStatus." + newStatus.toString());
+        ds.update(updateQuery, updateOps);
+    }
+
+    @Override
+    public void deleteResultStatusFromRun(ObjectId testrunid, ResultStatus status)
+    {
+        Query<Testrun> updateQuery = createQuery();
+        updateQuery.criteria("id").equal(testrunid);
+        UpdateOperations<Testrun> updateOps = ds.createUpdateOperations(Testrun.class);
+        updateOps.dec("summary.resultsByStatus." + status.toString());
+        ds.update(updateQuery, updateOps);
+    }
+
+    @Override
+    public Testrun updateSummary(Testrun run)
+    {
+        run.setSummary(getSummary(run));
+        save(run);
+        return run;
+    }
 }

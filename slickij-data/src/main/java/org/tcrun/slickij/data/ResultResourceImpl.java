@@ -111,8 +111,11 @@ public class ResultResourceImpl implements ResultResource
 	public Result updateResult(String resultid, Result update)
 	{
 		Result result = getResult(resultid);
+        ResultStatus oldstatus = null;
+
 		if(update.getStatus() != null)
 		{
+            oldstatus = result.getStatus();
 			result.setStatus(update.getStatus());
 			if(update.getRunstatus() == null && update.getStatus() != ResultStatus.NO_RESULT)
 				update.setRunstatus(RunStatus.FINISHED);
@@ -230,6 +233,10 @@ public class ResultResourceImpl implements ResultResource
 			result.setTestrun(update.getTestrun());
 		}
 
+        if(oldstatus != null && oldstatus != result.getStatus() && result.getTestrun() != null)
+        {
+            m_testrunDAO.changeResultStatus(result.getTestrun().getTestrunObjectId(), oldstatus, result.getStatus());
+        }
 		m_resultDAO.save(result);
 
 		return result;
@@ -306,6 +313,7 @@ public class ResultResourceImpl implements ResultResource
 			if(config == null)
 				result.setConfig(null);
 		}
+
 		// Testrun
 		if(result.getTestrun() != null)
 		{
@@ -340,6 +348,7 @@ public class ResultResourceImpl implements ResultResource
 
 		// you have to save the new result before setting up the hoststatus
 		m_resultDAO.save(result);
+        m_testrunDAO.addNewResultStatusToRun(result.getTestrun().getTestrunObjectId(), result.getStatus());
 
 		// Hostname (HostStatus)
 		if(result.getHostname() != null)
@@ -396,6 +405,11 @@ public class ResultResourceImpl implements ResultResource
             }
         }
 
+        if(result.getTestrun() != null)
+        {
+            m_testrunDAO.deleteResultStatusFromRun(result.getTestrun().getTestrunObjectId(), result.getStatus());
+        }
+
         m_resultDAO.delete(result);
         return result;
     }
@@ -431,6 +445,10 @@ public class ResultResourceImpl implements ResultResource
     public Result cancelResult(String resultid, String reason)
     {
         Result result = getResult(resultid);
+        if(result.getTestrun() != null)
+        {
+            m_testrunDAO.changeResultStatus(result.getTestrun().getTestrunObjectId(), result.getStatus(), ResultStatus.CANCELLED);
+        }
 		
 		// update the host status
 		HostStatus host = m_hoststatusDAO.get(result.getHostname());
@@ -463,6 +481,7 @@ public class ResultResourceImpl implements ResultResource
 		Result res = getResult(resultid);
 		if(res.getRunstatus() == RunStatus.FINISHED)
 		{
+            ResultStatus oldStatus = res.getStatus();
 			res.setRunstatus(RunStatus.TO_BE_RUN);
 			res.setLog(new ArrayList<LogEntry>());
 			res.setFiles(new ArrayList<StoredFile>());
@@ -471,6 +490,10 @@ public class ResultResourceImpl implements ResultResource
 			res.setReason(null);
 			res.setRecorded(new Date());
 			m_resultDAO.save(res);
+            if(res.getTestrun() != null)
+            {
+                m_testrunDAO.changeResultStatus(res.getTestrun().getTestrunObjectId(), oldStatus, ResultStatus.NO_RESULT);
+            }
 		}
 
 		return res;

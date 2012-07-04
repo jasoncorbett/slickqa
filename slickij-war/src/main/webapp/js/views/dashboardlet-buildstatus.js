@@ -49,24 +49,38 @@ var BuildStatusDashboardlet = SlickPage.extend({
                 }
             }, this);
 
-                this.addRequiredData("summary", "api/results/summary/bybuild/" + this.defaultBuildObj.id);
+            this.addRequiredData("testruns", "api/testruns?buildid=" + this.defaultBuildObj.id);
         }
     },
 
     onReady: function() {
         this.title = this.name;
+        var statusNames = [];
+        var statuses = {};
+        this.total = 0;
+        _.each(this.data.testruns, function(testrun) {
+            _.each(testrun.summary.statusListOrdered, function(statusName) {
+
+                if(_.contains(statusNames, statusName)) {
+                    statuses[statusName].numberoftests = statuses[statusName].numberoftests + testrun.summary.resultsByStatus[statusName];
+                } else {
+                    statusNames[statusNames.length] = statusName;
+                    statuses[statusName] = {
+                        resultstatus: statusName,
+                        resulttype: statusName.replace("_", " "),
+                        statusclass: statusName.replace("_", ""),
+                        numberoftests: testrun.summary.resultsByStatus[statusName]
+                    };
+                }
+                this.total = this.total + testrun.summary.resultsByStatus[statusName];
+            }, this);
+        }, this);
+
+        // calculate the % of total
         this.statuses = [];
-        _.each(this.data.summary.statusListOrdered, function(statusName) {
-
-            // add the line to the summary element
-            this.statuses[this.statuses.length] = {
-                resultstatus: statusName,
-                resulttype: statusName.replace("_", " "),
-                statusclass: statusName.replace("_", ""),
-                numberoftests: this.data.summary.resultsByStatus[statusName],
-                percentageoftotal: "" + (((0.0 + this.data.summary.resultsByStatus[statusName]) / (0.0 + this.data.summary.total)) * 100.0).toFixed(1) + "%"
-            };
-
+        _.each(statusNames, function(statusName) {
+            statuses[statusName].percentageoftotal = "" + ((statuses[statusName].numberoftests / this.total) * 100.0).toFixed(1) + "%";
+            this.statuses[this.statuses.length] = statuses[statusName];
         }, this);
     }
 

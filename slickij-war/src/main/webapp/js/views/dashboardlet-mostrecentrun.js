@@ -23,37 +23,26 @@ var MostRecentTestRunSummaryDashboardlet = SlickPage.extend({
 
     initialize: function() {
         this.on("ready", this.onReady, this);
-        this.on("dataRecieved", this.onDataRecieved, this);
         this.on("finish", this.onFinish, this);
     },
 
-    onDataRecieved: function(event) {
-        var key = event[0];
-        var data = event[1];
-        if (key == "testruns") {
-            this.addRequiredData("summary", SlickUrlBuilder.testrun.getSummary(data[0].id));
-        }
-    },
-
     onReady: function() {
+        this.testrun = this.data.testruns[0];
         $(this.el).addClass("box width-5");
-        this.title = "Most Recent Testrun: " + this.data.summary.name;
-        if(this.data.summary.testplanId) {
-            this.title = "Most Recent Testrun: " + safeReference(this.data.summary, "testplan.name", "?");
-        }
+        this.title = "Most Recent Testrun: " + safeReference(this.testrun, "testplan.name", this.testrun.name);
 
         this.chartdata = new google.visualization.DataTable();
         this.chartdata.addColumn('string', 'Result Type');
         this.chartdata.addColumn('number', 'Number of Results');
         var resultTypeCount = 0;
-        if(this.data.summary.statusListOrdered) {
-            resultTypeCount = this.data.summary.statusListOrdered.length;
+        if(this.testrun.summary.statusListOrdered) {
+            resultTypeCount = this.testrun.summary.statusListOrdered.length;
         }
         this.chartdata.addRows(resultTypeCount);
         this.statusColors = [];
         this.summarylines = [];
-        for(var i = 0; i < this.data.summary.statusListOrdered.length; ++i) {
-            var statusName = this.data.summary.statusListOrdered[i];
+        for(var i = 0; i < this.testrun.summary.statusListOrdered.length; ++i) {
+            var statusName = this.testrun.summary.statusListOrdered[i];
 
             // get the color from CSS
             var statusColorElement = $('<div class="result-status-' + statusName.replace("_", "") + '" style="display: none" />').appendTo("#main");
@@ -62,7 +51,7 @@ var MostRecentTestRunSummaryDashboardlet = SlickPage.extend({
 
             // add the data to the chart
             this.chartdata.setValue(i, 0, statusName.replace("_", " "));
-            this.chartdata.setValue(i, 1, this.data.summary.resultsByStatus[statusName]);
+            this.chartdata.setValue(i, 1, this.testrun.summary.resultsByStatus[statusName]);
 
             // add the line to the summary element
             this.summarylines[this.summarylines.length] = {
@@ -70,14 +59,14 @@ var MostRecentTestRunSummaryDashboardlet = SlickPage.extend({
                 resultstatus: statusName,
                 resulttype: statusName.replace("_", " "),
                 statusclass: statusName.replace("_", ""),
-                numberoftests: this.data.summary.resultsByStatus[statusName],
-                percentageoftotal: "" + (((0.0 + this.data.summary.resultsByStatus[statusName]) / (0.0 + this.data.summary.total)) * 100.0).toFixed(1) + "%"
+                numberoftests: this.testrun.summary.resultsByStatus[statusName],
+                percentageoftotal: "" + (((0.0 + this.testrun.summary.resultsByStatus[statusName]) / (0.0 + this.testrun.summary.total)) * 100.0).toFixed(1) + "%"
             };
         }
         this.summarytotal = {
             resulttype: "TOTAL",
             statusclass: "TOTAL",
-            numberoftests: this.data.summary.total,
+            numberoftests: this.testrun.summary.total,
             percentageoftotal: ""
         };
 
@@ -93,6 +82,13 @@ var MostRecentTestRunSummaryDashboardlet = SlickPage.extend({
             colors: this.statusColors
         });
 
+        var data = this.chartdata;
+        var testrun = this.testrun;
+
+        google.visualization.events.addListener(chart, "select", function() {
+            var name = (data.getValue((chart.getSelection()[0]).row, 0)).replace(" ","_");
+            $.address.value("/reports/testrundetail/" + testrun.id + "?only=" + name);
+        });
 
     }
 

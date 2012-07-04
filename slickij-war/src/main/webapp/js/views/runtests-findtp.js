@@ -45,7 +45,7 @@ var RunTestsFindTestplan = SlickPage.extend({
             bDeferRender: true,
             bPaginate: false,
             sDom: "<\"H\"lfr>tS<\"F\"ip>",
-            sScrollY: "" + $(window).height() - $("#header").height() - (3 * $("#footer").height()) + "px"
+            sScrollY: "" + $("#content").height() - (5 * $("#footer").height()) - $("#content-bottom-pad").height() + "px"
         });
 
         _.each(this.data.plans, function(plan) {

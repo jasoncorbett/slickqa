@@ -171,6 +171,7 @@ public class TestplanResourceImpl implements TestplanResource
 			result.setRelease(run.getRelease());
 			result.setBuild(run.getBuild());
 			m_resultDAO.save(result);
+            m_testrunDAO.addNewResultStatusToRun(run.getObjectId(), ResultStatus.NO_RESULT);
 		}
 		return run;
 	}
@@ -287,6 +288,7 @@ public class TestplanResourceImpl implements TestplanResource
 			result.setRelease(run.getRelease());
 			result.setBuild(run.getBuild());
 			m_resultDAO.save(result);
+            m_testrunDAO.addNewResultStatusToRun(run.getObjectId(), ResultStatus.NO_RESULT);
 		}
 		return run;
 	}

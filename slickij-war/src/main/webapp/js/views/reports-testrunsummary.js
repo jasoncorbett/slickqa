@@ -11,11 +11,8 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
     group: "reports",
 
     requiredData: {
-        "summary": function() {
-            return SlickUrlBuilder.testrun.getSummary(this.options.positional[0]);
-        },
-        rundata: function() {
-            return "api/testruns/" + this.options.positional[0];
+        "testrun": function() {
+            return SlickUrlBuilder.testrun.getTestrun(this.options.positional[0]);
         }
     },
 
@@ -27,27 +24,27 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
     onReady: function() {
 
         // this section sets up data needed by the template
-        this.subtitle1 = (new Date(this.data.rundata.dateCreated)).toLocaleDateString();
-        this.subtitle2 = safeReference(this.data.summary, "release.name", "") + " Build " + safeReference(this.data.summary, "build.name", "Unknown");
-        if (this.data.summary.config) {
-            this.subtitle3 = safeReference(this.data.summary, "config.name", "");
+        this.subtitle1 = (new Date(this.data.testrun.dateCreated)).toLocaleDateString();
+        this.subtitle2 = safeReference(this.data.testrun, "release.name", "") + " Build " + safeReference(this.data.testrun, "build.name", "Unknown");
+        if (this.data.testrun.config) {
+            this.subtitle3 = safeReference(this.data.testrun, "config.name", "");
         }
-        if (this.data.rundata.runtimeOptions) {
-            this.subtitle4 = "Runtime Options: " + safeReference(this.data.rundata, "runtimeOptions.name", "");
+        if (this.data.testrun.runtimeOptions) {
+            this.subtitle4 = "Runtime Options: " + safeReference(this.data.testrun, "runtimeOptions.name", "");
         }
-		this.timeCreated = (new Date(this.data.rundata.dateCreated)).toLocaleTimeString();
+		this.timeCreated = (new Date(this.data.testrun.dateCreated)).toLocaleTimeString();
 		this.chartdata = new google.visualization.DataTable();
         this.chartdata.addColumn('string', 'Result Type');
         this.chartdata.addColumn('number', 'Number of Results');
         var resultTypeCount = 0;
-        if(this.data.summary.statusListOrdered) {
-            resultTypeCount = this.data.summary.statusListOrdered.length;
+        if(this.data.testrun.summary.statusListOrdered) {
+            resultTypeCount = this.data.testrun.summary.statusListOrdered.length;
         }
         this.chartdata.addRows(resultTypeCount);
         this.statusColors = [];
         this.summarylines = [];
-        for(var i = 0; i < this.data.summary.statusListOrdered.length; ++i) {
-            var statusName = this.data.summary.statusListOrdered[i];
+        for(var i = 0; i < this.data.testrun.summary.statusListOrdered.length; ++i) {
+            var statusName = this.data.testrun.summary.statusListOrdered[i];
 
             // get the color from CSS
             var statusColorElement = $('<div class="result-status-' + statusName.replace("_", "") + '" style="display: none" />').appendTo("#main");
@@ -56,7 +53,7 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
 
             // add the data to the chart
             this.chartdata.setValue(i, 0, statusName.replace("_", " "));
-            this.chartdata.setValue(i, 1, this.data.summary.resultsByStatus[statusName]);
+            this.chartdata.setValue(i, 1, this.data.testrun.summary.resultsByStatus[statusName]);
 
             // add the line to the summary element
             this.summarylines[this.summarylines.length] = {
@@ -64,14 +61,14 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
                 resultstatus: statusName,
                 resulttype: statusName.replace("_", " "),
                 statusclass: statusName.replace("_", ""),
-                numberoftests: this.data.summary.resultsByStatus[statusName],
-                percentageoftotal: "" + (((0.0 + this.data.summary.resultsByStatus[statusName]) / (0.0 + this.data.summary.total)) * 100.0).toFixed(1) + "%"
+                numberoftests: this.data.testrun.summary.resultsByStatus[statusName],
+                percentageoftotal: "" + (((0.0 + this.data.testrun.summary.resultsByStatus[statusName]) / (0.0 + this.data.testrun.summary.total)) * 100.0).toFixed(1) + "%"
             };
         }
         this.summarytotal = {
             resulttype: "TOTAL",
             statusclass: "TOTAL",
-            numberoftests: this.data.summary.total,
+            numberoftests: this.data.testrun.summary.total,
             percentageoftotal: ""
         };
     },
@@ -85,6 +82,14 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
             legendTextStyle: {
                 color: $("#main").css('color')},
             colors: this.statusColors
+        });
+
+        var data = this.chartdata;
+        var testrun = this.data.testrun;
+
+        google.visualization.events.addListener(chart, "select", function() {
+            var name = (data.getValue((chart.getSelection()[0]).row, 0)).replace(" ","_");
+            $.address.value("/reports/testrundetail/" + testrun.id + "?only=" + name);
         });
 
         $(".testrun-reschedule-bulk").on("click", function(){
@@ -101,7 +106,7 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
     },
 
     getTitle: function() {
-        return safeReference(this.data.summary, "testplan.name", this.data.summary.name) + " Summary";
+        return safeReference(this.data.testrun, "testplan.name", this.data.testrun.name) + " Summary";
     }
 });
 

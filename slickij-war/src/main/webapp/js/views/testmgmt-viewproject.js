@@ -46,7 +46,7 @@ var TestManagementViewProjectPage = SlickPage.extend({
             bDeferRender: true,
             bPaginate: false,
             sDom: "<\"H\"lfr>tS<\"F\"ip>",
-            sScrollY: "" + ($(document).height() - (4 * $("#pagetitle").height()) -  (3 * $("#titlebar").height()) - (3 * ($("#project-description-box").height()))) + "px"
+            sScrollY: "" + ($("#content").height() - (2 * $("#header").height()) - (2 * ($("#project-description-box").height())) - $("#content-bottom-pad").height()) + "px"
         });
     }
 

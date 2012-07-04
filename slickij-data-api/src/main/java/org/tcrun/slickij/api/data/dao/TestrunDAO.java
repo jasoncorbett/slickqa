@@ -22,4 +22,13 @@ public interface TestrunDAO extends DAO<Testrun, ObjectId>
 	public TestRunSummary getSummary(Testrun run);
 
 	public void rescheduleByStatus(ObjectId testrunid, ResultStatus status);
+
+    public void addNewResultStatusToRun(ObjectId testrunid, ResultStatus status);
+
+    public void changeResultStatus(ObjectId testrunid, ResultStatus old, ResultStatus newStatus);
+
+    public void deleteResultStatusFromRun(ObjectId testrunid, ResultStatus status);
+
+    public Testrun updateSummary(Testrun run);
+
 }

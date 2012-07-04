@@ -23,38 +23,21 @@ var ThreeMostRecentTestrunsDashboardlet = SlickPage.extend({
 
     initialize: function() {
         this.on("ready", this.onReady, this);
-        this.on("dataRecieved", this.onDataRecieved, this);
-        this.on("finish", this.onFinish, this);
-    },
-
-    onDataRecieved: function(event) {
-        var key = event[0];
-        var data = event[1];
-        if (key == "testruns") {
-            _.each(data.slice(1), function(testrun, index) {
-                this.addRequiredData("summary" + (index + 1), SlickUrlBuilder.testrun.getSummary(testrun.id));
-            }, this);
-        }
     },
 
     onReady: function() {
         $(this.el).addClass("box width-5");
         this.theruns = [];
         for(var i = 1; i < 4; i++) {
-            var key = "summary" + i;
-            if(_.has(this.data, key)) {
-                var summary = this.data[key];
+                var summary = this.data.testruns[i];
                 summary.datestring = (new Date(summary.dateCreated)).toLocaleDateString();
                 summary.name = safeReference(summary, "testplan.name", summary.name);
                 _.each(["PASS", "FAIL", "BROKEN_TEST"], function(resulttype) {
-                    if(!_.has(summary.resultsByStatus, resulttype)) {
-                        summary.resultsByStatus[resulttype] = 0;
+                    if(!_.has(summary.summary.resultsByStatus, resulttype)) {
+                        summary.summary.resultsByStatus[resulttype] = 0;
                     }
                 });
                 this.theruns[i - 1] = summary;
-            } else {
-                break;
-            }
         }
         this.title = "Three most recent Testruns";
     }

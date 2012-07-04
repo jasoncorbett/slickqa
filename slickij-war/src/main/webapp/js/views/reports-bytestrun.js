@@ -73,7 +73,7 @@ var ReportsByTestrunPage = SlickPage.extend({
             bDeferRender: true,
             bPaginate: false,
             sDom: "<\"H\"lfr>tS<\"F\"ip>",
-            sScrollY: "" + $(window).height() - $("#header").height() - (3 * $("#footer").height()) - (2 * $("h2.center").height()) + "px"
+            sScrollY: "" + ($("#content").height() - (4 * $("#bytestrun-release-select").height()) - (5 * $("#footer").height()) - $("#content-bottom-pad").height()) + "px"
         });
         datatable.fnSort([[3, "desc"]]);
 

@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.tcrun.slickij.core.DataPluginModule;
 import org.tcrun.slickij.data.org.tcrun.slickij.data.updates.AddIndexesUpdate;
+import org.tcrun.slickij.data.org.tcrun.slickij.data.updates.AddTestrunBuildIndexUpdate;
 
 /**
  *
@@ -62,6 +63,7 @@ public class DataModule extends AbstractModule implements DataPluginModule
         // for updates
         Multibinder<SlickUpdate> slickUpdateMultibinder = Multibinder.newSetBinder(binder(), SlickUpdate.class);
         slickUpdateMultibinder.addBinding().to(AddIndexesUpdate.class);
+        slickUpdateMultibinder.addBinding().to(AddTestrunBuildIndexUpdate.class);
 	}
 
 	@Override

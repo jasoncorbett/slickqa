@@ -24,10 +24,8 @@ import org.tcrun.slickij.api.data.ResultStatus;
 import org.tcrun.slickij.api.data.RunStatus;
 import org.tcrun.slickij.api.data.Testrun;
 import org.tcrun.slickij.api.data.TestRunSummary;
-import org.tcrun.slickij.api.data.dao.ConfigurationDAO;
-import org.tcrun.slickij.api.data.dao.ProjectDAO;
-import org.tcrun.slickij.api.data.dao.ResultDAO;
-import org.tcrun.slickij.api.data.dao.TestrunDAO;
+import org.tcrun.slickij.api.data.dao.*;
+import org.tcrun.slickij.data.dao.TestplanDAOImpl;
 
 /**
  *
@@ -35,18 +33,20 @@ import org.tcrun.slickij.api.data.dao.TestrunDAO;
  */
 public class TestrunResourceImpl implements TestrunResource
 {
+    private TestplanDAO m_testplanDAO;
 	private TestrunDAO m_testrunDAO;
 	private ResultDAO m_resultDAO;
 	private ConfigurationDAO m_configDAO;
 	private ProjectDAO m_projectDAO;
 
 	@Inject
-	public TestrunResourceImpl(TestrunDAO p_testrunDAO, ResultDAO p_resultDAO, ConfigurationDAO p_configDAO, ProjectDAO p_projectDAO)
+	public TestrunResourceImpl(TestrunDAO p_testrunDAO, ResultDAO p_resultDAO, ConfigurationDAO p_configDAO, ProjectDAO p_projectDAO, TestplanDAO p_testplanDAO)
 	{
 		m_testrunDAO = p_testrunDAO;
 		m_resultDAO = p_resultDAO;
 		m_configDAO = p_configDAO;
 		m_projectDAO = p_projectDAO;
+        m_testplanDAO = p_testplanDAO;
 	}
 
 	@Override
@@ -139,7 +139,22 @@ public class TestrunResourceImpl implements TestrunResource
             query.limit(limit);
         }
 
-		return query.order("-dateCreated").asList();
+        List<Testrun> retval = query.order("-dateCreated").asList();
+        for(Testrun run : retval)
+        {
+            if(run.getSummary() == null)
+            {
+                run.setSummary(m_testrunDAO.getSummary(run));
+                m_testrunDAO.save(run);
+            }
+
+            if(run.getTestplanId() != null)
+            {
+                run.setTestplan(m_testplanDAO.get(run.getTestplanObjectId()));
+            }
+        }
+
+		return retval;
 	}
 
 	@Override
@@ -193,14 +208,22 @@ public class TestrunResourceImpl implements TestrunResource
 		}
 		if(retval == null)
 			throw new NotFoundError(Testrun.class, testrunId);
+        if(retval.getSummary() == null)
+        {
+            retval.setSummary(m_testrunDAO.getSummary(retval));
+            m_testrunDAO.save(retval);
+        }
+        if(retval.getTestplanId() != null)
+        {
+            retval.setTestplan(m_testplanDAO.get(retval.getTestplanObjectId()));
+        }
 		return retval;
 	}
 
 	@Override
-	public TestRunSummary getTestrunSummary(String testrunId)
+	public Testrun getTestrunSummary(String testrunId)
 	{
-		Testrun run = getTestrun(testrunId); // handle the testrun not existing
-		return m_testrunDAO.getSummary(run);
+		return getTestrun(testrunId);
 	}
 
 
@@ -342,10 +365,10 @@ public class TestrunResourceImpl implements TestrunResource
 	}
 
 	@Override
-	public TestRunSummary rescheduleResults(String testrunId, ResultStatus status)
+	public Testrun rescheduleResults(String testrunId, ResultStatus status)
 	{
 		Testrun run = getTestrun(testrunId);
 		m_testrunDAO.rescheduleByStatus(run.getObjectId(), status);
-		return getTestrunSummary(testrunId);
+		return getTestrun(testrunId);
 	}
 }

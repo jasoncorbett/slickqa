@@ -3,9 +3,9 @@
 {{#each theruns}}
     <a href="#/reports/testrunsummary/{{id}}">{{name}} -- {{datestring}}</a>
     <br />
-    <a href="#/reports/testrundetail/{{id}}?only=PASS" class="result-status-PASS">Pass: {{resultsByStatus.PASS}}</a>
-    <a href="#/reports/testrundetail/{{id}}?only=FAIL" class="result-status-FAIL">Fail: {{resultsByStatus.FAIL}}</a>
-    <a href="#/reports/testrundetail/{{id}}?only=BROKEN_TEST" class="result-status-BROKENTEST">Broken: {{resultsByStatus.BROKEN_TEST}}</a>
+    <a href="#/reports/testrundetail/{{id}}?only=PASS" class="result-status-PASS">Pass: {{summary.resultsByStatus.PASS}}</a>
+    <a href="#/reports/testrundetail/{{id}}?only=FAIL" class="result-status-FAIL">Fail: {{summary.resultsByStatus.FAIL}}</a>
+    <a href="#/reports/testrundetail/{{id}}?only=BROKEN_TEST" class="result-status-BROKENTEST">Broken: {{summary.resultsByStatus.BROKEN_TEST}}</a>
     <br />
     <br />
 {{/each}}

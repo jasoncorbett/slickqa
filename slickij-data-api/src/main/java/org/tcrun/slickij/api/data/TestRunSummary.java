@@ -1,5 +1,7 @@
 package org.tcrun.slickij.api.data;
 
+import com.google.code.morphia.annotations.Property;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +14,7 @@ import java.util.Map;
  *
  * @author jcorbett
  */
-public class TestRunSummary extends Testrun implements Serializable
+public class TestRunSummary implements Serializable
 {
 	private static final Map<String, Integer> statusOrderValues;
 	static {
@@ -25,25 +27,18 @@ public class TestRunSummary extends Testrun implements Serializable
 		statusOrderValues.put(ResultStatus.NO_RESULT.toString(), new Integer(6));
 	}
 
+    @Property
 	private Map<String, Long> resultsByStatus;
-	private List<String> statusListOrdered;
-    private int totalTime;
-	private TestplanReference testplan;
 
-	public TestRunSummary(Testrun run, TestplanReference ref)
+    private int totalTime;
+
+	public TestRunSummary()
 	{
 		resultsByStatus = new HashMap<String, Long>();
-		statusListOrdered = new ArrayList<String>();
-		this.setId(run.getObjectId());
-		this.setTestplanId(run.getTestplanObjectId());
-		this.setBuild(run.getBuild());
-		this.setConfig(run.getConfig());
-		this.setDateCreated(run.getDateCreated());
-		this.setExtensions(run.getExtensions());
-		this.setName(run.getName());
-		this.setProject(run.getProject());
-		this.setRelease(run.getRelease());
-		this.testplan = ref;
+        for(ResultStatus status : ResultStatus.values())
+        {
+            resultsByStatus.put(status.toString(), 0L);
+        }
 	}
 
 	public Map<String, Long> getResultsByStatus()
@@ -58,40 +53,38 @@ public class TestRunSummary extends Testrun implements Serializable
 
 	public List<String> getStatusListOrdered()
 	{
-		if(statusListOrdered == null || statusListOrdered.isEmpty())
-		{
-			this.statusListOrdered = new ArrayList<String>(getResultsByStatus().keySet());
-			Collections.sort(statusListOrdered, new Comparator<String>() {
+        List<String> statusListOrdered = new ArrayList<String>();
+        for(String key : resultsByStatus.keySet())
+        {
+            if(resultsByStatus.get(key) > 0)
+                statusListOrdered.add(key);
+        }
 
-				@Override
-				public int compare(String o1, String o2)
-				{
-					Integer o1SortOrder = statusOrderValues.get(o1);
-					if(o1SortOrder == null)
-						o1SortOrder = new Integer(50);
-					Integer o2SortOrder = statusOrderValues.get(o2);
-					if(o2SortOrder == null)
-						o2SortOrder = new Integer(50);
-					return o1SortOrder.compareTo(o2SortOrder);
-				}
+        Collections.sort(statusListOrdered, new Comparator<String>() {
 
-			});
+            @Override
+            public int compare(String o1, String o2)
+            {
+            Integer o1SortOrder = statusOrderValues.get(o1);
+            if(o1SortOrder == null)
+                o1SortOrder = 50;
+            Integer o2SortOrder = statusOrderValues.get(o2);
+            if(o2SortOrder == null)
+                o2SortOrder = 50;
+            return o1SortOrder.compareTo(o2SortOrder);
+            }
 
-		}
+        });
+
 		return statusListOrdered;
 	}
 
 	public Long getTotal()
 	{
-		Long retval = new Long(0);
+		Long retval = 0L;
 		for(Long bystatus : getResultsByStatus().values())
 			retval += bystatus;
 		return retval;
-	}
-
-	public TestplanReference getTestplan()
-	{
-		return testplan;
 	}
 
     public int getTotalTime() {

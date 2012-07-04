@@ -1,12 +1,7 @@
 package org.tcrun.slickij.api.data;
 
-import com.google.code.morphia.annotations.Embedded;
-import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.annotations.Id;
-import com.google.code.morphia.annotations.Indexed;
-import com.google.code.morphia.annotations.PostLoad;
-import com.google.code.morphia.annotations.PrePersist;
-import com.google.code.morphia.annotations.Property;
+import com.google.code.morphia.annotations.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +23,9 @@ public class Testrun implements Serializable
 
 	@Property
 	private ObjectId testplanId;
+
+    @NotSaved
+    private Testplan testplan;
 
 	@Property
 	private String name;
@@ -54,6 +52,9 @@ public class Testrun implements Serializable
 
 	@Embedded
 	private List<DataExtension<Testrun>> extensions;
+
+    @Embedded
+    private TestRunSummary summary;
 
 	public ConfigurationReference getConfig()
 	{
@@ -200,4 +201,23 @@ public class Testrun implements Serializable
 		return ref;
 	}
 
+    public TestRunSummary getSummary()
+    {
+        return summary;
+    }
+
+    public void setSummary(TestRunSummary summary)
+    {
+        this.summary = summary;
+    }
+
+    public Testplan getTestplan()
+    {
+        return testplan;
+    }
+
+    public void setTestplan(Testplan testplan)
+    {
+        this.testplan = testplan;
+    }
 }

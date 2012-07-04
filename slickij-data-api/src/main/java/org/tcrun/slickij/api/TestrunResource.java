@@ -17,7 +17,6 @@ import org.tcrun.slickij.api.data.DataExtension;
 import org.tcrun.slickij.api.data.Result;
 import org.tcrun.slickij.api.data.ResultStatus;
 import org.tcrun.slickij.api.data.Testrun;
-import org.tcrun.slickij.api.data.TestRunSummary;
 
 /**
  *
@@ -46,7 +45,7 @@ public interface TestrunResource
 	@Path("/{testrunid}/summary")
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
-	public TestRunSummary getTestrunSummary(@PathParam("testrunid") String testrunId);
+	public Testrun getTestrunSummary(@PathParam("testrunid") String testrunId);
 
 	@Path("/{testrunid}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -57,7 +56,7 @@ public interface TestrunResource
 	@Path("/{testrunid}/reschedule-{status}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@POST
-	public TestRunSummary rescheduleResults(@PathParam("testrunid") String testrunId, @PathParam("status") ResultStatus status);
+	public Testrun rescheduleResults(@PathParam("testrunid") String testrunId, @PathParam("status") ResultStatus status);
 
 	@Path("/{testrunid}")
 	@Produces(MediaType.APPLICATION_JSON)
