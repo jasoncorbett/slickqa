@@ -57,7 +57,6 @@ var ReportsByTestrunPage = SlickPage.extend({
                 resultBar = resultBar + "<div class=\"result-bar-inner status-background-" + statusName.replace("_", "") + "\" style=\"width: " + (testrun.summary.resultsByStatus[statusName] / testrun.summary.total).toFixed(2) + "in;\"></div>";
             });
 
-            // resultBar = resultBar + "<div class=\"clear\"></div>";
 
             tbldata[tbldata.length] = [
                 "<a href=\"#/reports/testrunsummary/" + testrun.id + "\">" + testrun.name + "</a>",
@@ -87,7 +86,7 @@ var ReportsByTestrunPage = SlickPage.extend({
             sDom: "<\"H\"lfr>tS<\"F\"ip>",
             sScrollY: "" + ($("#content").height() - (4 * $("#bytestrun-release-select").height()) - (5 * $("#footer").height()) - $("#content-bottom-pad").height()) + "px"
         });
-        datatable.fnSort([[3, "desc"]]);
+        datatable.fnSort([[5, "desc"]]);
 
         // trigger onReleaseChange whenever the release dropdown changes
         $("#bytestrun-release-select").on("change", { page: this }, this.onReleaseChange);
