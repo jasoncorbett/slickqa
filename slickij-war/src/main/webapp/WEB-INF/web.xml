@@ -80,7 +80,7 @@
 		</init-param>
 		<init-param>
 			<param-name>uriLocators</param-name>
-			<param-value>servletContext,classpath,url</param-value>
+			<param-value>servletContext,classpath,uri</param-value>
 		</init-param>
 		<init-param>
 			<param-name>preProcessors</param-name>

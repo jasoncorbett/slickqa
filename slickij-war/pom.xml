@@ -118,12 +118,12 @@
         <dependency>
             <groupId>ro.isdc.wro4j</groupId>
             <artifactId>wro4j-core</artifactId>
-            <version>1.4.3</version>
+            <version>1.4.7</version>
         </dependency>
 		<dependency>
             <groupId>ro.isdc.wro4j</groupId>
             <artifactId>wro4j-extensions</artifactId>
-            <version>1.4.3</version>
+            <version>1.4.7</version>
         </dependency>
     </dependencies>
 </project>
