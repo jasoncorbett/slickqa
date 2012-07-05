@@ -52,7 +52,17 @@ var ReportsByTestrunPage = SlickPage.extend({
         setSlickTitle("Report - Testrun Results");
         var tbldata = [];
         _.each(this.data.testruns, function(testrun) {
-            tbldata[tbldata.length] = ["<a href=\"#/reports/testrunsummary/" + testrun.id + "\">" + testrun.name + "</a>",
+            var resultBar = "";
+            _.each(testrun.summary.statusListOrdered, function(statusName) {
+                resultBar = resultBar + "<div class=\"result-bar-inner status-background-" + statusName.replace("_", "") + "\" style=\"width: " + (testrun.summary.resultsByStatus[statusName] / testrun.summary.total).toFixed(2) + "in;\"></div>";
+            });
+
+            // resultBar = resultBar + "<div class=\"clear\"></div>";
+
+            tbldata[tbldata.length] = [
+                "<a href=\"#/reports/testrunsummary/" + testrun.id + "\">" + testrun.name + "</a>",
+                "<div class=\"result-bar center-block\">" + resultBar + "</div>",
+                safeReference(testrun, "summary.total", "?"),
                 safeReference(testrun, "config.name", "Unknown Environment"),
                 safeReference(testrun, "release.name", "Unknown Release") + " Build " + safeReference(testrun, "build.name", "Unknown"),
                 new Date(testrun.dateCreated)];
@@ -65,9 +75,11 @@ var ReportsByTestrunPage = SlickPage.extend({
             aaData: this.testrunData,
             aoColumns: [
                 {"sTitle": "Name", "sWidth": "40%", "sType": "html"},
-                {"sTitle": "Environment", "sWidth": "20%"},
-                {"sTitle": "Build", "sWidth": "20%"},
-                {"sTitle": "Date Created", "sWidth": "20%"}],
+                {"sTitle": "Results", "sWidth": "10%", "sType": "html", "sClass": "center"},
+                {"sTitle": "Total", "sWidth": "5%", "sClass": "center"},
+                {"sTitle": "Environment", "sWidth": "12%", "sClass": "center"},
+                {"sTitle": "Build", "sWidth": "15%", "sClass": "center"},
+                {"sTitle": "Date Created", "sWidth": "18%", "sClass": "center"}],
             bJQueryUI: true,
             bAutoWidth: false,
             bDeferRender: true,

@@ -1393,3 +1393,57 @@ span.log-level-TRACE {
 .slick-logo {
     width: 5.5in;
 }
+
+.result-bar {
+    width: 1in;
+    height: .25in;
+    padding: 0;
+    clear: both;
+}
+
+.result-bar-inner {
+    height: .25in;
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+
+.result-bar :first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.result-bar :last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.status-background-PASS {
+    background-color: #008000;
+}
+
+.status-background-BROKENTEST {
+    background-color: #ffac00;
+}
+
+.status-background-NORESULT {
+    background-color: #c0c0c0;
+}
+
+.status-background-FAIL {
+    background-color: #ff0000;
+}
+
+.status-background-NOTTESTED {
+    background-color: #1e90ff;
+}
+
+.status-background-SKIPPED {
+    background-color: #bdb76b;
+}
+
+.status-background-CANCELLED {
+    background-color: #a0522d;
+}
+
+
