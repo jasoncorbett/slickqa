@@ -18,7 +18,7 @@ class SlickTest(SlickTestCase):
         #cls.mac.install()
     
     def test_01(self):
-        """Test Name One
+        """Test Jared
         Purpose: Test the api of slick
         Attributes: Test Attributes 
         Tags: api test, test api, slick
