@@ -58,24 +58,23 @@ class SlickTestRunner(TextTestRunner):
         #for testsuite in all_tests:
         if hasattr(tests, "_tests"):
             for test in tests._tests:
-                slicktest = None
                 # Get all tests with this name and then delete them first 
                 try:
-                    allTestsWithName = self.slickCon.get_testcases_with_name(test.shortDescription())
+                    slicktest = self.slickCon.get_testcases_with_name(test.shortDescription())
                 except SlickError:
-                    allTestsWithName = []
+                    slicktest = []
             
                 values = self._parseTestCaseInfo(test)
                 
-                if allTestsWithName == []:
+                if not slicktest:
                     slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["Author"], purpose=values["Purpose"],
                                                            tags=values["Tags"], requirements=values["Requirements"], 
-                                                           steps=values["Steps"], automated=True, 
-                                                           component=values["Component"], automationTool=values["Automation Tool"])
+                                                           steps=values["Steps"], automated=True, component=values["Component"],
+                                                           automationTool=values["Automation Tool"])
                 else:
                     updatedTest = {}
-                    if isinstance(allTestsWithName, list):
-                        slicktest = allTestsWithName.pop()
+                    if isinstance(slicktest, list):
+                        slicktest = slicktest.pop()
                         
                         # I need to compare values now 
                         if slicktest["author"] != values["Author"]:
@@ -103,6 +102,8 @@ class SlickTestRunner(TextTestRunner):
                     if updatedTest != {}:
                         slicktest = self.slickCon.update_testcase(slicktest["id"], updatedTest)
                     
+                if slicktest == None:
+                    print "SLick test is none"
                 self.testsFromSlick.append(slicktest)
 
     def _checkTestsOrg(self, tests):
@@ -226,7 +227,10 @@ class SlickTestRunner(TextTestRunner):
                 for component in components:                    
                     componentNames.append(component["name"])
                 if foundValues["Component"] not in componentNames:
-                    self.slickCon.add_component(foundValues["Component"])
+                    try:
+                        self.slickCon.add_component(foundValues["Component"])
+                    except SlickError:
+                        print "Component already exists"
                 
                 foundValues["Component"] = {"name": foundValues["Component"]}
                 
@@ -281,7 +285,10 @@ class SlickTestRunner(TextTestRunner):
                 
             self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), 
                                                                         "NOT_TESTED", "TO_BE_RUN", componentRef=component, hostname=loggername))
-        
+
+            #self.not_tested_result_list.append(self.slickCon.add_result(self.testRunRef, test, get_date(), 
+                                                                        #"NOT_TESTED", "TO_BE_RUN", hostname=loggername))
+                
         # 2. Pass the result to the corrisponding test case 
         # 3. Change result to update instead of add (This will be done in the result class)
         

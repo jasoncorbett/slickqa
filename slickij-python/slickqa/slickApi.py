@@ -87,7 +87,8 @@ class SlickAsPy(object):
             except SlickError as se:
                 raise
             except:
-                print 'Here is the content recieved from the server: {}'.format(content)
+                pass
+                #print 'Here is the content recieved from the server: {}'.format(content)
             if good_content:
                 return good_content
         raise SlickError("Tried connecting 5 times to {} {} \nData: {}\nResponse: {}\nContent: {}".format(url, method, data, response, content))
