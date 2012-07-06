@@ -369,6 +369,8 @@ public class TestrunResourceImpl implements TestrunResource
 	{
 		Testrun run = getTestrun(testrunId);
 		m_testrunDAO.rescheduleByStatus(run.getObjectId(), status);
+        run.setSummary(m_testrunDAO.getSummary(run));
+        m_testrunDAO.save(run);
 		return getTestrun(testrunId);
 	}
 }
