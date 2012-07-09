@@ -1,1 +1,0 @@
-(function(){var a=Handlebars.template,b=Handlebars.templates=Handlebars.templates||{};b["reports-viewlogs.html"]=a(function(a,b,c,d,e){c=c||a.helpers;var f,g=this;return'<div id="subtitle"></div>\r\n<table id="viewlogtable" class="table-full-width"></table>\r\n'})})()

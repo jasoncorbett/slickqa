@@ -10,6 +10,7 @@
 	<modules>
 		<module>slickij-data-api</module>
 		<module>slickij-data</module>
+		<module>slickij-wro4j-extensions</module>
 		<module>slickij-war</module>
 	</modules>
 

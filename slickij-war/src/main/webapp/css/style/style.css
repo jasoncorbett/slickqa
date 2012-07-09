@@ -861,6 +861,10 @@ a.notDefaultRelease:visited {
     text-align: center;
 }
 
+.text-left {
+    text-align: left;
+}
+
 .fieldName {
     display: inline-block;
     font-size: 1.2em;
@@ -1446,4 +1450,40 @@ span.log-level-TRACE {
     background-color: #a0522d;
 }
 
+.max-width-3 {
+    max-width: 3in;
+    padding: .1in;
+}
 
+.max-width-4 {
+    max-width: 4in;
+    padding: .1in;
+}
+
+.max-width-5 {
+    max-width: 5in;
+    padding: .1in;
+}
+
+.max-width-6 {
+    max-width: 6in;
+    padding: .1in;
+}
+
+.max-width-7 {
+    max-width: 7in;
+    padding: .1in;
+}
+
+.max-width-8 {
+    max-width: 8in;
+    padding: .1in;
+}
+
+.bigchart {
+    width: 8in;
+    height: 4.5in;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: .2in;
+}

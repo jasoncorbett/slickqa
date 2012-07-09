@@ -1,1 +1,0 @@
-(function(){var a=Handlebars.template,b=Handlebars.templates=Handlebars.templates||{};b["runtests-findtp.html"]=a(function(a,b,c,d,e){c=c||a.helpers;var f=this;return'<table id="runtests-findtp-table" class="table-full-width">\n</table>'})})()

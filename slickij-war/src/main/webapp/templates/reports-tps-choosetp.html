@@ -1,0 +1,25 @@
+<div class="center-block box max-width-8">
+    <div id="tps-report-box-name" class="boxname">Choose Testplan</div>
+    <span id="tps-report-box-explanation" class="explanation">Here you can choose the test plan and optionally the environment you want a historical report of.</span>
+    <hr class="glowing" />
+    <label id="tps-report-testplan-label" for="tps-report-testplan-select">Testplan: </label>
+    <select id="tps-report-testplan-select" name="tps-report-testplan-select">
+        {{#each data.testplans}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select>
+    <label id="tps-report-environment-label" for="tps-report-testplan-select">Environment: </label>
+    <select id="tps-report-environment-select" name="tps-report-environment-select">
+        <option value="none">Any Environment</option>
+        {{#each data.environments}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select>
+    <a id="tps-report-generate-button" href="javascript:;" class="button">Generate Report</a>
+</div>
+
+{{#if options.query.coversheet}}
+<br />
+<br />
+<iframe class="center-block" width="420" height="315" src="http://www.youtube.com/embed/Fy3rjQGc6lA" frameborder="0" allowfullscreen></iframe>
+{{/if}}
