@@ -26,7 +26,13 @@ var ProjectFourTestRuns = SlickPage.extend({
         this.nodata = true;
         this.title = this.projectname;
         this.extralinks = false;
-        if (this.project.attributes) {}
+        this.linkslist = [];
+        for (var attr in this.project.attributes) {
+            if (this.project.attributes[attr].indexOf("http") > -1) {
+                this.linkslist.push({name:attr,value:this.project.attributes[attr]})
+                this.extralinks = true;
+            }
+        }
         if (this.data.testruns.length > 0) {
             this.nodata = false
             var summary = this.data.testruns[0].summary
@@ -74,14 +80,15 @@ var ProjectFourTestRuns = SlickPage.extend({
             for(var i = 0; i < 4; i++) {
                 if (this.data.testruns[i]) {
                     var summary = this.data.testruns[i];
-                    summary.datestring = (new Date(summary.dateCreated)).toLocaleDateString();
+                    var date = new Date(summary.dateCreated)
+                    summary.datestring = date.toLocaleDateString() + " " + date.toLocaleTimeString();
                     summary.name = safeReference(summary, "testplan.name", summary.name);
                     _.each(["PASS", "FAIL", "BROKEN_TEST"], function(resulttype) {
                         if(!_.has(summary.summary.resultsByStatus, resulttype)) {
                             summary.summary.resultsByStatus[resulttype] = 0;
                         }
                     });
-                    this.theruns[i - 1] = summary;
+                    this.theruns[i] = summary;
                 }
             }
         }
