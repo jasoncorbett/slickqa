@@ -1,4 +1,14 @@
 <h3 class="center">{{projectname}} Most Recent Test Runs</h3>
+{{#if extralinks}}
+<hr class="glowing" />
+        <div class="center">
+-
+{{#each linkslist}}
+<a href="{{value}}">{{name}}</a>
+ -
+{{/each}}
+        </div>
+{{/if}}
 <hr class="glowing" />
 {{#unless nodata}}
 <div id="dashboardlet-{{projectname}}-chart" class="dashboardlet-chart">
