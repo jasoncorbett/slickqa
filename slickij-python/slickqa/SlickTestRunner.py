@@ -76,34 +76,58 @@ class SlickTestRunner(TextTestRunner):
                     if isinstance(slicktest, list):
                         slicktest = slicktest.pop()
                         
-                        # I need to compare values now 
-                        if slicktest["author"] != values["Author"]:
-                            updatedTest["author"] = values["Author"]
+                        currentValues = {}
+                        currentValues["author"] = slicktest["author"]
+                        currentValues["automationTool"] = slicktest["automationTool"]
+                        currentValues["component"] = slicktest["component"]
+                        currentValues["purpose"] = slicktest["purpose"]
+                        currentValues["requirements"] = slicktest["requirements"]
+                        currentValues["steps"] = slicktest["steps"]
+                        currentValues["tags"] = slicktest["tags"]
+                        currentValues["attributes"] = slicktest["attributes"]
+                        
+                        if currentValues != values:
+                            updatedTest["author"] = values["author"]
+                            updatedTest["automationTool"] = values["automationTool"]
+                            updatedTest["component"] = values["component"]
+                            updatedTest["purpose"] = values["purpose"]
+                            updatedTest["requirements"] = values["requirements"]
+                            updatedTest["steps"] = values["steps"]
+                            updatedTest["tags"] = values["tags"]
+                            updatedTest["attributes"] = values["attributes"]
                             
-                        if slicktest["automationTool"] != values["Automation Tool"]:
-                            updatedTest["automationTool"] = values["Automation Tool"]
+                        ## I need to compare values now 
+                        #if slicktest["author"] != values["Author"]:
+                            #updatedTest["author"] = values["Author"]
                             
-                        if slicktest["component"] != values["Component"]:
-                            updatedTest["component"] = values["Component"]
+                        #if slicktest["automationTool"] != values["Automation Tool"]:
+                            #updatedTest["automationTool"] = values["Automation Tool"]
                             
-                        if slicktest["purpose"] != values["Purpose"]:
-                            updatedTest["purpose"] = values["Purpose"]
+                        #if slicktest["component"] != values["Component"]:
+                            #updatedTest["component"] = values["Component"]
                             
-                        if slicktest["requirements"] != values["Requirements"]:
-                            updatedTest["requirements"] = values["Requirements"]
+                        #if slicktest["purpose"] != values["Purpose"]:
+                            #updatedTest["purpose"] = values["Purpose"]
                             
-                        if slicktest["steps"] != values["Steps"]:
-                            updatedTest["steps"] = values["Steps"]
+                        #if slicktest["requirements"] != values["Requirements"]:
+                            #updatedTest["requirements"] = values["Requirements"]
                             
-                        if slicktest["tags"] != values["Tags"]:
-                            updatedTest["tags"] = values["Tags"]
+                        #if slicktest["steps"] != values["Steps"]:
+                            #updatedTest["steps"] = values["Steps"]
+                            
+                        #if slicktest["tags"] != values["Tags"]:
+                            #updatedTest["tags"] = values["Tags"]
                             
                     # if there is update info then we will update the test
                     if updatedTest != {}:
+                        print "Updating test..."
                         slicktest = self.slickCon.update_testcase(slicktest["id"], updatedTest)
+
+                # Once I update I am going to get the test again. This might work
+                slicktest = self.slickCon.get_testcases_with_name(test.shortDescription())
+                if isinstance(slicktest, list):
+                    slicktest = slicktest.pop()
                     
-                if slicktest == None:
-                    print "SLick test is none"
                 self.testsFromSlick.append(slicktest)
 
     def _checkTestsOrg(self, tests):
@@ -177,10 +201,10 @@ class SlickTestRunner(TextTestRunner):
                 self.testsFromSlick.append(slicktest)
                     
     def _parseTestCaseInfo(self, test):
-        foundValues = {"Author":"API", "Purpose":None, "Attributes":None, 
-                       "Tags":[], "Requirements":None, "Component":None,
-                       "Automation Tool": None,
-                       "Steps": [{'name': "Testcase", 'expectedResult': "Coming Soon"}]}
+        foundValues = {"author":"API", "purpose":None, "attributes":None, 
+                       "tags":[], "requirements":None, "component":None,
+                       "automationTool": None,
+                       "steps": [{'name': "testcase", 'expectedResult': "Coming Soon"}]}
 
         # Set Author if it is found in the main doc string
         testInfo = test.__doc__
@@ -188,9 +212,9 @@ class SlickTestRunner(TextTestRunner):
             testInfoLines = testInfo.splitlines()
             for line in testInfoLines:
                 if "Author:" in line:
-                    foundValues["Author"] = line.replace("Author:", "").strip()
+                    foundValues["author"] = line.replace("Author:", "").strip()
                 elif "Automation Tool" in line:
-                    foundValues["Automation Tool"] = line.replace("Automation Tool:", "").strip()
+                    foundValues["automationTool"] = line.replace("Automation Tool:", "").strip()
                     
             
         # Now look at individual test cases for other info
@@ -199,25 +223,25 @@ class SlickTestRunner(TextTestRunner):
         for line in testInfoLines:
             # Expecting the values to be formatted like 'Author: Jared' Each value on its own line except for test steps
             if "Author:" in line:
-                foundValues["Author"] = line.replace("Author:", "").strip()
+                foundValues["author"] = line.replace("Author:", "").strip()
             
             elif "Purpose:" in line:
-                foundValues["Purpose"] = line.replace("Purpose:", "").strip()
+                foundValues["purpose"] = line.replace("Purpose:", "").strip()
             
             elif "Attributes" in line:
-                foundValues["Attributes"] = line.replace("Attributes:", "").strip()
+                foundValues["attributes"] = line.replace("Attributes:", "").strip()
             
             # Tags need to be a list of strings. Value needs to be separated with a ","
             elif "Tags" in line:
-                foundValues["Tags"] = line.replace("Tags:", "").strip()
-                foundValues["Tags"] = foundValues["Tags"].split(",")
+                foundValues["tags"] = line.replace("Tags:", "").strip()
+                foundValues["tags"] = foundValues["tags"].split(",")
             
             elif "Requirements" in line:
-                foundValues["Requirements"] = line.replace("Requirements:", "").strip()
+                foundValues["requirements"] = line.replace("Requirements:", "").strip()
             
             elif "Component" in line:
                 # We need to see if component exists. If not add it? Yeah sure I will add it 
-                foundValues["Component"] = line.replace("Component:", "").strip()
+                foundValues["component"] = line.replace("Component:", "").strip()
                 try:
                     components = self.slickCon.get_components()
                 except SlickError:
@@ -226,24 +250,24 @@ class SlickTestRunner(TextTestRunner):
                 componentNames = []
                 for component in components:                    
                     componentNames.append(component["name"])
-                if foundValues["Component"] not in componentNames:
+                if foundValues["component"] not in componentNames:
                     try:
-                        self.slickCon.add_component(foundValues["Component"])
+                        self.slickCon.add_component(foundValues["component"])
                     except SlickError:
                         print "Component already exists"
                 
-                foundValues["Component"] = {"name": foundValues["Component"]}
+                foundValues["component"] = {"name": foundValues["component"]}
                 
             elif "Automation Tool" in line:
-                foundValues["Automation Tool"] = line.replace("Automation Tool:", "").strip()
+                foundValues["automationTool"] = line.replace("Automation Tool:", "").strip()
             
             # Steps needs to be a list of step object. [{'name': 'testName', 'expectedResult': 'outcome'}]
             elif "Steps" in line:
-                foundValues["Steps"] = []
+                foundValues["steps"] = []
                 for step in testInfoLines:
                     testStep = re.search('([^\r\n]+\s+[^\r\n]+);\s+([^\r\n]+)', step)
                     if testStep:
-                        foundValues["Steps"].append({"name": testStep.group(1), "expectedResult": testStep.group(2)})
+                        foundValues["steps"].append({"name": testStep.group(1), "expectedResult": testStep.group(2)})
                         
         return foundValues
                 
