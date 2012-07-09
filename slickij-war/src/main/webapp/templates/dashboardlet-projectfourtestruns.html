@@ -5,9 +5,9 @@
 </div>
 <div >
     {{#each theruns}}
-    <a href="#/reports/testrunsummary/{{id}}">{{name}} - {{datestring}}</a>
+    <a href="#/reports/testrunsummary/{{id}}">{{name}} - {{datestring}}
     <br />
-    Release: {{release.name}} Build: {{build.name}}
+    Release: {{release.name}} Build: {{build.name}}</a>
     <br />
     <a href="#/reports/testrundetail/{{id}}?only=PASS" class="result-status-PASS">Pass: {{summary.resultsByStatus.PASS}}</a>
     <a href="#/reports/testrundetail/{{id}}?only=FAIL" class="result-status-FAIL">Fail: {{summary.resultsByStatus.FAIL}}</a>

@@ -25,6 +25,8 @@ var ProjectFourTestRuns = SlickPage.extend({
         $(this.el).addClass("box width-5");
         this.nodata = true;
         this.title = this.projectname;
+        this.extralinks = false;
+        if (this.project.attributes) {}
         if (this.data.testruns.length > 0) {
             this.nodata = false
             var summary = this.data.testruns[0].summary
