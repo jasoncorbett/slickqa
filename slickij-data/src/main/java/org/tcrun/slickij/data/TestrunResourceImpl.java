@@ -116,6 +116,16 @@ public class TestrunResourceImpl implements TestrunResource
 				throw new WebApplicationException(ex, Status.BAD_REQUEST);
 			}
 		}
+        if(queryParams.containsKey("testplanid"))
+        {
+            try
+            {
+                query.criteria("testplanId").equal(new ObjectId(queryParams.getFirst("testplanid")));
+            } catch(RuntimeException ex)
+            {
+                throw new WebApplicationException(ex, Status.BAD_REQUEST);
+            }
+        }
 		if(queryParams.containsKey("configName"))
 			query.criteria("config.name").equal(queryParams.getFirst("configName"));
 		if(queryParams.containsKey("projectName"))

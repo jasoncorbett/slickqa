@@ -7,7 +7,7 @@
 		<js>/js/libraries/**.js</js>
 	</group>
     <group name="templates">
-        <js>/js/templates/**.js</js>
+        <js>/templates/**.html</js>
     </group>
 	<group name="views">
 		<js>/js/views/**.js</js>

@@ -84,7 +84,7 @@
 		</init-param>
 		<init-param>
 			<param-name>preProcessors</param-name>
-			<param-value>cssUrlRewriting,semicolonAppender</param-value>
+			<param-value>namedHandlebarsJs.html,cssUrlRewriting,semicolonAppender</param-value>
 		</init-param>
 		<init-param>
 			<param-name>postProcessors</param-name>
