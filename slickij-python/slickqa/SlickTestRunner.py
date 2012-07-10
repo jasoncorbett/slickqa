@@ -67,60 +67,40 @@ class SlickTestRunner(TextTestRunner):
                 values = self._parseTestCaseInfo(test)
                 
                 if not slicktest:
-                    slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["Author"], purpose=values["Purpose"],
-                                                           tags=values["Tags"], requirements=values["Requirements"], 
-                                                           steps=values["Steps"], automated=True, component=values["Component"],
-                                                           automationTool=values["Automation Tool"])
+                    slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["author"], purpose=values["purpose"],
+                                                           tags=values["tags"], requirements=values["requirements"], 
+                                                           steps=values["steps"], automated=True, component=values["component"],
+                                                           automationTool=values["automationTool"])
                 else:
                     updatedTest = {}
                     if isinstance(slicktest, list):
                         slicktest = slicktest.pop()
                         
-                        currentValues = {}
-                        currentValues["author"] = slicktest["author"]
-                        currentValues["automationTool"] = slicktest["automationTool"]
-                        currentValues["component"] = slicktest["component"]
-                        currentValues["purpose"] = slicktest["purpose"]
-                        currentValues["requirements"] = slicktest["requirements"]
-                        currentValues["steps"] = slicktest["steps"]
-                        currentValues["tags"] = slicktest["tags"]
-                        currentValues["attributes"] = slicktest["attributes"]
-                        
-                        if currentValues != values:
+                        # I need to compare values now 
+                        if slicktest["author"] != values["author"]:
                             updatedTest["author"] = values["author"]
+                            
+                        if slicktest["automationTool"] != values["automationTool"]:
                             updatedTest["automationTool"] = values["automationTool"]
-                            updatedTest["component"] = values["component"]
+                            
+                        # Componet is currently broken so taking it out for now.
+                        #if slicktest["component"]["name"] != values["component"]["name"]:
+                            #updatedTest["component"] = values["component"]
+                            
+                        if slicktest["purpose"] != values["purpose"]:
                             updatedTest["purpose"] = values["purpose"]
+                            
+                        if slicktest["requirements"] != values["requirements"]:
                             updatedTest["requirements"] = values["requirements"]
+                            
+                        if slicktest["steps"] != values["steps"]:
                             updatedTest["steps"] = values["steps"]
+                            
+                        if slicktest["tags"] != values["tags"]:
                             updatedTest["tags"] = values["tags"]
-                            updatedTest["attributes"] = values["attributes"]
-                            
-                        ## I need to compare values now 
-                        #if slicktest["author"] != values["Author"]:
-                            #updatedTest["author"] = values["Author"]
-                            
-                        #if slicktest["automationTool"] != values["Automation Tool"]:
-                            #updatedTest["automationTool"] = values["Automation Tool"]
-                            
-                        #if slicktest["component"] != values["Component"]:
-                            #updatedTest["component"] = values["Component"]
-                            
-                        #if slicktest["purpose"] != values["Purpose"]:
-                            #updatedTest["purpose"] = values["Purpose"]
-                            
-                        #if slicktest["requirements"] != values["Requirements"]:
-                            #updatedTest["requirements"] = values["Requirements"]
-                            
-                        #if slicktest["steps"] != values["Steps"]:
-                            #updatedTest["steps"] = values["Steps"]
-                            
-                        #if slicktest["tags"] != values["Tags"]:
-                            #updatedTest["tags"] = values["Tags"]
                             
                     # if there is update info then we will update the test
                     if updatedTest != {}:
-                        print "Updating test..."
                         slicktest = self.slickCon.update_testcase(slicktest["id"], updatedTest)
 
                 # Once I update I am going to get the test again. This might work
@@ -194,14 +174,14 @@ class SlickTestRunner(TextTestRunner):
                     pass
             
                 values = self._parseTestCaseInfo(test)
-                slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["Author"], purpose=values["Purpose"],
-                                                       tags=values["Tags"], requirements=values["Requirements"], 
-                                                       steps=values["Steps"], component=values["Component"], 
-                                                       automationTool=values["Automation Tool"], automated=True)
+                slicktest = self.slickCon.add_testcase(test.shortDescription(), author=values["author"], purpose=values["purpose"],
+                                                       tags=values["tags"], requirements=values["requirements"], 
+                                                       steps=values["steps"], component=values["component"], 
+                                                       automationTool=values["automationTool"], automated=True)
                 self.testsFromSlick.append(slicktest)
                     
     def _parseTestCaseInfo(self, test):
-        foundValues = {"author":"API", "purpose":None, "attributes":None, 
+        foundValues = {"author":"API", "purpose":None, 
                        "tags":[], "requirements":None, "component":None,
                        "automationTool": None,
                        "steps": [{'name': "testcase", 'expectedResult': "Coming Soon"}]}

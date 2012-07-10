@@ -65,8 +65,11 @@ class SlickTestResult(TestResult):
                 last_result['files'].extend(files)
             else:
                 last_result['files'] = files
-        self.slick.update_result(last_result['id'], last_result)
-        self.completed_tests.append(last_result)
+        
+        if last_result:
+            self.slick.update_result(last_result['id'], last_result)
+            self.completed_tests.append(last_result)
+        
         test.clear_queue() 
         
     def get_last_result(self):

@@ -23,7 +23,7 @@ class SlickTest(SlickTestCase):
         Attributes: Test Attributes 
         Tags: api test, test api, slick
         Requirements: A good version of slick
-        Component: New
+        Component: Stan
         
         Steps:
         a. Log a message; Should log a message
