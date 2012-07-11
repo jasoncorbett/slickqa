@@ -271,13 +271,14 @@ class SlickTestRunner(TextTestRunner):
 
     def setup_test_run(self, testSuite, loggername):
         '''setup the test run so multiple tests can be placed in one test run'''
+        self.not_tested_result_list = []
         self._checkTests(testSuite)
         self.logger_name = loggername
         
         # Set all tests to not tested, so every test has a result and the final result reflects all tests
         # We need to keep all the results in a list. (Complete result object)
         # 1. Creat a result in slick for each test that we will run
-        self.not_tested_result_list = []
+        
         for test in self.testsFromSlick:
             component = None
             if isinstance(test, dict):
