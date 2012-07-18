@@ -8,5 +8,15 @@
 var AboutSlickPage = SlickPage.extend({
     group: "about",
     codename: "slick",
-    name: "About Slick"
+    name: "About Slick",
+
+    initialize: function() {
+        this.on("finish", this.onFinish, this);
+    },
+
+    onFinish: function() {
+        $(".slick-logo").on("click", function() {
+            $(".slick-logo").attr("src", $(".slick-logo").attr("src"));
+        });
+    }
 });
