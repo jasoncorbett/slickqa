@@ -9,12 +9,15 @@ import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 import com.google.code.morphia.annotations.PostLoad;
 import com.google.code.morphia.annotations.Property;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.tcrun.slickij.api.data.testqueries.NamedTestcaseQuery;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 /**
  *
@@ -54,6 +57,11 @@ public class Testplan implements Serializable
 		else
 			return id.toString();
 	}
+
+    public void setId(ObjectId id)
+    {
+        this.id = id;
+    }
 
 	@JsonIgnore
 	public ObjectId getObjectId()
