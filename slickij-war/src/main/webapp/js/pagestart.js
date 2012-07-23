@@ -2,6 +2,10 @@
 
 $(function() {
     // Build the main menu
+				$.ajaxSetup ({
+				    // Disable caching of AJAX responses
+					    cache: false
+						});
                 var pagenav = [];
                 _.each(SlickPage.StandardNavigationGroups, function(group) {
                     if(SlickPage.PageGroups[group.codename]) {
