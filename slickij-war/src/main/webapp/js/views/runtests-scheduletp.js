@@ -27,6 +27,8 @@ var RunTestsScheduleTestPlanPage = SlickPage.extend({
     },
     
     onReady: function() {
+        // make the newest release the first release
+        this.data.proj.releases.reverse();
         _.each(this.data.proj.releases, function(release) {
             if(this.data.proj.defaultRelease == release.id) {
                 release.isDefaultRelease = true;
