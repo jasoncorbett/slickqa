@@ -25,12 +25,13 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
 
         // this section sets up data needed by the template
         this.subtitle1 = (new Date(this.data.testrun.dateCreated)).toLocaleDateString();
-        this.subtitle2 = safeReference(this.data.testrun, "release.name", "") + " Build " + safeReference(this.data.testrun, "build.name", "Unknown");
+        this.subtitle2 = safeReference(this.data.testrun, "project.name", "");
         if (this.data.testrun.config) {
             this.subtitle3 = safeReference(this.data.testrun, "config.name", "");
         }
+        this.subtitle4 = safeReference(this.data.testrun, "release.name", "") + " Build " + safeReference(this.data.testrun, "build.name", "Unknown");
         if (this.data.testrun.runtimeOptions) {
-            this.subtitle4 = "Runtime Options: " + safeReference(this.data.testrun, "runtimeOptions.name", "");
+            this.subtitle5 = "Runtime Options: " + safeReference(this.data.testrun, "runtimeOptions.name", "");
         }
 		this.timeCreated = (new Date(this.data.testrun.dateCreated)).toLocaleTimeString();
 		this.chartdata = new google.visualization.DataTable();
