@@ -8,7 +8,7 @@ def read(fname):
 #TODO: support pip and dependencies
 setup(
     name = "slickqa",
-    version = "0.1.396",
+    version = "0.1.400",
     author = "Chris Saxey",
     author_email = "jared.jorgensen@quest.com",
     description = ("Python interface to Slick QA Results Database"),

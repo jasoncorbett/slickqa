@@ -10,7 +10,7 @@ FIN = "FINISHED"
 class SlickTestResult(TestResult):
     """Adds reporting through slick"""
 
-    def __init__(self, project, testRunRef, slick, loggername='root', not_tested_results=[]):
+    def __init__(self, project, testRunRef, slick, loggername='root', not_tested_results=None):
         """Constructor"""
         super(SlickTestResult, self).__init__()
         self.slick = slick

@@ -87,6 +87,7 @@ class SlickAsPy(object):
             except SlickError as se:
                 raise
             except:
+                # This is not very useful output most of the time
                 pass
                 print 'Here is the content recieved from the server: {}'.format(content)
             if good_content:

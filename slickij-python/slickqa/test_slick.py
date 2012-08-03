@@ -89,7 +89,7 @@ class SlickTest(SlickTestCase):
 if __name__ == '__main__':
     import unittest
     import sys
-    slickcon = SlickAsPy("http://localhost:8080/api")
+    slickcon = SlickAsPy("http://slick.test.qas:8080/slickij/api")
     handler = logging.StreamHandler(sys.stdout)
     unittest.loader.TestLoader.suiteClass = SlickTestSuite
     tests = unittest.TestLoader().loadTestsFromTestCase(SlickTest)    

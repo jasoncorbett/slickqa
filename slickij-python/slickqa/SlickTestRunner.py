@@ -21,6 +21,7 @@ class SlickTestRunner(TextTestRunner):
         super(SlickTestRunner, self).__init__(stream, descriptions, verbosity, failfast, buffer, resultclass)
         self.logger_name = loggername
         self.testPlan = testplanName
+        self.not_tested_result_list = []
         if isinstance(slickLocation, SlickAsPy):
             self.slickCon = slickLocation
         else:
@@ -83,7 +84,7 @@ class SlickTestRunner(TextTestRunner):
                         if slicktest["automationTool"] != values["automationTool"]:
                             updatedTest["automationTool"] = values["automationTool"]
                             
-                        # Componet is currently broken so taking it out for now.
+                        ## Componet is currently broken so taking it out for now.
                         #if slicktest["component"]["name"] != values["component"]["name"]:
                             #updatedTest["component"] = values["component"]
                             
@@ -271,7 +272,7 @@ class SlickTestRunner(TextTestRunner):
 
     def setup_test_run(self, testSuite, loggername):
         '''setup the test run so multiple tests can be placed in one test run'''
-        self.not_tested_result_list = []
+
         self._checkTests(testSuite)
         self.logger_name = loggername
         
@@ -311,7 +312,8 @@ class SlickTestRunner(TextTestRunner):
         if startTestRun is not None:
             startTestRun()
         try:
-            test(result)
+            if test:
+                test(result)
         finally:
             stopTestRun = getattr(result, 'stopTestRun', None)
             if stopTestRun is not None:
