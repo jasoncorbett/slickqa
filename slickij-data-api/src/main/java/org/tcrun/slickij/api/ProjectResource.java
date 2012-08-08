@@ -97,6 +97,11 @@ public interface ProjectResource
 	@GET
 	public Release getRelease(@PathParam("projectid") String projectId, @PathParam("releaseid") String releaseId);
 
+	@Path("/{projectid}/releases/byname/{releasename}")
+	@Produces("application/json")
+	@GET
+	public Release getReleaseByName(@PathParam("projectid") String projectId, @PathParam("releasename") String releaseName);
+
 	@Path("/{projectid}/releases/default")
 	@Produces("application/json")
 	@GET

@@ -208,6 +208,18 @@ public class ProjectResourceImpl implements ProjectResource
 	}
 
 	@Override
+	public Release getReleaseByName(String projectId, String releaseName)
+	{
+		Project project = getProjectById(projectId);
+		Release retval = project.findReleaseByName(releaseName);
+		if(retval == null)
+			throw new NotFoundError(Release.class, releaseName);
+		else
+			return retval;
+	}
+
+
+	@Override
 	public Release getDefaultRelease(String projectId)
 	{
 		Project project = getProjectById(projectId);
