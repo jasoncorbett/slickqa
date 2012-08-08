@@ -1,11 +1,7 @@
 import json
-import zlib
 import urllib
 import urlparse
 import httplib2
-import traceback
-from dateutil.tz import *
-from datetime import datetime
 
 json_content = {'Content-Type': 'application/json'}
 STREAM_CONTENT = {'Content-Type': 'application/octet-stream'}
@@ -13,6 +9,13 @@ GET = 'GET'
 POST = 'POST'
 PUT = 'PUT'
 DELETE = 'DELETE'
+
+class AttributeDict(dict):
+    __getattr__ = dict.__getitem__
+    __setattr__ = dict.__setitem__
+
+def obj_hook_attr_dict(dct):
+    return AttributeDict(dct)
 
 class RestError(Exception):
     pass
@@ -23,6 +26,15 @@ class RestApi(object):
         self.baseurl = baseurl
         if self.baseurl.endswith('/'):
             self.baseurl = baseurl[0:-1]
+        self.urlargs = []
+
+    def __getattr__(self, item):
+        self.urlargs.append(item)
+        return self
+
+    def __getitem__(self, item):
+        self.urlargs.append(item)
+        return self
 
     def _fix_uri(self, uri, charset='utf-8'):
         if isinstance(uri, unicode):
@@ -34,15 +46,17 @@ class RestApi(object):
 
     def _get_url(self, *args, **kwargs):
         if len(kwargs) > 0:
-            uri = '/'.join([self.baseurl,] + list(args)) + "?" + kwargs
+            uri = '/'.join([self.baseurl,] + self.urlargs + list(args)) + "?" + kwargs
         else:
-            uri = '/'.join([self.baseurl,] + list(args))
+            uri = '/'.join([self.baseurl,] + self.urlargs + list(args))
+        self.urlargs = []
         url = self._fix_uri(uri)
         return url
 
     def _safe_return(self, response, content):
         if response['status'] == "200":
-            return json.loads(content)
+            retval = json.loads(content, object_hook=obj_hook_attr_dict)
+            return retval
         elif response['status'] == "204":
             return None
         else:
