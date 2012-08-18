@@ -41,12 +41,11 @@ class RestApi(object):
             uri = uri.encode(charset, 'ignore')
         scheme, netloc, path, query, fragment = urlparse.urlsplit(uri)
         path = urllib.quote(path, '/%')
-        query = urllib.quote(query, ':&=')
         return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
 
     def _get_url(self, *args, **kwargs):
         if len(kwargs) > 0:
-            uri = '/'.join([self.baseurl,] + self.urlargs + list(args)) + "?" + kwargs
+            uri = '/'.join([self.baseurl,] + self.urlargs + list(args)) + "?" + urllib.urlencode(kwargs)
         else:
             uri = '/'.join([self.baseurl,] + self.urlargs + list(args))
         self.urlargs = []
@@ -101,3 +100,18 @@ class RestApi(object):
             print 'Here is the content recieved from the server: {}'.format(content)
         return good_content
 
+
+def get_default_release(project):
+    default_release_id = project.defaultRelease
+    for release in project.releases:
+        if release.id == default_release_id:
+            return release
+
+def get_default_build(release):
+    if "releases" in release:
+        #they handed us a project, that's ok
+        release = get_default_release(release)
+    default_build_id = release.defaultBuild
+    for build in release.builds:
+        if build.id == default_build_id:
+            return build

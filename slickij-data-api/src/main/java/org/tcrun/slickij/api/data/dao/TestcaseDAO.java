@@ -14,6 +14,7 @@ import org.tcrun.slickij.api.data.testqueries.TestcaseQuery;
 public interface TestcaseDAO extends DAO<Testcase, ObjectId>
 {
 	public List<Testcase> findTestsByTestcaseQuery(TestcaseQuery query);
+	public List<Testcase> findTestsByTestcaseQuery(TestcaseQuery query, boolean includeDeleted);
 	public long countTestsFromTestcaseQuery(TestcaseQuery query);
 	public Testcase findTestcaseByReference(TestcaseReference ref);
 }

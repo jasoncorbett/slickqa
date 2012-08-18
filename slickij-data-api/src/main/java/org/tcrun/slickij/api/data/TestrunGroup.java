@@ -1,7 +1,9 @@
 package org.tcrun.slickij.api.data;
 
 import com.google.code.morphia.annotations.*;
+import com.mongodb.util.StringBuilderPool;
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +31,16 @@ public class TestrunGroup
     @Reference
     private List<Testrun> testruns;
 
-    public ObjectId getId()
+    public String getId()
+    {
+        if(id == null)
+            return null;
+        else
+            return id.toString();
+    }
+
+    @JsonIgnore
+    public ObjectId getObjectId()
     {
         return id;
     }

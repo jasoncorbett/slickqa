@@ -94,7 +94,7 @@ public class TestrunGroupResourceImpl implements TestrunGroupResource
     public TestrunGroup addTestrunToTestrunGroup(@PathParam("trgroupid") ObjectId id, @PathParam("testrunid") ObjectId testrunId)
     {
         TestrunGroup trgroup = getTestrunGroup(id);
-        Testrun tr = trApi.getTestrun(id.toString());
+        Testrun tr = trApi.getTestrun(testrunId.toString());
 
         trgroup.getTestruns().add(tr);
         trgDAO.save(trgroup);

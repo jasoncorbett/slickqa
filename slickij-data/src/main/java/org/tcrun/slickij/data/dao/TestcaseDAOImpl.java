@@ -26,10 +26,21 @@ public class TestcaseDAOImpl extends BasicDAO<Testcase, ObjectId> implements Tes
 	@Override
 	public List<Testcase> findTestsByTestcaseQuery(TestcaseQuery query)
 	{
+		return findTestsByTestcaseQuery(query, false);
+	}
+
+	@Override
+	public List<Testcase> findTestsByTestcaseQuery(TestcaseQuery query, boolean includeDeleted)
+	{
 		Query<Testcase> testquery = createQuery();
 
-		//Criteria criteria = query.toMorphiaQuery(testquery);
-		testquery.and(testquery.criteria("deleted").equal(Boolean.FALSE), query.toMorphiaQuery(testquery));
+		if(includeDeleted)
+		{
+			query.toMorphiaQuery(testquery);
+		} else
+		{
+			testquery.and(testquery.criteria("deleted").equal(Boolean.FALSE), query.toMorphiaQuery(testquery));
+		}
 		return testquery.asList();
 	}
 
