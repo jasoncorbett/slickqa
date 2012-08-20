@@ -191,7 +191,7 @@ public class TestcaseResourceImpl implements TestcaseResource
 			if(project != null)
 			{
 				real.setProject(updatedTestcase.getProject());
-				if(project.findComponentByReference(real.getComponent()) == null)
+				if(real.getComponent() == null || project.findComponentByReference(real.getComponent()) == null)
 					real.setComponent(null);
 			}
 		}
