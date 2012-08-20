@@ -80,4 +80,24 @@ public class ProjectTest
 		assertEquals("The id of the object should be the same in the reference", project.getObjectId(), ref.getObjectId());
         assertEquals("The id of the object should be the same in the reference", project.getId(), ref.getId());
 	}
+	
+	@Test
+	public void findBuildByNameTest() throws Exception
+    {
+        // first try to find a build with no builds initialized.
+	Release release = new Release();
+        release.setId(ObjectId.get());
+        release.setName("A Release");
+	release.postLoad(); // Ensure the build list is valid
+
+        project.addRelease(release);
+        assertNull("The result of trying to find a build when no builds are present should be null.", project.findBuildByName(release.getId(), "Doesn't Matter"));
+
+	Build build = new Build();
+	build.setId(ObjectId.get());
+	build.setName("A Build");
+	
+	release.getBuilds().add(build);
+        assertSame("The build we just added should be the same as what is returned from findBuildByName.", build, project.findBuildByName(release.getId(), build.getName()));
+    }
 }

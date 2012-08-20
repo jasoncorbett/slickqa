@@ -275,6 +275,12 @@ public class ProjectResourceImpl implements ProjectResource
 	}
 
 	@Override
+	public Build getBuildByName(String projectId, String releaseId, String buildName) {
+		Release release = getRelease(projectId, releaseId);
+		return release.findBuildByName(buildName);
+	}
+
+	@Override
 	public Build getDefaultBuild(String projectId, String releaseId)
 	{
 		Release release = getRelease(projectId, releaseId);

@@ -12,3 +12,4 @@
 TEST-*.xml
 .idea/
 nb-configuration.xml
+/target/

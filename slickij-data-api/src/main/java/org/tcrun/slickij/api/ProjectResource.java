@@ -147,6 +147,11 @@ public interface ProjectResource
 	@GET
 	public Build getBuild(@PathParam("projectid") String projectId, @PathParam("releaseid") String releaseId, @PathParam("buildid") String buildId);
 
+	@Path("/{projectid}/releases/{releaseid}/builds/byname/{buildname}")
+	@Produces("application/json")
+	@GET
+	public Build getBuildByName(@PathParam("projectid") String projectId, @PathParam("releaseid") String releaseId, @PathParam("buildname") String buildName);
+
 	@Path("/{projectid}/releases/{releaseid}/builds/default")
 	@Produces("application/json")
 	@GET
