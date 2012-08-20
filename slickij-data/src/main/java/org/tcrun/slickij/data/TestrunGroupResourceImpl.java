@@ -13,6 +13,7 @@ import org.tcrun.slickij.api.data.dao.TestrunGroupDAO;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -106,10 +107,16 @@ public class TestrunGroupResourceImpl implements TestrunGroupResource
     public TestrunGroup removeTestrunFromTestrunGroup(@PathParam("trgroupid") ObjectId id, @PathParam("testrunid") ObjectId testrunId)
     {
         TestrunGroup trgroup = getTestrunGroup(id);
-        Testrun tr = trApi.getTestrun(id.toString());
+        Testrun tr = trApi.getTestrun(testrunId.toString());
 
-        trgroup.getTestruns().remove(tr);
-
+        List<Testrun> runs = trgroup.getTestruns();
+        List<Testrun> updated = new ArrayList<Testrun>(runs.size() - 1);
+        for(Testrun possible_match : runs)
+        {
+            if(!possible_match.getId().equals(tr.getId()))
+                updated.add(possible_match);
+        }
+        trgroup.setTestruns(updated);
         trgDAO.save(trgroup);
 
         return trgroup;

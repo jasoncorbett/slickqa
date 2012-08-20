@@ -78,9 +78,6 @@ class TestrunGroupTests(unittest.TestCase):
 
         cls.testruns = testruns
 
-
-
-
     def test_add_testrun_group(self):
         """Add testrun group test"""
         group = self.api.testrungroups.post({"name": "A test testrun group"})
@@ -89,19 +86,40 @@ class TestrunGroupTests(unittest.TestCase):
     def test_add_testruns_to_group(self):
         self.assertGreater(len(TestrunGroupTests.testruns), 0)
         group = self.api.testrungroups.get(createdafter=(int(time.time()) - (60 * 60 * 24)))[0]
+        total_tests = group.groupSummary.total
         self.assertIn('id', group)
-        totals = {}
         for testrun in TestrunGroupTests.testruns:
             self.api.testrungroups[group.id].addtestrun[testrun.id].post(None)
+
+        group = self.api.testrungroups[group.id].get()
+        self.assertEqual(len(group.testruns), len(TestrunGroupTests.testruns))
+        self.assertNotEqual(group.groupSummary.total, total_tests)
+
+    def test_group_summary_accurate(self):
+        totals = {}
+        group = self.api.testrungroups.get(createdafter=(int(time.time()) - (60 * 60 * 24)))[0]
+        self.assertIn('id', group)
+        for testrun in group.testruns:
             for resultstatus in testrun.summary.resultsByStatus.keys():
                 if resultstatus in totals:
                     totals[resultstatus] += testrun.summary.resultsByStatus[resultstatus]
                 else:
                     totals[resultstatus] = testrun.summary.resultsByStatus[resultstatus]
 
-        group = self.api.testrungroups[group.id].get()
         for resultstatus in group.groupSummary.resultsByStatus.keys():
             if group.groupSummary.resultsByStatus[resultstatus] != 0:
                 self.assertEquals(group.groupSummary.resultsByStatus[resultstatus], totals[resultstatus])
+
+    def test_remove_testrun_from_group(self):
+        group = self.api.testrungroups.get(createdafter=(int(time.time()) - (60 * 60 * 24)))[0]
+        self.assertIn('id', group)
+        total_tests = group.groupSummary.total
+        num_of_testruns = len(group.testruns)
+        self.assertGreaterEqual(num_of_testruns, 1)
+        self.api.testrungroups[group.id].removetestrun[group.testruns[0].id].delete()
+        group = self.api.testrungroups.get(createdafter=(int(time.time()) - (60 * 60 * 24)))[0]
+        self.assertLess(len(group.testruns), num_of_testruns)
+        self.assertNotEqual(group.groupSummary.total, total_tests)
+
 
 
