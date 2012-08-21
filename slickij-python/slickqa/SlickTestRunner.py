@@ -84,9 +84,15 @@ class SlickTestRunner(TextTestRunner):
                         if slicktest["automationTool"] != values["automationTool"]:
                             updatedTest["automationTool"] = values["automationTool"]
                             
-                        ## Componet is currently broken so taking it out for now.
-                        #if slicktest["component"]["name"] != values["component"]["name"]:
-                            #updatedTest["component"] = values["component"]
+                        # Componet is currently broken so taking it out for now. Trying now. Maybe it works. 
+                        try:
+                            componentName = slicktest["component"]["name"]
+                        except:
+                            componentName = None
+                            
+                        if values["component"]:
+                            if componentName != values["component"]["name"]:
+                                updatedTest["component"] = values["component"]
                             
                         if slicktest["purpose"] != values["purpose"]:
                             updatedTest["purpose"] = values["purpose"]
