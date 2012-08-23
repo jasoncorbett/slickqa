@@ -25,6 +25,12 @@
                     <img src="api/files/{{id}}/content/{{filename}}" alt="{{filename}}" />
                 </div>
             {{/if}}
+            {{#if isText}}
+		<!-- TODO: Figure out a better display for plain text files -->
+		<pre class="filedisplay textdisplay" data-fileName="{{filename}}" id="{{id}}">
+		</pre>
+            {{/if}}
+	    <!-- TODO: Add handling for XML files separate from the plain text files -->
         {{/each}}
     </div>
 

@@ -33,7 +33,10 @@ var ReportsViewFilesPage = SlickPage.extend({
             } else if(file.mimetype.match(/^image.*/)) {
                 file.isImage = true;
                 file.icon = "api/files/" + file.id + "/content/" + file.filename;
-            }
+            } else if(file.mimetype.match(/^text.*/)) {
+		file.isText = true;
+		file.icon = "images/logs.png";
+	    }
         });
     },
 
@@ -49,6 +52,24 @@ var ReportsViewFilesPage = SlickPage.extend({
             $("#" + $(this).data("fileid")).show();
             $("#filename").text($(this).data("filename"));
         });
+	
+	$(".textdisplay").each(function() {
+	    var displaydiv = $(this);
+	    var fileId = displaydiv.attr("id");
+	    var fileName = displaydiv.data("fileName");
+	    
+	    $.ajax({
+		type: "GET",
+		url: "api/files/" + fileId + "/content/" + fileName,
+		dataType: "text",
+		displaydiv: displaydiv,
+		success: function(text) {
+		    this.displaydiv.text(text);
+		    prettyPrint();
+		}
+	    })
+	});
+	
         $(".htmldisplay").each(function() {
             var displaydiv = $(this);
             var fileId = displaydiv.attr("id");
