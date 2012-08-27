@@ -36,6 +36,9 @@ public class Project implements Serializable
 
 	@Embedded
 	private List<Release> releases;
+    
+        @Embedded
+        private List<Release> inactiveReleases;
 
 	@Property
 	private Date lastUpdated;
@@ -83,7 +86,7 @@ public class Project implements Serializable
         if(id == null)
             return null;
         else
-		    return id.toString();
+            return id.toString();
 	}
 
 	public void setId(ObjectId id)
@@ -100,6 +103,16 @@ public class Project implements Serializable
 	{
 		this.releases = releases;
 	}
+        
+    public List<Release> getInactiveReleases()
+	{
+        return inactiveReleases;
+	}
+        
+    public void setInactiveReleases(ArrayList<Release> arrayList) 
+    {
+        this.inactiveReleases = arrayList;
+    }
 
 	public Date getLastUpdated()
 	{
@@ -190,14 +203,14 @@ public class Project implements Serializable
 
 	public Release findRelease(String releaseId)
 	{
-        if(getReleases() != null)
-        {
-		    for(Release potential : getReleases())
-    		{
-    			if(potential.getId().equals(releaseId))
-    				return potential;
-    		}
-        }
+                if(getReleases() != null)
+                {
+                            for(Release potential : getReleases())
+                        {
+                                if(potential.getId().equals(releaseId))
+                                        return potential;
+                        }
+                }
 		return null;
 	}
 
@@ -248,6 +261,45 @@ public class Project implements Serializable
             setReleases(new ArrayList<Release>());
 		getReleases().add(release);
 		return release;
+	}
+        
+        public Release deactivateRelease(Release release)
+        {
+            Release retval = null;
+            if(getReleases().remove(release))
+            {
+                if(getInactiveReleases() == null)
+                {
+                    setInactiveReleases(new ArrayList<Release>());
+                }
+                getInactiveReleases().add(release);
+                retval = release;
+            }
+            return retval;
+        }
+
+        public Release activateRelease(Release release)
+        {
+            Release retval = null;
+            if(getInactiveReleases().remove(release))
+            {
+                getReleases().add(release);
+                retval = release;
+            }
+            return retval;
+        }
+        
+        public Release findInactiveRelease(String releaseId)
+	{
+            if(getInactiveReleases() != null)
+            {
+                for(Release potential : getInactiveReleases())
+                {
+                    if(potential.getId().equals(releaseId))
+                        return potential;
+                }
+            }
+            return null;
 	}
 
 	public Build findBuild(String releaseId, String buildId)

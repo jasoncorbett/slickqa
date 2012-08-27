@@ -600,4 +600,46 @@ public class ProjectResourceImpl implements ProjectResource
 			throw new NotFoundError(Project.class, name);
 		return retval;
 	}
+
+        @Override
+        public List<Release> getInactiveReleases(String projectId)
+        {
+            Project project = getProjectById(projectId);
+            return project.getInactiveReleases();
+        }
+
+        @Override
+        public Release getInactiveRelease(String projectId, String releaseId)
+        {
+            Project project = getProjectById(projectId);
+            Release retval = project.findInactiveRelease(releaseId);
+            if(retval == null)
+                throw new NotFoundError(Release.class, releaseId);
+            else
+                return retval;
+        }
+
+        @Override
+        public Release deactivateRelease(String projectId, String releaseId)
+        {
+            Project project = getProjectById(projectId);
+            Release release = project.findRelease(releaseId);
+            if(release == null)
+                throw new NotFoundError(Release.class, releaseId);
+            release = project.deactivateRelease(release);
+            m_projectDAO.save(project);
+            return release;
+        }
+
+        @Override
+        public Release activateRelease(String projectId, String releaseId)
+        {
+            Project project = getProjectById(projectId);
+            Release release = project.findInactiveRelease(releaseId);
+            if(release == null)
+                throw new NotFoundError(Release.class, releaseId);
+            release = project.activateRelease(release);
+            m_projectDAO.save(project);
+            return release;
+        }
 }

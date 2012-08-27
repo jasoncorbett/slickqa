@@ -100,4 +100,33 @@ public class ProjectTest
 	release.getBuilds().add(build);
         assertSame("The build we just added should be the same as what is returned from findBuildByName.", build, project.findBuildByName(release.getId(), build.getName()));
     }
+
+    @Test
+    public void activateReleaseTest() throws Exception
+    {
+        Release release = new Release();
+        release.setId(ObjectId.get());
+        release.setName("BaldEagle");
+        project.addRelease(release);
+        project.deactivateRelease(release);
+        project.activateRelease(release);
+        assertNotNull("After activating a release, releases shouldn't be null.", project.getReleases());
+        assertEquals("There should be exactly 0 inactive releases in the project since the only release has been activated.", 0, project.getInactiveReleases().size());
+        assertEquals("There should be exactly 1 release in the project as only 1 has been added.", 1, project.getReleases().size());
+        assertSame("The release we added should be the same as the 1 and only release in the project's releases list.", release, project.getReleases().get(0));
+    }
+    
+    @Test
+    public void deactivateReleaseTest() throws Exception
+    {
+        Release release = new Release();
+        release.setId(ObjectId.get());
+        release.setName("BaldOne");
+        project.addRelease(release);
+        project.deactivateRelease(release);
+        assertNotNull("After deactivating a release, inactiveReleases shouldn't be null.", project.getInactiveReleases());
+        assertEquals("There should be exactly 0 release in the project since the only release has been deactivated.", 0, project.getReleases().size());
+        assertEquals("There should be exactly 1 inactive release in the project as only 1 has been added.", 1, project.getInactiveReleases().size());
+        assertSame("The release we added should be the same as the 1 and only release in the project's inactiveReleases list.", release, project.getInactiveReleases().get(0));
+    }
 }

@@ -443,8 +443,8 @@ body {
     border-radius: 14px;
     color: white;
     text-shadow: 0 1px 1px black;
-    padding: 3px 20px;
-    margin: .03in;
+    padding: 1px 15px;
+    margin: .01in;
     display: inline-block;
     font-size: .9em;
 }
@@ -772,7 +772,26 @@ a.result-status-CANCELLED:visited {
 .table-full-width {
     width: 100%;
 }
+.table-full-centered {
+    display: table;
+    width: 100%;
+    margin: 0 auto;
+}
+.table-half-width {
+    display: table-cell;
+    width: 45%;
+}
+.right-left-panel {
+    display: table-cell;
+    vertical-align: middle;
+    width: 5%;
+    padding-left: .1in;
+    padding-right: .1in;
+}
 
+.table-row-centered {
+    display: table-row;
+}
 
 .projectclass
 {
@@ -1487,4 +1506,26 @@ span.log-level-TRACE {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: .2in;
+}
+
+.row-selected {
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#A6000D), to(#650207));
+    background: -moz-linear-gradient(#A6000D, #650207);
+    background: linear-gradient(#A6000D, #650207);
+}
+
+#active-release-list_filter {
+    display: inline-block;
+    padding-right: 9px;
+}
+
+.add-release {
+    display: inline-block;
+    padding-left: 9px;
+    padding-right: 9px;
+}
+
+.edit-release {
+    display: inline-block;
+    padding-left: 5px;
 }

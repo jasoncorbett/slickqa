@@ -126,6 +126,26 @@ public interface ProjectResource
 	@PUT
 	public Release updateRelease(@PathParam("projectid") String projectId, @PathParam("releaseid") String releaseId, Release release);
 
+        @Path("/{projectid}/inactivereleases/{releaseid}")
+        @Produces("application/json")
+        @GET
+        public Release getInactiveRelease(@PathParam("projectid") String projectId, @PathParam("releaseid") String releaseId);
+
+        @Path("/{projectid}/inactivereleases")
+        @Produces("application/json")
+        @GET
+        public List<Release> getInactiveReleases(@PathParam("projectid") String projectId);
+
+        @Path("/{projectid}/releases/{releaseid}/deactivate")
+        @Produces("application/json")
+        @GET
+        public Release deactivateRelease(@PathParam("projectid") String projectId, @PathParam("releaseid") String releaseId);
+
+        @Path("/{projectid}/inactivereleases/{releaseid}/activate")
+        @Produces("application/json")
+        @GET
+        public Release activateRelease(@PathParam("projectid") String projectId, @PathParam("releaseid") String releaseId);
+
 	@Path("/{projectid}/releases/{releaseid}")
 	@Produces("application/json")
 	@DELETE
