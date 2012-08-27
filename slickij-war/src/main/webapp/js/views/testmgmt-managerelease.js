@@ -74,7 +74,8 @@ var TestManagementAddReleasePage = SlickPage.extend({
 
         // Setup action based on the add release form submit button
         $("#add-release").on("click", {page: this}, this.onAddRelease);
-        $(".notDefaultRelease").on("click", {page: this}, this.onMakeDefault);
+        //make it the default release
+        $("#active-release-list").on("click", ".notDefaultRelease", {page: this}, this.onMakeDefault);
         //add actions based on clicking the activate or deactivate buttons
         $("#deactivate-release").on("click", {page: this, activeTable: releaseList, inactiveTable: inactiveList}, this.onDeactivateRelease);
         $("#activate-release").on("click", {page: this, activeTable: releaseList, inactiveTable: inactiveList}, this.onActivateRelease);
@@ -86,10 +87,11 @@ var TestManagementAddReleasePage = SlickPage.extend({
 
     onTableCellEdit: function(event) {
         $("tr.row-selected td:eq(0)").trigger("edit");
+        $("tr.row-selected").addClass('no-deselect');
     },
 
     onRowSelected: function(event) {
-        if ( $(this).hasClass('row-selected') ) {
+        if ( $(this).hasClass('row-selected') && !$(this).hasClass("no-deselect")) {
             $(this).removeClass('row-selected');
         }
         else {
@@ -109,6 +111,8 @@ var TestManagementAddReleasePage = SlickPage.extend({
                     event: "edit",
                     callback: function( value, settings) {
                         table.fnUpdate(value);
+                        $(this).removeClass('row-selected');
+                        $(this).removeClass('no-deselect');
                     }
             })
         }
