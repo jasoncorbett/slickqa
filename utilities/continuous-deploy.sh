@@ -16,7 +16,7 @@ fi
 
 
 
-LATEST_SLICKIJ_URL=`curl -s http://code.google.com/p/slickqa/downloads/list |grep "files.slickij-war" |head -1 |perl -pi -e 's/.*(http.*?\d.war).*/$1/'`
+LATEST_SLICKIJ_URL=`curl -s http://code.google.com/p/slickqa/downloads/list |grep "files.slickij-war" |head -1 |perl -pi -e 's/.*(\/\/.*?\d.war).*/http:$1/'`
 LATEST_SLICKIJ_BUILD_NUMBER=`echo ${LATEST_SLICKIJ_URL} |perl -pi -e 's/.*?slickij-war-(.*?).war$/$1/'`
 
 CURRENT_SLICKIJ_BUILD_NUMBER=`curl -s "${LOCAL_SLICKIJ_URL}/api/version/slick" |python -m json.tool |grep versionString |perl -pi -e 's/.*versionString.. .(.*).$/$1/'`
