@@ -6,7 +6,15 @@ LOCAL_SLICKIJ_URL="http://localhost:8080/slickij"
 LOCAL_SLICKIJ_WAR=/Library/Tomcat/runtime/webapps/slickij.war
 # A list of urls to jar files you want to add to slick
 JARS_TO_ADD=""
+
+# optionally put them in a file in your home directory
+if [ -e ~/.slick-deploy ]
+then
+	. ~/.slick-deploy
+fi
 #################################################################################
+
+
 
 LATEST_SLICKIJ_URL=`curl -s http://code.google.com/p/slickqa/downloads/list |grep "files.slickij-war" |head -1 |perl -pi -e 's/.*(http.*?\d.war).*/$1/'`
 LATEST_SLICKIJ_BUILD_NUMBER=`echo ${LATEST_SLICKIJ_URL} |perl -pi -e 's/.*?slickij-war-(.*?).war$/$1/'`
