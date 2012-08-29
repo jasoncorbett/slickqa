@@ -337,6 +337,16 @@ public class ProjectResourceImpl implements ProjectResource
 			throw new NotFoundError(Component.class, componentId);
 		return retval;
 	}
+	
+	@Override
+	public Component getComponentByName(String projectId, String componentName)
+	{
+		Project project = getProjectById(projectId);
+		Component retval = project.findComponentByName(componentName);
+		if (retval == null)
+		    throw new NotFoundError(Component.class, componentName);
+		return retval;
+	}
 
 	@Override
 	public Component updateComponent(String projectId, String componentId, Component component)
