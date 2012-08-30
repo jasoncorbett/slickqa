@@ -31,6 +31,8 @@ public class ProjectDAOImpl extends BasicDAO<Project, ObjectId> implements Proje
 	@Override
 	public Project findByReference(ProjectReference ref)
 	{
+		if(ref == null)
+			return null;	    
 		Project project = null;
 		if(ref.getObjectId() != null)
 			project = this.get(ref.getObjectId());

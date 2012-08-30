@@ -45,6 +45,8 @@ public class TestrunDAOImpl extends BasicDAO<Testrun, ObjectId> implements Testr
 	@Override
 	public Testrun findByTestrunReference(TestrunReference ref)
 	{
+		if(ref == null)
+			return null;	    
 		Testrun result = null;
 		if(ref.getTestrunObjectId() != null)
 		{

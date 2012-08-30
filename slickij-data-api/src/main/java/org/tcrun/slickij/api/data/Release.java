@@ -140,6 +140,8 @@ public class Release implements Serializable
 
 	public Build findBuildByReference(BuildReference ref)
 	{
+		if(ref == null)
+			return null;	    
 		Build retval = null;
 		if(ref.getBuildId() != null)
 			retval = findBuild(ref.getBuildId());
