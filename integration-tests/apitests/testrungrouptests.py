@@ -56,11 +56,11 @@ class TestrunGroupTests(unittest.TestCase):
                                     "name": proj.name}}
 
         testruns = []
-        for i in range(3):
+        for i in range(6):
             testrun = dict(base_testrun)
             testrun["name"] = "Testrun " + str(i + 1)
             testrun = api.testruns.post(testrun)
-            for j in range(random.randint(10, 40)):
+            for j in range(random.randint(20, 40)):
                 result = AttributeDict(base_testrun)
                 result["testrun"] = {"name": testrun["name"],
                                      "testrunId": testrun["id"]}

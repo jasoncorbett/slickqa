@@ -11,18 +11,30 @@ var ReportsResultViewPage = SlickPage.extend({
     name: "Test Run Group",
     navigation: true,
 
-    requiredData: {
-        testrungroups: function() {
-            return "api/testrungroups?createdafter=" + moment().subtract('months', 3).valueOf();
+    initialize: function() {
+        if (this.options.positional.length > 0) {
+            this.requiredData = {
+                testrungroup: function() {
+                    return "api/testrungroups/" + this.options.positional[0]
+                }
+            }
+            this.on("ready", this.onReportReady, this);
+            this.on("finish", this.onReportFinish, this);
+            this.primaryTemplateName = "reports-testrungroup-report.html";
+        } else {
+            // if we don't have a testrun group id in the url, go into select mode
+            this.requiredData = {
+                testrungroups: function() {
+                    return "api/testrungroups?createdafter=" + moment().subtract('months', 3).valueOf();
+                }
+            }
+            this.on("ready", this.onSelectGroupReady, this);
+            this.on("finish", this.onSelectGroupFinish, this);
+            this.primaryTemplateName = "reports-testrungroup-select.html";
         }
     },
 
-    initialize: function() {
-        this.on("ready", this.onReady, this);
-        this.on("finish", this.onFinish, this);
-    },
-
-    onReady: function() {
+    onSelectGroupReady: function() {
         this.title = "Test Run Group";
         var tbldata = [];
         _.each(this.data.testrungroups, function(testrungroup) {
@@ -33,7 +45,7 @@ var ReportsResultViewPage = SlickPage.extend({
 
 
             tbldata[tbldata.length] = [
-                "<a href=\"#/reports/testrunsummary/" + testrungroup.id + "\">" + testrungroup.name + "</a>",
+                "<a href=\"#/reports/testrungroup/" + testrungroup.id + "\">" + testrungroup.name + "</a>",
                 "<div class=\"result-bar center-block\">" + resultBar + "</div>",
                 safeReference(testrungroup, "groupSummary.total", 0),
                 safeReference(testrungroup, "testruns.length", 0),
@@ -44,7 +56,7 @@ var ReportsResultViewPage = SlickPage.extend({
         this.testrungroupData = tbldata;
     },
 
-    onFinish: function() {
+    onSelectGroupFinish: function() {
         var datatable = $("#reports-testrungroup-table").dataTable({
             aaData: this.testrungroupData,
             aoColumns: [
@@ -64,5 +76,61 @@ var ReportsResultViewPage = SlickPage.extend({
         datatable.fnSort([[5, "desc"]]);
 
 
+    },
+
+    onReportReady: function() {
+        this.title = this.data.testrungroup.name + " Testrun Group";
+        this.piechartdata = new google.visualization.DataTable();
+        this.piechartdata.addColumn('string', 'Result Type');
+        this.piechartdata.addColumn('number', 'Number of Results');
+        this.piechartdata.addRows(this.data.testrungroup.groupSummary.statusListOrdered.length);
+        this.statusColors = [];
+        this.summarylines = [];
+        this.barchartdata = new google.visualization.DataTable();
+        this.barchartdata.addColumn('string', 'Testrun Name');
+        _.each(this.data.testrungroup.groupSummary.statusListOrdered, function(statusName, index) {
+            // get the color from CSS
+            var statusColorElement = $('<div class="result-status-' + statusName.replace("_", "") + '" style="display: none" />').appendTo("#main");
+            this.statusColors[this.statusColors.length] = statusColorElement.css('color');
+            statusColorElement.remove();
+
+            // add the data to the chart
+            this.piechartdata.setValue(index, 0, statusName.replace("_", " "));
+            this.piechartdata.setValue(index, 1, this.data.testrungroup.groupSummary.resultsByStatus[statusName]);
+            this.barchartdata.addColumn('number', statusName);
+        }, this);
+
+        this.barchartdata.addRows(this.data.testrungroup.testruns.length);
+        _.each(this.data.testrungroup.testruns, function(testrun, i) {
+            this.barchartdata.setValue(i, 0, testrun.name);
+            _.each(this.data.testrungroup.groupSummary.statusListOrdered, function(statusName, j) {
+                var value = 0;
+                if(testrun.summary.resultsByStatus[statusName]) {
+                    value = testrun.summary.resultsByStatus[statusName];
+                }
+                this.barchartdata.setValue(i, j + 1, value);
+            }, this);
+        }, this);
+    },
+
+    onReportFinish: function() {
+        var piechart = new google.visualization.PieChart(document.getElementById("testrungroup-piechart"));
+        piechart.draw(this.piechartdata, {
+            is3D: true,
+            backgroundColor: $("#main").css('background-color'),
+            legendTextStyle: {
+                color: $("#main").css('color')},
+            colors: this.statusColors
+        });
+
+        var barchart = new google.visualization.ColumnChart(document.getElementById("testrungroup-barchart"));
+        barchart.draw(this.barchartdata, {
+            backgroundColor: $("#main").css('background-color'),
+            legendTextStyle: {
+                color: $("#main").css('color')},
+            colors: this.statusColors,
+            hAxis: { textStyle: { color: $("#main").css('color')}},
+            vAxis: { baselineColor: $("#main").css('color'), textStyle: { color: $("#main").css('color')}}
+        });
     }
 });
