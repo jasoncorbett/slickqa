@@ -209,6 +209,11 @@ public interface ProjectResource
 	@GET
 	public Component getComponent(@PathParam("projectid") String projectId, @PathParam("componentid") String componentId);
 
+	@Path("/{projectid}/components/byname/{componentname}")
+	@Produces("application/json")
+	@GET
+	public Component getComponentByName(@PathParam("projectid") String projectId, @PathParam("componentname") String componentName);
+	
 	@Path("/{projectid}/components/{componentid}")
 	@Produces("application/json")
 	@Consumes("application/json")

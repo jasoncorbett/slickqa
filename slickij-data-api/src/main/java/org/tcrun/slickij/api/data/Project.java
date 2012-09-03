@@ -238,6 +238,8 @@ public class Project implements Serializable
 
 	public Release findReleaseByReference(ReleaseReference ref)
 	{
+		if(ref == null)
+			return null;	    
 		Release retval = null;
 		if(ref.getReleaseId() != null)
 			retval = findRelease(ref.getReleaseId());
@@ -368,6 +370,8 @@ public class Project implements Serializable
 
 	public Component findComponentByReference(ComponentReference ref)
 	{
+		if(ref == null)
+			return null;	    
 		Component retval = null;
 		if(ref.getId() != null)
 			retval = findComponent(ref.getId());

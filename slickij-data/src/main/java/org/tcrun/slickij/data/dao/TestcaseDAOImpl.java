@@ -55,6 +55,8 @@ public class TestcaseDAOImpl extends BasicDAO<Testcase, ObjectId> implements Tes
 	@Override
 	public Testcase findTestcaseByReference(TestcaseReference ref)
 	{
+		if(ref == null)
+			return null;	    
 		Testcase retval = null;
 		if(ref.getTestcaseId() != null)
 			retval = get(ref.getActualId());
