@@ -56,7 +56,7 @@ class TestrunGroupTests(unittest.TestCase):
                                     "name": proj.name}}
 
         testruns = []
-        for i in range(6):
+        for i in range(7):
             testrun = dict(base_testrun)
             testrun["name"] = "Testrun " + str(i + 1)
             testrun = api.testruns.post(testrun)
@@ -80,7 +80,7 @@ class TestrunGroupTests(unittest.TestCase):
 
     def test_add_testrun_group(self):
         """Add testrun group test"""
-        group = self.api.testrungroups.post({"name": "A test testrun group"})
+        group = self.api.testrungroups.post({"name": "Example"})
         self.assertIn('id', group)
 
     def test_add_testruns_to_group(self):

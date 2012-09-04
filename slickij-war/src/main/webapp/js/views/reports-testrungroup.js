@@ -80,6 +80,15 @@ var ReportsResultViewPage = SlickPage.extend({
 
     onReportReady: function() {
         this.title = this.data.testrungroup.name + " Testrun Group";
+
+        // create the table data
+        this.tabledata = [];
+        var statuswidth =  50.0 / (this.data.testrungroup.groupSummary.statusListOrdered.length + 1.0);
+        this.tablecolumns = [{sTitle: "Name", sWidth: "40%", sType: "html"},
+                             {sTitle: "Build", sWidth: "10%"},
+                             {sTitle: "Total Tests", sWidth: "" + statuswidth + "%"}];
+
+        // create pie and bar chart data
         this.piechartdata = new google.visualization.DataTable();
         this.piechartdata.addColumn('string', 'Result Type');
         this.piechartdata.addColumn('number', 'Number of Results');
@@ -98,19 +107,31 @@ var ReportsResultViewPage = SlickPage.extend({
             this.piechartdata.setValue(index, 0, statusName.replace("_", " "));
             this.piechartdata.setValue(index, 1, this.data.testrungroup.groupSummary.resultsByStatus[statusName]);
             this.barchartdata.addColumn('number', statusName);
+
+            // add to the table columns
+            this.tablecolumns[this.tablecolumns.length] = {sTitle: statusName.replace("_", " "), sWidth: statuswidth};
         }, this);
 
         this.barchartdata.addRows(this.data.testrungroup.testruns.length);
         _.each(this.data.testrungroup.testruns, function(testrun, i) {
             this.barchartdata.setValue(i, 0, testrun.name);
+
+            var testruncolumns = ["<a href=\"#/reports/testrunsummary/" + testrun.id + "\">" + testrun.name + "</a>",
+                                  safeReference(testrun, "release.name", "") + " Build " + safeReference(testrun, "build.name", ""),
+                                  testrun.summary.total];
             _.each(this.data.testrungroup.groupSummary.statusListOrdered, function(statusName, j) {
                 var value = 0;
                 if(testrun.summary.resultsByStatus[statusName]) {
                     value = testrun.summary.resultsByStatus[statusName];
                 }
                 this.barchartdata.setValue(i, j + 1, value);
+                testruncolumns[testruncolumns.length] = value;
             }, this);
+
+            this.tabledata[this.tabledata.length] = testruncolumns;
+
         }, this);
+
     },
 
     onReportFinish: function() {
@@ -132,5 +153,17 @@ var ReportsResultViewPage = SlickPage.extend({
             hAxis: { textStyle: { color: $("#main").css('color')}},
             vAxis: { baselineColor: $("#main").css('color'), textStyle: { color: $("#main").css('color')}}
         });
+
+        var datatable = $("#testruns-table").dataTable({
+            aaData: this.tabledata,
+            aoColumns: this.tablecolumns,
+            bJQueryUI: true,
+            bAutoWidth: false,
+            bDeferRender: true,
+            bPaginate: false,
+            sDom: "<\"H\"lfr>tS<\"F\"ip>",
+            sScrollY: "" + ($("#content").height() - $("#testrungroup-piechart-container").height() - (6 * $("#footer").height()) - $("#content-bottom-pad").height()) + "px"
+        });
+
     }
 });
