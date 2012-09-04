@@ -75,6 +75,7 @@ var ReportsTestrunGroupPage = SlickPage.extend({
         });
         datatable.fnSort([[5, "desc"]]);
 
+        $("#reports-testrungroup-table").on("click", ".testrungroup-delete-button", {page: this}, this.onDeleteTestrunGroup);
 
     },
 
@@ -165,6 +166,24 @@ var ReportsTestrunGroupPage = SlickPage.extend({
             bPaginate: false,
             sDom: "<\"H\"lfr>tS<\"F\"ip>",
             sScrollY: "" + ($("#content").height() - $("#testrungroup-piechart-container").height() - (6 * $("#footer").height()) - $("#content-bottom-pad").height()) + "px"
+        });
+
+    },
+
+    onDeleteTestrunGroup: function(event) {
+        event.preventDefault();
+        var page = event.data.page;
+        var id = $(event.target).data("id");
+
+        $.ajax({
+            url: "api/testrungroups/" + id,
+            type: "DELETE",
+            success: function() {
+                window.onPageChange();
+            },
+            error: function() {
+                page.error("Unable to delete testrun group with id " + id);
+            }
         });
 
     }

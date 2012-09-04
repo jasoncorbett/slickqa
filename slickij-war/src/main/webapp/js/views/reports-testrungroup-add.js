@@ -36,6 +36,6 @@ var ReportsAddTestrunGroupPage = SlickPage.extend({
                 page.error("Adding new testrungroup failed.");
                 window.onPageChange(); // reload page
             }
-        })
+        });
     }
 });
