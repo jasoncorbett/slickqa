@@ -5,10 +5,10 @@
  * Time: 9:40 AM
  */
 
-var ReportsResultViewPage = SlickPage.extend({
+var ReportsTestrunGroupPage = SlickPage.extend({
     group: "reports",
     codename: "testrungroup",
-    name: "Test Run Group",
+    name: "Test Run Groups",
     navigation: true,
 
     initialize: function() {
@@ -49,8 +49,8 @@ var ReportsResultViewPage = SlickPage.extend({
                 "<div class=\"result-bar center-block\">" + resultBar + "</div>",
                 safeReference(testrungroup, "groupSummary.total", 0),
                 safeReference(testrungroup, "testruns.length", 0),
-                "<a href=\"javascript:;\" class=\"button testrungroup-edit-button\" data-id=\"" + testrungroup.id + "\" > Edit </a>" +
-                "<a href=\"javascript:;\" class=\"button testrungroup-delete-button\" data-id=\"" + testrungroup.id + "\"> Delete </a>",
+                "<a href=\"#/reports/testrungroup-edit/" + testrungroup.id + "\" class=\"button modal-link\">Edit</a>" +
+                "<a href=\"javascript:;\" class=\"button testrungroup-delete-button\" data-id=\"" + testrungroup.id + "\">Delete</a>",
                 new Date(testrungroup.created)];
         });
         this.testrungroupData = tbldata;
@@ -97,6 +97,8 @@ var ReportsResultViewPage = SlickPage.extend({
         this.summarylines = [];
         this.barchartdata = new google.visualization.DataTable();
         this.barchartdata.addColumn('string', 'Testrun Name');
+
+        // go through each status
         _.each(this.data.testrungroup.groupSummary.statusListOrdered, function(statusName, index) {
             // get the color from CSS
             var statusColorElement = $('<div class="result-status-' + statusName.replace("_", "") + '" style="display: none" />').appendTo("#main");
