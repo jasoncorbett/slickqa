@@ -1,0 +1,35 @@
+<div id="testrungroup-edit-page">
+<table id="testrungroup-edit-included" class="table-full-width"></table>
+<hr class="glowing" />
+<div id="testrungroup-edit-selects" class="center">
+<select id="testrungroup-edit-project-select">
+    {{#if noProject}}
+    <option value="null" selected>No Project</option>
+    {{else}}
+    <option value="null">No Project</option>
+    {{/if}}
+    {{#each data.projects}}
+    {{#if selectedProject}}
+    <option value="{{id}}" data-project-name="{{name}}" selected>{{name}}</option>
+    {{else}}
+    <option value="{{id}}" data-project-name="{{name}}">{{name}}</option>
+    {{/if}}
+    {{/each}}
+</select>
+<select id="testrungroup-edit-release-select">
+    {{#if noRelease}}
+    <option value="null" selected>No Release</option>
+    {{else}}
+    <option value="null">No Release</option>
+    {{/if}}
+    {{#each releases}}
+    {{#if selectedRelease}}
+    <option value="{{id}}" data-release-name="{{name}}" selected>{{name}}</option>
+    {{else}}
+    <option value="{{id}}" data-release-name="{{name}}">{{name}}</option>
+    {{/if}}
+    {{/each}}
+</select>
+</div>
+<table id="testrungroup-edit-potential" class="table-full-width"></table>
+</div>

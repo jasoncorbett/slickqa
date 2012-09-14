@@ -84,7 +84,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
                 {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "center"},
                 {"sTitle": "Test Name", "sWidth": "55%", "sType": "html"},
                 {"sTitle": "Component", "sWidth": "10%", "sClass": "center"},
-                {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": false},
+                {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": true},
                 {"sTitle": "Test Duration", "sWidth": "10%", "sClass": "center"},
                 {"sTitle": "Automation ID", "bVisible": false},
                 {"sTitle": "Reason", "bVisible": false},

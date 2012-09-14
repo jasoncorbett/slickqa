@@ -355,6 +355,15 @@ var SlickPage = Backbone.View.extend({
                 this.trigger("finish");
                 $("[title]").tooltip();
             }
+        },
+
+        reload: function() {
+            $(this.el).html("");
+            this.trigger("reload");
+            this._callbacks = null;
+            this.data = {};
+            this.initialize(this.options);
+            this.pageStart();
         }
 },
 {
