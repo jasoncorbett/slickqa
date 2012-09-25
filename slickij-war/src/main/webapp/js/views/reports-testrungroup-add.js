@@ -23,7 +23,7 @@ var ReportsAddTestrunGroupPage = SlickPage.extend({
         var name = $("#add-testrungroup-form-name").val();
         var page = event.data.page;
         $.ajax({
-            url: "/api/testrungroups",
+            url: "api/testrungroups",
             type: "POST",
             dataType: "json",
             contentType: "application/json",
