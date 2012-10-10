@@ -30,6 +30,10 @@
 		<pre class="filedisplay textdisplay" data-fileName="{{filename}}" id="{{id}}">
 		</pre>
             {{/if}}
+            {{#if isWMV}}
+                <div class="filedisplay video-wmv" data-filename="{{filename}}" id="{{id}}">
+                </div>
+            {{/if}}
 	    <!-- TODO: Add handling for XML files separate from the plain text files -->
         {{/each}}
     </div>

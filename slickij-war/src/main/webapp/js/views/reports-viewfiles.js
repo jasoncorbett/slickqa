@@ -34,9 +34,12 @@ var ReportsViewFilesPage = SlickPage.extend({
                 file.isImage = true;
                 file.icon = "api/files/" + file.id + "/content/" + file.filename;
             } else if(file.mimetype.match(/^text.*/)) {
-		file.isText = true;
-		file.icon = "images/logs.png";
-	    }
+		        file.isText = true;
+		        file.icon = "images/logs.png";
+	        } else if(file.mimetype.match(/.*wmv.*/)) {
+                file.isWMV = true;
+                file.icon = "images/film.png";
+            }
         });
     },
 
@@ -85,6 +88,14 @@ var ReportsViewFilesPage = SlickPage.extend({
                     prettyPrint();
                 }
             });
+        });
+
+        $(".video-wmv").each(function() {
+            var displaydiv = $(this);
+            var movie = "api/files/" + displaydiv.attr("id") + "/content/" + displaydiv.data("fileName");
+            var src = "media/wmvplayer.xaml";
+            var cfg = {height: $("#viewfilebox").height(), width: $("#fileviewer").width(), backgroundcolor:'000000',file: movie,backcolor:'000000', frontcolor:'FFFFFF',windowless:'true'};
+            var ply = new jeroenwijering.Player(this,src,cfg);
         });
     }
 });
