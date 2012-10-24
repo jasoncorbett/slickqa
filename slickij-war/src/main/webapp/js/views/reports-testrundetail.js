@@ -82,8 +82,8 @@ var ReportsTestRunDetailPage = SlickPage.extend({
             aaData: this.tbldata,
             aoColumns: [
                 {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "center"},
-                {"sTitle": "Test Name", "sWidth": "55%", "sType": "html"},
-                {"sTitle": "Component", "sWidth": "10%", "sClass": "center"},
+                {"sTitle": "Test Name", "sWidth": "55%", "sType": "html", "sClass": "testrundetail-test-name"},
+                {"sTitle": "Component", "sWidth": "10%", "sClass": "center", "sClass": "testrundetail-component-name"},
                 {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": true},
                 {"sTitle": "Test Duration", "sWidth": "10%", "sClass": "center"},
                 {"sTitle": "Automation ID", "bVisible": false},

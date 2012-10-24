@@ -1530,3 +1530,13 @@ span.log-level-TRACE {
     padding-left: 5px;
 }
 
+.testrundetail-test-name {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.testrundetail-component-name {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
