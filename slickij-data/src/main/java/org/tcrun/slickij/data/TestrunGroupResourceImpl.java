@@ -1,5 +1,6 @@
 package org.tcrun.slickij.data;
 
+import com.google.code.morphia.query.Query;
 import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.tcrun.slickij.api.TestrunGroupResource;
@@ -36,9 +37,18 @@ public class TestrunGroupResourceImpl implements TestrunGroupResource
     }
 
     @Override
-    public List<TestrunGroup> getMatchingTestrunGroups(Long date)
+    public List<TestrunGroup> getMatchingTestrunGroups(Long date, String name)
     {
-        return trgDAO.getTestrunsCreatedAfter(new Date(date));
+        Query<TestrunGroup> query = trgDAO.createQuery();
+        if(date > 0)
+        {
+            query.criteria("created").greaterThan(new Date(date));
+        }
+        if (name != null && !name.equals(""))
+        {
+            query.criteria("name").equal(name);
+        }
+        return query.asList();
     }
 
     @Override

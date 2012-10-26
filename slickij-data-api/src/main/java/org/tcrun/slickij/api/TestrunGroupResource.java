@@ -19,7 +19,8 @@ import java.util.List;
 public interface TestrunGroupResource
 {
     @GET
-    public List<TestrunGroup> getMatchingTestrunGroups(@QueryParam("createdafter") Long date);
+    public List<TestrunGroup> getMatchingTestrunGroups(@QueryParam("createdafter") @DefaultValue("0") Long date,
+                                                       @QueryParam("name") @DefaultValue("") String name);
 
     @POST
     public TestrunGroup createTestrunGroup(TestrunGroup trgroup);
