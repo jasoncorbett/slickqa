@@ -94,7 +94,7 @@ var ActiveReleasesThreeTestRuns = SlickPage.extend({
     onFinish: function() {
         //first result
         if (!this.nodata) {
-            var chart = new google.visualization.PieChart(document.getElementById("dashboardlet-" + this.projectname + "-chart"));
+            var chart = new google.visualization.PieChart(document.getElementById("dashboardlet-" + this.title + "-chart"));
             chart.draw(this.chartdata, {
                 is3D: true,
                 backgroundColor: $("#main").css('background-color'),
