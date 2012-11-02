@@ -146,6 +146,12 @@ class SlickAsPy(object):
                 self.current_release = release
                 return release
 
+    def get_test_run_group_by_name(self, name):
+        try:            
+            return self._safe_get("testrungroups?name={}".format(name))
+        except SlickError:
+            return None
+    
     def get_release_by_id(self, release_id):
         return self._safe_get("projects", self.current_project["id"], "releases", release_id)
 
@@ -355,6 +361,12 @@ class SlickAsPy(object):
         testRun = {"name": name, "testplanId": testPlanId, "config": configurationRef, "project": projectRef, "dateCreated": dateCreated, 
                    "release": releaseRef, "build": buildRef, "extensions": extensions}
         return self._safe_post(testRun, "testruns")
+    
+    def add_test_run_group(self, test_run_group_name):
+        self._safe_post({"name":test_run_group_name}, "testrungroups")
+        
+    def add_test_run_to_test_group(self, trg_id, tr_id):
+        self._safe_post(None, "testrungroups", trg_id, "addtestrun", tr_id)
 
     def update_test_run(self, testRunId, testRun):
         return self._safe_put("testruns", testRunId, testRun)
