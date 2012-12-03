@@ -546,8 +546,8 @@ public class ProjectResourceImpl implements ProjectResource
 
 	protected DataExtension<Project> getExtensionById(Project project, String extensionid)
 	{
-		DataExtension retval = null;
-		for(DataExtension potential : project.getExtensions())
+		DataExtension<Project> retval = null;
+		for(DataExtension<Project> potential : project.getExtensions())
 		{
 			if(potential.getId().equals(extensionid))
 			{
@@ -586,7 +586,7 @@ public class ProjectResourceImpl implements ProjectResource
 	public DataExtension<Project> updateExtension(String projectId, String extensionid, DataExtension<Project> extension)
 	{
 		Project project = getProjectById(projectId);
-		DataExtension realExtension = getExtensionById(project, extensionid);
+		DataExtension<Project> realExtension = getExtensionById(project, extensionid);
 		realExtension.update(extension);
 		m_projectDAO.save(project);
 		return realExtension;
