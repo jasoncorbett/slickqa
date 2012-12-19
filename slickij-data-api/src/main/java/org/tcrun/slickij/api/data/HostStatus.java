@@ -12,7 +12,7 @@ import java.util.Date;
  * @author jcorbett
  */
 @Entity("hoststatus")
-public class HostStatus implements Serializable
+public class HostStatus implements Serializable, Copyable<HostStatus>
 {
 	@Id
 	private String hostname;
@@ -63,5 +63,17 @@ public class HostStatus implements Serializable
     public int getSecondsSinceLastCheckin()
     {
         return (int)(((new Date()).getTime() - lastCheckin.getTime())/1000);
+    }
+
+    @Override
+    public HostStatus createCopy()
+    {
+        HostStatus copy = new HostStatus();
+
+        copy.setHostname(hostname);
+        copy.setLastCheckin(new Date(lastCheckin.getTime()));
+        copy.setCurrentWork(currentWork.createCopy());
+
+        return copy;
     }
 }

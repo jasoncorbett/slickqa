@@ -10,7 +10,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author slambson
  */
-public class ProjectReference implements Serializable
+public class ProjectReference implements Serializable, Copyable<ProjectReference>
 {
 
 	@Property
@@ -80,4 +80,12 @@ public class ProjectReference implements Serializable
 	}
 
 
+    @Override
+    public ProjectReference createCopy()
+    {
+        ProjectReference copy = new ProjectReference();
+        copy.setId(getObjectId());
+        copy.setName(getName());
+        return copy;
+    }
 }

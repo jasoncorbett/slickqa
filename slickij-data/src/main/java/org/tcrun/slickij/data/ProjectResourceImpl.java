@@ -24,6 +24,9 @@ import org.tcrun.slickij.api.data.DataDrivenPropertyType;
 import org.tcrun.slickij.api.data.InvalidDataError;
 import org.tcrun.slickij.api.data.Project;
 import org.tcrun.slickij.api.data.Release;
+import org.tcrun.slickij.api.events.CreateReleaseEvent;
+import org.tcrun.slickij.api.events.EventManager;
+import org.tcrun.slickij.api.events.SlickEventException;
 
 /**
  *
@@ -33,12 +36,14 @@ public class ProjectResourceImpl implements ProjectResource
 {
 	private ProjectDAO m_projectDAO;
 	private ConfigurationDAO m_configDAO;
+    private EventManager m_eventManager;
 
 	@Inject
-	public ProjectResourceImpl(ProjectDAO p_projectDAO, ConfigurationDAO p_configDAO)
+	public ProjectResourceImpl(ProjectDAO p_projectDAO, ConfigurationDAO p_configDAO, EventManager p_eventManager)
 	{
 		m_projectDAO = p_projectDAO;
 		m_configDAO = p_configDAO;
+        m_eventManager = p_eventManager;
 	}
 
 	@Override
@@ -154,11 +159,11 @@ public class ProjectResourceImpl implements ProjectResource
 		try
 		{
 			project.addRelease(release);
+            m_eventManager.publishEvent(new CreateReleaseEvent(project, release));
 		} catch(InvalidDataError e)
 		{
 			throw new WebApplicationException(e, Status.BAD_REQUEST);
 		}
-
 		m_projectDAO.save(project);
 
 		return release;

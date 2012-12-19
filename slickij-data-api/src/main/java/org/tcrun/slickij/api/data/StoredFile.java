@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author jcorbett
  */
 @Entity("fs.files")
-public class StoredFile implements Serializable
+public class StoredFile implements Serializable, Copyable<StoredFile>
 {
 	@Id
 	private ObjectId id;
@@ -116,4 +116,17 @@ public class StoredFile implements Serializable
 	}
 
 
+    @Override
+    public StoredFile createCopy()
+    {
+        StoredFile copy = new StoredFile();
+        copy.setId(getObjectId());
+        copy.setChunkSize(getChunkSize());
+        copy.setFilename(getFilename());
+        copy.setLength(getLength());
+        copy.setMd5(getMd5());
+        copy.setMimetype(getMimetype());
+        copy.setUploadDate(new Date(getUploadDate().getTime()));
+        return copy;
+    }
 }

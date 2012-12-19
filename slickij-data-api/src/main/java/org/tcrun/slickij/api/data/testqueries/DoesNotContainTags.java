@@ -3,6 +3,8 @@ package org.tcrun.slickij.api.data.testqueries;
 import com.google.code.morphia.annotations.Property;
 import com.google.code.morphia.query.Criteria;
 import com.google.code.morphia.query.Query;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.tcrun.slickij.api.data.Testcase;
 
@@ -45,4 +47,13 @@ public class DoesNotContainTags implements TestcaseQuery
 		this.tagnames = tagnames;
 	}
 
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        DoesNotContainTags copy = new DoesNotContainTags();
+
+        copy.setTagnames(new ArrayList<String>(tagnames));
+
+        return copy;
+    }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author jcorbett
  */
-public class TestRunSummary implements Serializable
+public class TestRunSummary implements Serializable, Copyable<TestRunSummary>
 {
 	private static final Map<String, Integer> statusOrderValues;
 	static {
@@ -93,5 +93,16 @@ public class TestRunSummary implements Serializable
 
     public void setTotalTime(int totalTime) {
         this.totalTime = totalTime;
+    }
+
+    @Override
+    public TestRunSummary createCopy()
+    {
+        TestRunSummary copy = new TestRunSummary();
+
+        copy.setTotalTime(totalTime);
+        copy.setResultsByStatus(new HashMap<String, Long>(resultsByStatus));
+
+        return copy;
     }
 }

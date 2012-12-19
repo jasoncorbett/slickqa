@@ -6,12 +6,13 @@ package org.tcrun.slickij.api.data.testqueries;
 
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Property;
+import org.tcrun.slickij.api.data.Copyable;
 
 /**
  *
  * @author jcorbett
  */
-public class NamedTestcaseQuery
+public class NamedTestcaseQuery implements Copyable<NamedTestcaseQuery>
 {
 	@Property
 	private String name;
@@ -38,4 +39,15 @@ public class NamedTestcaseQuery
 	{
 		this.query = query;
 	}
+
+    @Override
+    public NamedTestcaseQuery createCopy()
+    {
+        NamedTestcaseQuery copy = new NamedTestcaseQuery();
+
+        copy.setName(name);
+        copy.setQuery(query.createCopy());
+
+        return copy;
+    }
 }

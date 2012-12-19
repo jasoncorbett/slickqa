@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author jcorbett
  */
-public class Build implements Serializable
+public class Build implements Serializable, Copyable<Build>
 {
 	@Property
 	private ObjectId id;
@@ -85,4 +85,16 @@ public class Build implements Serializable
 		retval.setName(name);
 		return retval;
 	}
+
+    @Override
+    public Build createCopy()
+    {
+        Build copy = new Build();
+
+        copy.setId(id);
+        copy.setBuilt(new Date(built.getTime()));
+        copy.setName(name);
+
+        return copy;
+    }
 }

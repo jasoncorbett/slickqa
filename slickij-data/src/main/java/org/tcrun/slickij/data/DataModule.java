@@ -4,6 +4,7 @@ import com.google.inject.multibindings.Multibinder;
 import org.tcrun.slickij.api.*;
 import org.tcrun.slickij.api.data.*;
 import org.tcrun.slickij.api.data.dao.*;
+import org.tcrun.slickij.api.events.EventManager;
 import org.tcrun.slickij.data.dao.*;
 import com.google.code.morphia.Morphia;
 import com.google.inject.AbstractModule;
@@ -12,6 +13,7 @@ import java.util.Map;
 import org.tcrun.slickij.core.DataPluginModule;
 import org.tcrun.slickij.data.org.tcrun.slickij.data.updates.AddIndexesUpdate;
 import org.tcrun.slickij.data.org.tcrun.slickij.data.updates.AddTestrunBuildIndexUpdate;
+import org.tcrun.slickij.events.AMQPEventManager;
 
 /**
  *
@@ -36,6 +38,7 @@ public class DataModule extends AbstractModule implements DataPluginModule
 		morphia.map(FileChunk.class);
         morphia.map(UpdateRecord.class);
         morphia.map(TestrunGroup.class);
+        morphia.map(AMQPSystemConfiguration.class);
 		bind(ProjectDAO.class).to(ProjectDAOImpl.class);
 		bind(FileChunkDAO.class).to(FileChunkDAOImpl.class);
 		bind(ConfigurationDAO.class).to(ConfigurationDAOImpl.class);
@@ -48,6 +51,7 @@ public class DataModule extends AbstractModule implements DataPluginModule
 		bind(StoredFileDAO.class).to(StoredFileDAOImpl.class);
         bind(UpdateRecordDAO.class).to(UpdateRecordDAOImpl.class);
         bind(TestrunGroupDAO.class).to(TestrunGroupDAOImpl.class);
+        bind(SystemConfigurationDAO.class).to(SystemConfigurationDAOImpl.class);
 		bind(ProjectResource.class).to(ProjectResourceImpl.class);
 		bind(TestplanResource.class).to(TestplanResourceImpl.class);
 		bind(ConfigurationResource.class).to(ConfigurationResourceImpl.class);
@@ -60,6 +64,9 @@ public class DataModule extends AbstractModule implements DataPluginModule
 		bind(VersionResource.class).to(VersionResourceImpl.class);
         bind(UpdateResource.class).to(UpdateResourceImpl.class);
         bind(TestrunGroupResource.class).to(TestrunGroupResourceImpl.class);
+        bind(SystemConfigurationResource.class).to(SystemConfigurationResourceImpl.class);
+        bind(ReloadResource.class).to(ReloadResourceImpl.class);
+        bind(EventManager.class).to(AMQPEventManager.class).asEagerSingleton();
 		bind(SlickApiExceptionMapper.class);
 		bind(NotFoundExceptionMapper.class);
 

@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author jcorbett
  */
-public class ConfigurationOverride implements Serializable
+public class ConfigurationOverride implements Serializable, Copyable<ConfigurationOverride>
 {
 	@Property
 	private String key;
@@ -47,4 +47,16 @@ public class ConfigurationOverride implements Serializable
 	{
 		this.value = value;
 	}
+
+    @Override
+    public ConfigurationOverride createCopy()
+    {
+        ConfigurationOverride copy = new ConfigurationOverride();
+
+        copy.setIsRequirement(isRequirement);
+        copy.setKey(key);
+        copy.setValue(value);
+
+        return copy;
+    }
 }

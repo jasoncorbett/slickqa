@@ -52,4 +52,15 @@ public class FieldEquals implements TestcaseQuery
 	{
 		this.fieldValue = fieldValue;
 	}
+
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        FieldEquals copy = new FieldEquals();
+
+        copy.setFieldName(fieldName);
+        copy.setFieldValue(fieldValue);
+
+        return copy;
+    }
 }

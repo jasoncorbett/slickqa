@@ -9,7 +9,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author jcorbett
  */
-public class BuildReference implements Serializable
+public class BuildReference implements Serializable, Copyable<BuildReference>
 {
 	@Property
 	private ObjectId buildId;
@@ -45,4 +45,15 @@ public class BuildReference implements Serializable
 	{
 		this.name = name;
 	}
+
+    @Override
+    public BuildReference createCopy()
+    {
+        BuildReference copy = new BuildReference();
+
+        copy.setBuildId(buildId);
+        copy.setName(name);
+
+        return copy;
+    }
 }

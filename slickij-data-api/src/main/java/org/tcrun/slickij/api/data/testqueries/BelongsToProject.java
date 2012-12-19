@@ -34,4 +34,14 @@ public class BelongsToProject implements TestcaseQuery
 	{
 		this.projectId = projectId;
 	}
+
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        BelongsToProject copy = new BelongsToProject();
+
+        copy.setProjectId(projectId);
+
+        return copy;
+    }
 }

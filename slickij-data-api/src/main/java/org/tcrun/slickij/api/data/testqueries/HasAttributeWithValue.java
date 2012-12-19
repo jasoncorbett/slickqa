@@ -50,4 +50,12 @@ public class HasAttributeWithValue implements TestcaseQuery
 	}
 
 
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        HasAttributeWithValue copy = new HasAttributeWithValue();
+        copy.setAttributeName(attributeName);
+        copy.setAttributeValue(attributeValue);
+        return copy;
+    }
 }

@@ -14,7 +14,7 @@ import org.bson.types.ObjectId;
  * @author jcorbett
  */
 @Entity("configurations")
-public class Configuration implements Serializable
+public class Configuration implements Serializable, Copyable<Configuration>
 {
 	@Id
 	private ObjectId id;
@@ -150,4 +150,18 @@ public class Configuration implements Serializable
 		retval.setName(name);
 		return retval;
 	}
+
+    @Override
+    public Configuration createCopy()
+    {
+        Configuration copy = new Configuration();
+        copy.setId(id);
+        copy.setConfigurationType(getConfigurationType());
+        copy.setFilename(getFilename());
+        copy.setName(getName());
+        Map<String, String> data = new HashMap<String, String>();
+        data.putAll(getConfigurationData());
+        copy.setConfigurationData(data);
+        return copy;
+    }
 }

@@ -24,7 +24,7 @@ import java.util.List;
  * @author jcorbett
  */
 @Entity("testplans")
-public class Testplan implements Serializable
+public class Testplan implements Serializable, Copyable<Testplan>
 {
 	@Id
 	private ObjectId id;
@@ -168,4 +168,25 @@ public class Testplan implements Serializable
 	{
 		this.extensions = extensions;
 	}
+
+    @Override
+    public Testplan createCopy()
+    {
+        Testplan copy = new Testplan();
+
+        copy.setId(id);
+        copy.setCreatedBy(createdBy);
+        copy.setIsprivate(isprivate);
+        copy.setName(name);
+        copy.setProject(project.createCopy());
+
+        List<NamedTestcaseQuery> copyOfQueries = new ArrayList<NamedTestcaseQuery>();
+        for(NamedTestcaseQuery orig : queries)
+            copyOfQueries.add(orig.createCopy());
+        copy.setQueries(copyOfQueries);
+
+        copy.setSharedWith(new ArrayList<String>(sharedWith));
+
+        return copy;
+    }
 }

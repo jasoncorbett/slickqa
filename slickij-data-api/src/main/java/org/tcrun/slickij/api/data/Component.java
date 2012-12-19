@@ -11,7 +11,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author jcorbett
  */
-public class Component implements Serializable
+public class Component implements Serializable, Copyable<Component>
 {
 	@Property
 	private ObjectId id;
@@ -92,4 +92,15 @@ public class Component implements Serializable
 			setCode(name.toLowerCase().replaceAll(" ", "_"));
 	}
 
+
+    @Override
+    public Component createCopy()
+    {
+        Component copy = new Component();
+        copy.setId(getObjectId());
+        copy.setDescription(getDescription());
+        copy.setName(getName());
+        copy.setCode(getCode());
+        return copy;
+    }
 }

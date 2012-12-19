@@ -7,9 +7,8 @@ import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Property;
 import com.google.code.morphia.annotations.Reference;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -18,7 +17,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author jcorbett
  */
 @Entity("results")
-public class Result implements Serializable
+public class Result implements Serializable, Copyable<Result>
 {
 	@Id
 	private ObjectId id;
@@ -353,4 +352,59 @@ public class Result implements Serializable
 
 		return allRequirementsSatisfied;
 	}
+
+    @Override
+    public Result createCopy()
+    {
+        Result copy = new Result();
+
+        copy.setBuild(build.createCopy());
+        copy.setComponent(component.createCopy());
+        copy.setConfig(config.createCopy());
+        copy.setHostname(hostname);
+        copy.setId(id);
+        copy.setProject(project.createCopy());
+        copy.setTestrun(testrun.createCopy());
+        copy.setTestcase(testcase.createCopy());
+        copy.setStatus(status);
+        copy.setRunstatus(runstatus);
+        copy.setRunlength(runlength);
+        copy.setRelease(release.createCopy());
+        copy.setRecorded(new Date(recorded.getTime()));
+        copy.setReason(reason);
+        copy.setTestrun(testrun.createCopy());
+
+        copy.setAttributes(new HashMap<String, String>());
+        copy.getAttributes().putAll(attributes);
+
+        List<ResultReference> copyOfHistory = new ArrayList<ResultReference>(history.size());
+        for(ResultReference orig : history)
+        {
+            copyOfHistory.add(orig.createCopy());
+        }
+        copy.setHistory(copyOfHistory);
+
+        List<ConfigurationOverride> copyOfOverrides = new ArrayList<ConfigurationOverride>();
+        for(ConfigurationOverride orig : getConfigurationOverride())
+        {
+            copyOfOverrides.add(orig.createCopy());
+        }
+        copy.setConfigurationOverride(copyOfOverrides);
+
+        List<StoredFile> copyOfStoredFiles = new ArrayList<StoredFile>();
+        for(StoredFile orig : getFiles())
+        {
+            copyOfStoredFiles.add(orig.createCopy());
+        }
+        copy.setFiles(copyOfStoredFiles);
+
+        List<LogEntry> copyOfLogs = new ArrayList<LogEntry>(log.size());
+        for(LogEntry orig : log)
+        {
+            copyOfLogs.add(orig.createCopy());
+        }
+        copy.setLog(copyOfLogs);
+
+        return copy;
+    }
 }

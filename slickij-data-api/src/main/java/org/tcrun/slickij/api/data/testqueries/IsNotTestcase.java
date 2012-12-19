@@ -40,4 +40,12 @@ public class IsNotTestcase implements TestcaseQuery
 	{
 		testcaseId = id;
 	}
+
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        IsNotTestcase copy = new IsNotTestcase();
+        copy.setTestcaseId(testcaseId);
+        return copy;
+    }
 }

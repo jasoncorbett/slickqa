@@ -58,4 +58,12 @@ public class IsTestcase implements TestcaseQuery
 	{
 		this.ref = ref;
 	}
+
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        IsTestcase copy = new IsTestcase();
+        copy.setRef(ref.createCopy());
+        return copy;
+    }
 }

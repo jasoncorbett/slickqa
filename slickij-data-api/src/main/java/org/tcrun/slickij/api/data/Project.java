@@ -16,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author jcorbett
  */
 @Entity("projects")
-public class Project implements Serializable
+public class Project implements Serializable, Copyable<Project>
 {
 	@Id
 	private ObjectId id;
@@ -515,4 +515,54 @@ public class Project implements Serializable
         // do nothing
     }
 
+    @Override
+    public Project createCopy()
+    {
+        Project copy = new Project();
+        copy.setName(getName());
+        copy.setDescription(getDescription());
+        copy.setDefaultRelease(getDefaultRelease());
+        copy.setLastUpdated(getLastUpdated());
+        copy.setId(getObjectId());
+        copy.setConfiguration(getConfiguration().createCopy());
+
+        copy.setTags(new ArrayList<String>(getTags().size()));
+        copy.getTags().addAll(getTags());
+
+        copy.setAttributes(new HashMap<String, String>());
+        copy.getAttributes().putAll(getAttributes());
+
+        copy.setAutomationTools(new ArrayList<String>(automationTools.size()));
+        copy.getAutomationTools().addAll(getAutomationTools());
+
+        List<Release> copyOfReleases = new ArrayList<Release>(getReleases().size());
+        for(Release orig : getReleases())
+        {
+            copyOfReleases.add(orig.createCopy());
+        }
+        copy.setReleases(copyOfReleases);
+
+        ArrayList<Release> copyOfInactiveReleases = new ArrayList<Release>(getInactiveReleases().size());
+        for(Release orig : getInactiveReleases())
+        {
+            copyOfInactiveReleases.add(orig.createCopy());
+        }
+        copy.setInactiveReleases(copyOfInactiveReleases);
+
+        List<Component> copyOfComponents = new ArrayList<Component>(getComponents().size());
+        for(Component orig : getComponents())
+        {
+            copyOfComponents.add(orig.createCopy());
+        }
+        copy.setComponents(copyOfComponents);
+
+        List<DataDrivenPropertyType> copyOfDataDrivenProperties = new ArrayList<DataDrivenPropertyType>(getDatadrivenProperties().size());
+        for(DataDrivenPropertyType orig : getDatadrivenProperties())
+        {
+            copyOfDataDrivenProperties.add(orig.createCopy());
+        }
+        copy.setDatadrivenProperties(copyOfDataDrivenProperties);
+
+        return copy;
+    }
 }

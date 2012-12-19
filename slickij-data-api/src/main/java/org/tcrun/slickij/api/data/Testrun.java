@@ -16,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
  */
 @Entity("testruns")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Testrun implements Serializable
+public class Testrun implements Serializable, Copyable<Testrun>
 {
 	@Id
 	private ObjectId id;
@@ -219,5 +219,25 @@ public class Testrun implements Serializable
     public void setTestplan(Testplan testplan)
     {
         this.testplan = testplan;
+    }
+
+    @Override
+    public Testrun createCopy()
+    {
+        Testrun copy = new Testrun();
+
+        copy.setId(id);
+        copy.setBuild(build.createCopy());
+        copy.setConfig(config.createCopy());
+        copy.setDateCreated(new Date(dateCreated.getTime()));
+        copy.setName(name);
+        copy.setProject(project.createCopy());
+        copy.setRelease(release.createCopy());
+        copy.setRuntimeOptions(runtimeOptions.createCopy());
+        copy.setSummary(summary.createCopy());
+        copy.setTestplan(testplan.createCopy());
+        copy.setTestplanId(testplanId);
+
+        return copy;
     }
 }

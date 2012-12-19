@@ -17,7 +17,7 @@ import org.bson.types.ObjectId;
  *
  * @author jcorbett
  */
-public class Release implements Serializable
+public class Release implements Serializable, Copyable<Release>
 {
 	@Property
 	@Indexed
@@ -162,4 +162,24 @@ public class Release implements Serializable
 		retval.setName(name);
 		return retval;
 	}
+
+    @Override
+    public Release createCopy()
+    {
+        Release copy = new Release();
+
+        copy.setId(id);
+        copy.setTarget(new Date(target.getTime()));
+        copy.setDefaultBuild(defaultBuild);
+        copy.setName(name);
+
+        List<Build> copyOfBuilds = new ArrayList<Build>(builds.size());
+        for(Build orig : builds)
+        {
+            copyOfBuilds.add(orig.createCopy());
+        }
+        copy.setBuilds(copyOfBuilds);
+
+        return copy;
+    }
 }

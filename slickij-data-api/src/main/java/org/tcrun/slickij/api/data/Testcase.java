@@ -18,7 +18,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 @Entity("testcases")
 @XmlRootElement
-public class Testcase implements Serializable
+public class Testcase implements Serializable, Copyable<Testcase>
 {
 
     @Id
@@ -310,4 +310,46 @@ public class Testcase implements Serializable
 		return ref;
 	}
 
+    @Override
+    public Testcase createCopy()
+    {
+        Testcase copy = new Testcase();
+
+        copy.setId(id);
+        copy.setAuthor(author);
+        copy.setAutomated(automated);
+        copy.setAutomationConfiguration(automationConfiguration);
+        copy.setAutomationId(automationId);
+        copy.setAutomationPriority(automationPriority);
+        copy.setAutomationKey(automationKey);
+        copy.setAutomationTool(automationTool);
+        copy.setComponent(component.createCopy());
+        copy.setDeleted(deleted);
+        copy.setName(name);
+        copy.setProject(project.createCopy());
+        copy.setPurpose(purpose);
+        copy.setRequirements(requirements);
+        copy.setStabilityRating(stabilityRating);
+
+        List<Step> copyOfSteps = new ArrayList<Step>();
+        for(Step orig : steps)
+            copyOfSteps.add(orig.createCopy());
+        copy.setSteps(copyOfSteps);
+
+        List<String> copyOfTags = new ArrayList<String>();
+        for(String orig : tags)
+            copyOfTags.add(orig);
+        copy.setTags(copyOfTags);
+
+        Map<String, String> copyOfAttributes = new HashMap<String, String>();
+        copyOfAttributes.putAll(attributes);
+        copy.setAttributes(copyOfAttributes);
+
+        List<DataDrivenPropertyType> copyOfDataDriven = new ArrayList<DataDrivenPropertyType>();
+        for(DataDrivenPropertyType orig : dataDriven)
+            copyOfDataDriven.add(orig.createCopy());
+        copy.setDataDriven(copyOfDataDriven);
+
+        return copy;
+    }
 }

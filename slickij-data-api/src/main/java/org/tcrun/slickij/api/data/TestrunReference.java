@@ -10,7 +10,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author jcorbett
  */
-public class TestrunReference implements Serializable
+public class TestrunReference implements Serializable, Copyable<TestrunReference>
 {
 	@Property
 	@Indexed
@@ -48,4 +48,12 @@ public class TestrunReference implements Serializable
 		this.testrunId = testrunId;
 	}
 
+    @Override
+    public TestrunReference createCopy()
+    {
+        TestrunReference copy = new TestrunReference();
+        copy.setTestrunId(getTestrunObjectId());
+        copy.setName(getName());
+        return copy;
+    }
 }

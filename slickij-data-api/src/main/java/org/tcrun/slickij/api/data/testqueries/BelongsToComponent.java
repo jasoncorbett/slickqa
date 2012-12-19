@@ -34,4 +34,14 @@ public class BelongsToComponent implements TestcaseQuery
 	{
 		this.componentId = componentId;
 	}
+
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        BelongsToComponent copy = new BelongsToComponent();
+
+        copy.setComponentId(componentId);
+
+        return copy;
+    }
 }

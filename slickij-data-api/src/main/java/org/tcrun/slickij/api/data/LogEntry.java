@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author jcorbett
  */
-public class LogEntry implements Serializable
+public class LogEntry implements Serializable, Copyable<LogEntry>
 {
 	@Property
 	private Date entryTime;
@@ -103,4 +103,19 @@ public class LogEntry implements Serializable
 	}
 
 
+    @Override
+    public LogEntry createCopy()
+    {
+        LogEntry copy = new LogEntry();
+
+        copy.setEntryTime(new Date(getEntryTime().getTime()));
+        copy.setExceptionClassName(getExceptionClassName());
+        copy.setExceptionMessage(getExceptionMessage());
+        copy.setExceptionStackTrace(getExceptionStackTrace());
+        copy.setLevel(getLevel());
+        copy.setLoggerName(getLoggerName());
+        copy.setMessage(getMessage());
+
+        return copy;
+    }
 }

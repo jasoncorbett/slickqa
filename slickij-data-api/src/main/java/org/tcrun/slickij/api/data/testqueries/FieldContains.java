@@ -49,4 +49,14 @@ public class FieldContains implements TestcaseQuery
 		this.fieldValue = fieldValue;
 	}
 
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        FieldContains copy = new FieldContains();
+
+        copy.setFieldName(fieldName);
+        copy.setFieldValue(fieldValue);
+
+        return copy;
+    }
 }

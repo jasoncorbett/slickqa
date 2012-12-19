@@ -9,7 +9,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author jcorbett
  */
-public class ConfigurationReference implements Serializable
+public class ConfigurationReference implements Serializable, Copyable<ConfigurationReference>
 {
 	@Property
 	private ObjectId configId;
@@ -60,4 +60,15 @@ public class ConfigurationReference implements Serializable
 	}
 
 
+    @Override
+    public ConfigurationReference createCopy()
+    {
+        ConfigurationReference copy = new ConfigurationReference();
+
+        copy.setConfigId(configId);
+        copy.setFilename(filename);
+        copy.setName(name);
+
+        return copy;
+    }
 }

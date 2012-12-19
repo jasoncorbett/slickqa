@@ -45,4 +45,13 @@ public class FieldStartsWith implements TestcaseQuery
 	{
 		this.fieldValue = fieldValue;
 	}
+
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        FieldStartsWith copy = new FieldStartsWith();
+        copy.setFieldName(fieldName);
+        copy.setFieldValue(fieldValue);
+        return copy;
+    }
 }
