@@ -12,6 +12,9 @@ import java.util.*;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  *
  * @author jcorbett
@@ -358,50 +361,50 @@ public class Result implements Serializable, Copyable<Result>
     {
         Result copy = new Result();
 
-        copy.setBuild(build.createCopy());
-        copy.setComponent(component.createCopy());
-        copy.setConfig(config.createCopy());
+        copy.setBuild(copyIfNotNull(build));
+        copy.setComponent(copyIfNotNull(component));
+        copy.setConfig(copyIfNotNull(config));
         copy.setHostname(hostname);
         copy.setId(id);
-        copy.setProject(project.createCopy());
-        copy.setTestrun(testrun.createCopy());
-        copy.setTestcase(testcase.createCopy());
+        copy.setProject(copyIfNotNull(project));
+        copy.setTestrun(copyIfNotNull(testrun));
+        copy.setTestcase(copyIfNotNull(testcase));
         copy.setStatus(status);
         copy.setRunstatus(runstatus);
         copy.setRunlength(runlength);
-        copy.setRelease(release.createCopy());
-        copy.setRecorded(new Date(recorded.getTime()));
+        copy.setRelease(copyIfNotNull(release));
+        copy.setRecorded(copyDateIfNotNull(recorded));
         copy.setReason(reason);
-        copy.setTestrun(testrun.createCopy());
+        copy.setTestrun(copyIfNotNull(testrun));
 
         copy.setAttributes(new HashMap<String, String>());
         copy.getAttributes().putAll(attributes);
 
-        List<ResultReference> copyOfHistory = new ArrayList<ResultReference>(history.size());
+        List<ResultReference> copyOfHistory = new ArrayList<ResultReference>();
         for(ResultReference orig : history)
         {
-            copyOfHistory.add(orig.createCopy());
+            copyOfHistory.add(copyIfNotNull(orig));
         }
         copy.setHistory(copyOfHistory);
 
         List<ConfigurationOverride> copyOfOverrides = new ArrayList<ConfigurationOverride>();
         for(ConfigurationOverride orig : getConfigurationOverride())
         {
-            copyOfOverrides.add(orig.createCopy());
+            copyOfOverrides.add(copyIfNotNull(orig));
         }
         copy.setConfigurationOverride(copyOfOverrides);
 
         List<StoredFile> copyOfStoredFiles = new ArrayList<StoredFile>();
         for(StoredFile orig : getFiles())
         {
-            copyOfStoredFiles.add(orig.createCopy());
+            copyOfStoredFiles.add(copyIfNotNull(orig));
         }
         copy.setFiles(copyOfStoredFiles);
 
-        List<LogEntry> copyOfLogs = new ArrayList<LogEntry>(log.size());
+        List<LogEntry> copyOfLogs = new ArrayList<LogEntry>();
         for(LogEntry orig : log)
         {
-            copyOfLogs.add(orig.createCopy());
+            copyOfLogs.add(copyIfNotNull(orig));
         }
         copy.setLog(copyOfLogs);
 

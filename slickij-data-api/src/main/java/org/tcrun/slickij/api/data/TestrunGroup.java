@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  * A testrun group is a group of testruns (duh).  It's a reporting element that allows you to create a report
  * based on several testruns together.
@@ -17,7 +20,7 @@ import java.util.List;
  * Time: 1:18 PM
  */
 @Entity("testrungroups")
-public class TestrunGroup
+public class TestrunGroup implements Copyable<TestrunGroup>
 {
     @Id
     private ObjectId id;
@@ -113,4 +116,22 @@ public class TestrunGroup
         if(testruns == null)
             testruns = new ArrayList<Testrun>();
     }
+
+    @Override
+    public TestrunGroup createCopy()
+    {
+        TestrunGroup copy = new TestrunGroup();
+
+        copy.setId(id);
+        copy.setName(name);
+        copy.setCreated(copyDateIfNotNull(created));
+        List<Testrun> copyOfTestruns = new ArrayList<Testrun>();
+        for(Testrun orig : testruns)
+            copyOfTestruns.add(copyIfNotNull(orig));
+        copy.setTestruns(copyOfTestruns);
+
+        return copy;
+    }
+
+
 }

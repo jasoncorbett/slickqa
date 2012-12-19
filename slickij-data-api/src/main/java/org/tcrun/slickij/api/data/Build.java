@@ -7,6 +7,8 @@ import java.util.Date;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+
 /**
  *
  * @author jcorbett
@@ -92,7 +94,7 @@ public class Build implements Serializable, Copyable<Build>
         Build copy = new Build();
 
         copy.setId(id);
-        copy.setBuilt(new Date(built.getTime()));
+        copy.setBuilt(copyDateIfNotNull(built));
         copy.setName(name);
 
         return copy;

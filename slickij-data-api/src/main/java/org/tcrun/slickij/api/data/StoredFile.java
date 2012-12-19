@@ -8,6 +8,8 @@ import java.util.Date;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+
 /**
  *
  * @author jcorbett
@@ -126,7 +128,7 @@ public class StoredFile implements Serializable, Copyable<StoredFile>
         copy.setLength(getLength());
         copy.setMd5(getMd5());
         copy.setMimetype(getMimetype());
-        copy.setUploadDate(new Date(getUploadDate().getTime()));
+        copy.setUploadDate(copyDateIfNotNull(getUploadDate()));
         return copy;
     }
 }

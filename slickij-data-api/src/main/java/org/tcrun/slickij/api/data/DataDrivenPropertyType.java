@@ -73,7 +73,7 @@ public class DataDrivenPropertyType implements Serializable, Copyable<DataDriven
         copy.setName(name);
         copy.setRequirement(requirement);
 
-        copy.setStandardValues(new ArrayList<String>(standardValues.size()));
+        copy.setStandardValues(new ArrayList<String>());
         copy.getStandardValues().addAll(standardValues);
 
         return copy;

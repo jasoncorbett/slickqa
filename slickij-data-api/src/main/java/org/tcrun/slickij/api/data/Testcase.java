@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  * Class representing a testcase in the database.
  *
@@ -323,22 +325,20 @@ public class Testcase implements Serializable, Copyable<Testcase>
         copy.setAutomationPriority(automationPriority);
         copy.setAutomationKey(automationKey);
         copy.setAutomationTool(automationTool);
-        copy.setComponent(component.createCopy());
+        copy.setComponent(copyIfNotNull(component));
         copy.setDeleted(deleted);
         copy.setName(name);
-        copy.setProject(project.createCopy());
+        copy.setProject(copyIfNotNull(project));
         copy.setPurpose(purpose);
         copy.setRequirements(requirements);
         copy.setStabilityRating(stabilityRating);
 
         List<Step> copyOfSteps = new ArrayList<Step>();
         for(Step orig : steps)
-            copyOfSteps.add(orig.createCopy());
+            copyOfSteps.add(copyIfNotNull(orig));
         copy.setSteps(copyOfSteps);
 
-        List<String> copyOfTags = new ArrayList<String>();
-        for(String orig : tags)
-            copyOfTags.add(orig);
+        List<String> copyOfTags = new ArrayList<String>(tags);
         copy.setTags(copyOfTags);
 
         Map<String, String> copyOfAttributes = new HashMap<String, String>();
@@ -347,7 +347,7 @@ public class Testcase implements Serializable, Copyable<Testcase>
 
         List<DataDrivenPropertyType> copyOfDataDriven = new ArrayList<DataDrivenPropertyType>();
         for(DataDrivenPropertyType orig : dataDriven)
-            copyOfDataDriven.add(orig.createCopy());
+            copyOfDataDriven.add(copyIfNotNull(orig));
         copy.setDataDriven(copyOfDataDriven);
 
         return copy;

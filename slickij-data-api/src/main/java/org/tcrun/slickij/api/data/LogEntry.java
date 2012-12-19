@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+
 /**
  *
  * @author jcorbett
@@ -108,7 +110,7 @@ public class LogEntry implements Serializable, Copyable<LogEntry>
     {
         LogEntry copy = new LogEntry();
 
-        copy.setEntryTime(new Date(getEntryTime().getTime()));
+        copy.setEntryTime(copyDateIfNotNull(getEntryTime()));
         copy.setExceptionClassName(getExceptionClassName());
         copy.setExceptionMessage(getExceptionMessage());
         copy.setExceptionStackTrace(getExceptionStackTrace());

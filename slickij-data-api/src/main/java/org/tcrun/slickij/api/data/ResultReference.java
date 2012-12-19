@@ -7,6 +7,8 @@ import java.util.Date;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+
 /**
  *
  * @author jcorbett
@@ -80,10 +82,12 @@ public class ResultReference implements Serializable, Copyable<ResultReference>
         ResultReference copy = new ResultReference();
 
         copy.setBuild(getBuild().createCopy());
-        copy.setRecorded(new Date(getRecorded().getTime()));
+        copy.setRecorded(copyDateIfNotNull(getRecorded()));
         copy.setResultId(getResultObjectId());
         copy.setStatus(getStatus());
 
         return copy;
     }
+
+
 }

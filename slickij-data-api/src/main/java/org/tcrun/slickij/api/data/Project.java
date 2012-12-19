@@ -10,6 +10,9 @@ import java.util.Map;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  * Class representing a project in the database.
  *
@@ -522,44 +525,41 @@ public class Project implements Serializable, Copyable<Project>
         copy.setName(getName());
         copy.setDescription(getDescription());
         copy.setDefaultRelease(getDefaultRelease());
-        copy.setLastUpdated(getLastUpdated());
+        copy.setLastUpdated(copyDateIfNotNull(getLastUpdated()));
         copy.setId(getObjectId());
-        copy.setConfiguration(getConfiguration().createCopy());
+        copy.setConfiguration(copyIfNotNull(getConfiguration()));
 
-        copy.setTags(new ArrayList<String>(getTags().size()));
-        copy.getTags().addAll(getTags());
+        copy.setTags(new ArrayList<String>(getTags()));
 
-        copy.setAttributes(new HashMap<String, String>());
-        copy.getAttributes().putAll(getAttributes());
+        copy.setAttributes(new HashMap<String, String>(getAttributes()));
 
-        copy.setAutomationTools(new ArrayList<String>(automationTools.size()));
-        copy.getAutomationTools().addAll(getAutomationTools());
+        copy.setAutomationTools(new ArrayList<String>(automationTools));
 
-        List<Release> copyOfReleases = new ArrayList<Release>(getReleases().size());
+        List<Release> copyOfReleases = new ArrayList<Release>();
         for(Release orig : getReleases())
         {
-            copyOfReleases.add(orig.createCopy());
+            copyOfReleases.add(copyIfNotNull(orig));
         }
         copy.setReleases(copyOfReleases);
 
-        ArrayList<Release> copyOfInactiveReleases = new ArrayList<Release>(getInactiveReleases().size());
+        ArrayList<Release> copyOfInactiveReleases = new ArrayList<Release>();
         for(Release orig : getInactiveReleases())
         {
-            copyOfInactiveReleases.add(orig.createCopy());
+            copyOfInactiveReleases.add(copyIfNotNull(orig));
         }
         copy.setInactiveReleases(copyOfInactiveReleases);
 
-        List<Component> copyOfComponents = new ArrayList<Component>(getComponents().size());
+        List<Component> copyOfComponents = new ArrayList<Component>();
         for(Component orig : getComponents())
         {
-            copyOfComponents.add(orig.createCopy());
+            copyOfComponents.add(copyIfNotNull(orig));
         }
         copy.setComponents(copyOfComponents);
 
-        List<DataDrivenPropertyType> copyOfDataDrivenProperties = new ArrayList<DataDrivenPropertyType>(getDatadrivenProperties().size());
+        List<DataDrivenPropertyType> copyOfDataDrivenProperties = new ArrayList<DataDrivenPropertyType>();
         for(DataDrivenPropertyType orig : getDatadrivenProperties())
         {
-            copyOfDataDrivenProperties.add(orig.createCopy());
+            copyOfDataDrivenProperties.add(copyIfNotNull(orig));
         }
         copy.setDatadrivenProperties(copyOfDataDrivenProperties);
 

@@ -7,6 +7,9 @@ import com.google.code.morphia.annotations.Reference;
 import java.io.Serializable;
 import java.util.Date;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  *
  * @author jcorbett
@@ -71,8 +74,8 @@ public class HostStatus implements Serializable, Copyable<HostStatus>
         HostStatus copy = new HostStatus();
 
         copy.setHostname(hostname);
-        copy.setLastCheckin(new Date(lastCheckin.getTime()));
-        copy.setCurrentWork(currentWork.createCopy());
+        copy.setLastCheckin(copyDateIfNotNull(lastCheckin));
+        copy.setCurrentWork(copyIfNotNull(currentWork));
 
         return copy;
     }

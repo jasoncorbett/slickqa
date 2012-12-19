@@ -10,6 +10,9 @@ import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  *
  * @author jcorbett
@@ -227,15 +230,15 @@ public class Testrun implements Serializable, Copyable<Testrun>
         Testrun copy = new Testrun();
 
         copy.setId(id);
-        copy.setBuild(build.createCopy());
-        copy.setConfig(config.createCopy());
-        copy.setDateCreated(new Date(dateCreated.getTime()));
+        copy.setBuild(copyIfNotNull(build));
+        copy.setConfig(copyIfNotNull(config));
+        copy.setDateCreated(copyDateIfNotNull(dateCreated));
         copy.setName(name);
-        copy.setProject(project.createCopy());
-        copy.setRelease(release.createCopy());
-        copy.setRuntimeOptions(runtimeOptions.createCopy());
-        copy.setSummary(summary.createCopy());
-        copy.setTestplan(testplan.createCopy());
+        copy.setProject(copyIfNotNull(project));
+        copy.setRelease(copyIfNotNull(release));
+        copy.setRuntimeOptions(copyIfNotNull(runtimeOptions));
+        copy.setSummary(copyIfNotNull(summary));
+        copy.setTestplan(copyIfNotNull(testplan));
         copy.setTestplanId(testplanId);
 
         return copy;

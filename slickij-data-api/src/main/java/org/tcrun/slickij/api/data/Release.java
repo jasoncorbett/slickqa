@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Set;
 import org.bson.types.ObjectId;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  *
  * @author jcorbett
@@ -169,14 +172,14 @@ public class Release implements Serializable, Copyable<Release>
         Release copy = new Release();
 
         copy.setId(id);
-        copy.setTarget(new Date(target.getTime()));
+        copy.setTarget(copyDateIfNotNull(target));
         copy.setDefaultBuild(defaultBuild);
         copy.setName(name);
 
-        List<Build> copyOfBuilds = new ArrayList<Build>(builds.size());
+        List<Build> copyOfBuilds = new ArrayList<Build>();
         for(Build orig : builds)
         {
-            copyOfBuilds.add(orig.createCopy());
+            copyOfBuilds.add(copyIfNotNull(orig));
         }
         copy.setBuilds(copyOfBuilds);
 
