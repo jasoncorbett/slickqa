@@ -1,0 +1,31 @@
+
+table.view-form {
+    margin-left: .5in;
+    margin-top: .3in;
+    border-spacing: 0;
+}
+
+
+.view-form-name {
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: right;
+    vertical-align: top;
+    border-right: 1px solid white;
+    padding-right: .1in;
+    padding-bottom: .1in;
+    font-weight: bolder;
+    color: white;
+    font-size: 1.2em;
+}
+
+.view-form-name .explanation {
+    font-weight: lighter;
+    color: #d3d2d2;
+    font-size: .6em;
+}
+.view-form-value {
+    vertical-align: top;
+    padding-left: .2in;
+    min-width: 2in;
+}

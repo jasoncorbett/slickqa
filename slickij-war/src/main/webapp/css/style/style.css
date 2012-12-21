@@ -1540,3 +1540,21 @@ span.log-level-TRACE {
     word-break: break-all;
 }
 
+.error-message {
+    border-radius: .1in .1in .1in .1in;
+    -webkit-box-shadow: #d00 0 0 .15in;
+    -moz-box-shadow: #d00 0 0 .15in;
+    -ms-box-shadow: #d00 0 0 .15in;
+    box-shadow: #d00 0 0 .15in;
+    background-color: #000;
+    border: 1px solid #d00;
+    padding: .1in;
+    display: inline-block;
+}
+
+.error-container {
+    padding-top: .1in;
+    padding-bottom: .1in;
+    padding-left: .5in;
+    padding-right: .5in;
+}

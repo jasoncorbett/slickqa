@@ -369,6 +369,7 @@ var SlickPage = Backbone.View.extend({
 {
     PageGroups: {},
     StandardNavigationGroups: [
+        {displayname: 'Administration', codename: 'admin'},
         {displayname: 'Dashboards', codename: 'dashboards'},
         {displayname: 'Test Management', codename: 'testmgmt'},
         {displayname: 'Run Tests', codename: 'runtests'},
