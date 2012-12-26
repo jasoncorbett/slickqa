@@ -3,7 +3,6 @@ package org.tcrun.slickij.data;
 import com.google.code.morphia.Key;
 import com.google.code.morphia.query.Query;
 import com.google.inject.Inject;
-import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 import org.bson.types.ObjectId;
 import org.tcrun.slickij.api.SystemConfigurationResource;
 import org.tcrun.slickij.api.data.InvalidDataError;
