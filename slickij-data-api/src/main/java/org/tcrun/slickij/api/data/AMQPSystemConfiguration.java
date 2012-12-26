@@ -126,6 +126,8 @@ public class AMQPSystemConfiguration extends AbstractSystemConfiguration
             this.password = realUpdate.getPassword();
         if(realUpdate.getExchangeName() != null)
             this.exchangeName = realUpdate.getExchangeName();
+        if(realUpdate.getVirtualHost() != null)
+            this.virtualHost = realUpdate.getVirtualHost();
     }
 
     @PrePersist

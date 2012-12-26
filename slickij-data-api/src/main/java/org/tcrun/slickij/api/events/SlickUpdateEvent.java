@@ -26,7 +26,10 @@ public class SlickUpdateEvent<T> extends AbstractSlickEvent<UpdateWrapper<T>>
     public SlickUpdateEvent(T before, T after)
     {
         super();
-        setTopic("update." + before.getClass().getSimpleName());
+        if(before != null)
+            setTopic("update." + before.getClass().getSimpleName());
+        else if (after != null)
+            setTopic("update." + after.getClass().getSimpleName());
         body = new UpdateWrapper<T>();
         body.setBefore(before);
         body.setAfter(after);
