@@ -104,6 +104,8 @@ var AdministrationAMQPConfigPage = SlickPage.extend({
                 if(data.systemStatus == "ERROR") {
                     $("#admin-amqpconfig-error").text("Unable to connect to AMQP Server, please check values and ensure the system is up.");
                     $("#admin-amqpconfig-error-container").show(150);
+                } else {
+                    $.jGrowl("Successfully connected to AMQP server.");
                 }
             }
         });

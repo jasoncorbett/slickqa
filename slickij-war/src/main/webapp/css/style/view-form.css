@@ -23,6 +23,7 @@ table.view-form {
     font-weight: lighter;
     color: #d3d2d2;
     font-size: .6em;
+    vertical-align: top;
 }
 .view-form-value {
     vertical-align: top;
