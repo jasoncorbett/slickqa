@@ -129,7 +129,7 @@ var TPSReportPage = SlickPage.extend({
             bPaginate: false,
             sDom: '<"H"lfrT<"clear">>tS<"F"ip>',
             sScrollY: "2in",
-            oTableTools: {"sSwfPath": "media/swf/copy_cvs_xls_pdf.swf"}
+            oTableTools: {"sSwfPath": "http://www.datatables.net/release-datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"}
         });
 
     }

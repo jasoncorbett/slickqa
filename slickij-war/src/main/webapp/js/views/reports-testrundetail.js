@@ -95,8 +95,8 @@ var ReportsTestRunDetailPage = SlickPage.extend({
             bDeferRender: true,
             bPaginate: false,
             sDom: '<"H"lfrT<"clear">>tS<"F"ip>',
-            sScrollY: "" + ($("#content").height() - (3 * $("#footer").height()) - (2 * $("#content-bottom-pad").height())) + "px",
-            oTableTools: {"sSwfPath": "media/swf/copy_cvs_xls_pdf.swf"}
+            sScrollY: "" + ($("#content").height() - (4 * $("#footer").height()) - (2 * $("#content-bottom-pad").height())) + "px",
+            oTableTools: {"sSwfPath": "http://www.datatables.net/release-datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"}
         });
         datatable.fnSort([[3, "asc"]]);
 

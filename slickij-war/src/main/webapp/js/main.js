@@ -17,12 +17,16 @@ $(document).ready(function () {
 			$("#actiongroup-" + $(this).attr("id")).addClass("groupselected");
 			$(showid).show(250);
 		}
-        if ($(this).hasAttribute("href")) {
+        if (_.has(this, "href")) {
             return true;
         } else {
+            $.jGrowl("foo");
 		    return false;
         }
 	});
+
+    $.jGrowl.defaults.position = 'center';
+    $.jGrowl.defaults.life = 5000;
 });
 
 

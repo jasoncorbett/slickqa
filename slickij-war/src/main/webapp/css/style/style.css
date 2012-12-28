@@ -587,14 +587,11 @@ a.result-status-CANCELLED:visited {
     text-align: right;
 }
 
-#trdetailtable_filter {
+.dataTables_filter {
     float: left;
-    margin: .1in;
-}
-
-.DTTT_container {
-    float: right;
-    margin: .1in;
+    margin-left: .1in;
+    margin-top: .05in;
+    margin-bottom: .05in;
 }
 
 .boxname {
@@ -1016,14 +1013,9 @@ a.result-status-CANCELLED:visited {
 	text-align: right;
 }
 
-#trdetailtable_filter {
-	float: left;
-	margin: .1in;
-}
-
 .DTTT_container {
 	float: right;
-	margin: .1in;
+	margin-right: .1in;
 }
 
 .boxname {
@@ -1557,4 +1549,13 @@ span.log-level-TRACE {
     padding-bottom: .1in;
     padding-left: .5in;
     padding-right: .5in;
+}
+
+.DTTT_button.ui-button {
+    margin-top: .04in;
+    margin-bottom: .04in;
+    margin-right: .04in;
+    padding: .05in;
+    border-radius: .08in .08in .08in .08in;
+    border: 1px solid grey;
 }
