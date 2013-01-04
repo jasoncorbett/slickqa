@@ -15,4 +15,13 @@
 	<group name="style">
 		<css>/css/style/**.css</css>
 	</group>
+    <group name="testlibs">
+        <js>/js/testlibs/**.js</js>
+    </group>
+    <group name="tests">
+        <js>/js/tests/**.js</js>
+    </group>
+    <group name="test">
+        <css>/css/test/**.css</css>
+    </group>
 </groups>

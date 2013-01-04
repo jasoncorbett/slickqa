@@ -1,35 +1,19 @@
 #!/bin/bash
 
-which node >/dev/null
-NODE_EXISTS=$?
+which phantomjs >/dev/null
+PHANTOM_EXISTS=$?
 
-if [ "$NODE_EXISTS" != "0" ];
+if [ "$PHANTOM_EXISTS" != "0" ];
 then
-	echo "You must install nodejs and npm in order to run javascript tests."
+	echo "You must install phantomjs from http://phantomjs.org in order to run javascript tests on the command line."
+	echo "If you just want to run the tests, open a browser to your slick instance and go to test.html"
 	exit 1
 fi
 
-which node >/dev/null
-NPM_EXISTS=$?
-
-if [ "$NPM_EXISTS" != "0" ];
+if [ "$1" = "" ];
 then
-	echo "You must install nodejs and npm in order to run javascript tests."
-	exit 1
+	phantomjs jstestrunner.js http://localhost:8080/test.html
+else
+	phantomjs jstestrunner.js "$1"
 fi
 
-for nodepkg in nodeunit should backbone;
-do
-	if [ ! -d "node_modules/$nodepkg" ];
-	then
-		npm install "$nodepkg";
-	fi
-done
-
-NODEUNITPARAMS="--reporter nested"
-if [ "$1" = "junit" ];
-then
-	NODEUNITPARAMS="--reporter junit --output target/nodeunit"
-fi
-
-node_modules/.bin/nodeunit ${NODEUNITPARAMS} src/test/js
