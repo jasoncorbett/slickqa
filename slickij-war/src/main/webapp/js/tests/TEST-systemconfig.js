@@ -1,12 +1,5 @@
 
-module('slick.models.SystemConfiguration', {
-    setup: function() {
-        this.server = sinon.fakeServer.create();
-    },
-    teardown: function() {
-    }
-
-});
+module('slick.models.SystemConfiguration');
 
 test('SystemConfiguration Model exists', function() {
 	sysconfigClass = slick.models.SystemConfiguration;
@@ -16,6 +9,7 @@ test('SystemConfiguration Model exists', function() {
 });
 
 test('SystemConfiguration.loadOne single response', function() {
+    this.server = this.sandbox.useFakeServer();
 	var sysconfig = new slick.models.SystemConfiguration({ 'configurationType': 'foobar' });
 	Assert(sysconfig.loadOne).shouldBeType("function");
 
@@ -29,7 +23,7 @@ test('SystemConfiguration.loadOne single response', function() {
                               JSON.stringify(response)]);
 
 	var req = sysconfig.loadOne();
-    Assert(req).shouldBeInstanceOf($.ajaxSettings.xhr, '$.ajaxSettings.xhr');
+    Assert(req.then).shouldBeType('function');
 
 	this.server.respond();
 

@@ -13,6 +13,13 @@
 
 	slick.models.SystemConfiguration = Backbone.DeepModel.extend({
 		loadOne: function() {
+            return $.ajax({
+                url: "api/system-configuration?config-type=" + this.get('configurationType'),
+                model: this,
+                success: function(data) {
+                    this.model.set(data);
+                }
+            });
 
 		}
 	});
