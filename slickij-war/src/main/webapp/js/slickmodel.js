@@ -17,10 +17,9 @@
                 url: "api/system-configuration?config-type=" + this.get('configurationType'),
                 model: this,
                 success: function(data) {
-                    this.model.set(data);
+                    this.model.set(data[0]);
                 }
             });
-
 		}
 	});
 
