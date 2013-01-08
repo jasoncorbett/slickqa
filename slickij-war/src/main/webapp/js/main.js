@@ -20,7 +20,6 @@ $(document).ready(function () {
         if (_.has(this, "href")) {
             return true;
         } else {
-            $.jGrowl("foo");
 		    return false;
         }
 	});
