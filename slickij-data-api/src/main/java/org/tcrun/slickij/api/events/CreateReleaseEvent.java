@@ -13,7 +13,8 @@ public class CreateReleaseEvent extends SlickCreateEvent<Release>
     public CreateReleaseEvent(Project project, Release release)
     {
         super(release);
-        setHeader("projectid", project.getId());
+        setHeader("project.id", project.getId());
+        setHeader("project.name", project.getName());
     }
 
     public CreateReleaseEvent(RawMessage message) throws SlickEventException

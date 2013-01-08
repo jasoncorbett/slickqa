@@ -25,6 +25,9 @@ import org.tcrun.slickij.api.data.RunStatus;
 import org.tcrun.slickij.api.data.Testrun;
 import org.tcrun.slickij.api.data.TestRunSummary;
 import org.tcrun.slickij.api.data.dao.*;
+import org.tcrun.slickij.api.events.CreateTestrunEvent;
+import org.tcrun.slickij.api.events.EventManager;
+import org.tcrun.slickij.api.events.UpdateTestrunEvent;
 import org.tcrun.slickij.data.dao.TestplanDAOImpl;
 
 /**
@@ -38,15 +41,17 @@ public class TestrunResourceImpl implements TestrunResource
 	private ResultDAO m_resultDAO;
 	private ConfigurationDAO m_configDAO;
 	private ProjectDAO m_projectDAO;
+    private EventManager m_events;
 
 	@Inject
-	public TestrunResourceImpl(TestrunDAO p_testrunDAO, ResultDAO p_resultDAO, ConfigurationDAO p_configDAO, ProjectDAO p_projectDAO, TestplanDAO p_testplanDAO)
+	public TestrunResourceImpl(TestrunDAO p_testrunDAO, ResultDAO p_resultDAO, ConfigurationDAO p_configDAO, ProjectDAO p_projectDAO, TestplanDAO p_testplanDAO, EventManager p_events)
 	{
 		m_testrunDAO = p_testrunDAO;
 		m_resultDAO = p_resultDAO;
 		m_configDAO = p_configDAO;
 		m_projectDAO = p_projectDAO;
         m_testplanDAO = p_testplanDAO;
+        m_events = p_events;
 	}
 
 	@Override
@@ -202,6 +207,7 @@ public class TestrunResourceImpl implements TestrunResource
 			}
 		}
 		m_testrunDAO.save(testrun);
+        m_events.publishEvent(new CreateTestrunEvent(testrun));
 		return testrun;
 	}
 
@@ -241,6 +247,7 @@ public class TestrunResourceImpl implements TestrunResource
 	public Testrun updateTestrun(String testrunId, Testrun update)
 	{
 		Testrun real = getTestrun(testrunId);
+        Testrun original = real.createCopy();
 		if(update.getName() != null)
 			real.setName(update.getName());
 		if(update.getDateCreated() != null && !update.getDateCreated().equals(new Date(0)))
@@ -300,7 +307,12 @@ public class TestrunResourceImpl implements TestrunResource
 				throw new NotFoundError(Configuration.class);
 			real.setConfig(update.getConfig());
 		}
+        if(update.getFinished() != null)
+        {
+            real.setFinished(update.getFinished());
+        }
 		m_testrunDAO.save(real);
+        m_events.publishEvent(new UpdateTestrunEvent(original, real));
 		return real;
 	}
 

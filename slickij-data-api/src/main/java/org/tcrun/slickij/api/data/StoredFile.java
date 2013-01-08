@@ -17,6 +17,8 @@ import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
 @Entity("fs.files")
 public class StoredFile implements Serializable, Copyable<StoredFile>
 {
+    public static int DEFAULT_CHUNK_SIZE=262144;
+
 	@Id
 	private ObjectId id;
 
@@ -116,6 +118,15 @@ public class StoredFile implements Serializable, Copyable<StoredFile>
 	{
 		this.uploadDate = uploadDate;
 	}
+
+    public void validate() throws InvalidDataError
+    {
+        if(getFilename() == null)
+            throw new InvalidDataError("StoredFile", "filename", "filename cannot be null");
+        if(getMimetype() == null)
+            throw new InvalidDataError("StoredFile", "mimetype", "mimetype cannot be null");
+        chunkSize = DEFAULT_CHUNK_SIZE;
+    }
 
 
     @Override

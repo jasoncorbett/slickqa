@@ -59,6 +59,14 @@ public class Testrun implements Serializable, Copyable<Testrun>
     @Embedded
     private TestRunSummary summary;
 
+    @Property
+    private Boolean finished;
+
+    public Testrun()
+    {
+        finished = false;
+    }
+
 	public ConfigurationReference getConfig()
 	{
 		return config;
@@ -224,6 +232,16 @@ public class Testrun implements Serializable, Copyable<Testrun>
         this.testplan = testplan;
     }
 
+    public Boolean getFinished()
+    {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished)
+    {
+        this.finished = finished;
+    }
+
     @Override
     public Testrun createCopy()
     {
@@ -240,6 +258,7 @@ public class Testrun implements Serializable, Copyable<Testrun>
         copy.setSummary(copyIfNotNull(summary));
         copy.setTestplan(copyIfNotNull(testplan));
         copy.setTestplanId(testplanId);
+        copy.setFinished(finished);
 
         return copy;
     }

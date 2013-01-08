@@ -89,7 +89,24 @@ public class StoredFileDAOImpl extends BasicDAO<StoredFile, ObjectId> implements
 		return file;
 	}
 
-	public static String toHexString(byte[] digest)
+    @Override
+    public StoredFile addChunk(StoredFile file, byte[] data)
+    {
+        FileChunk chunk = new FileChunk();
+        int numberOfChunks = file.getLength() / file.getChunkSize();
+        if((data.length % file.getChunkSize()) != 0)
+            numberOfChunks++;
+        chunk.setChunkNumber(numberOfChunks);
+        file.setLength(file.getLength() + data.length);
+        chunk.setFilesId(file.getObjectId());
+        chunk.setData(data);
+        filechunkDAO.save(chunk);
+
+        save(file);
+        return file;
+    }
+
+    public static String toHexString(byte[] digest)
 	{
 		StringBuilder sb = new StringBuilder();
 		for (byte b : digest)

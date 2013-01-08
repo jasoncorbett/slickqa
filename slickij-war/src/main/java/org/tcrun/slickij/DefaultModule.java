@@ -13,6 +13,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+
+import com.mongodb.gridfs.GridFS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tcrun.slickij.core.DataPluginModule;
@@ -73,12 +75,8 @@ public class DefaultModule extends AbstractModule
 			}
 		}
 	}
-	//TODO: Test out plugin system / providers and add-ins
-	//TODO: Load plugins from filesystem outside of war file
-	//TODO: Build layered configuration system (plugins)
 	//TODO: Defaults stored in web.xml
-	//TODO: Multiple module guice config (perhaps from configuration)
-	//TODO: Configuration edit page using wicket
+    //TODO: Some way to specify a mongodb connection information
 
 	@Override
 	protected void configure()
@@ -87,6 +85,14 @@ public class DefaultModule extends AbstractModule
 		try
 		{
 			initMongodb("127.0.0.1");
+            Mongo gridfsMongo = new Mongo("127.0.0.1");
+
+            // we are using a separate Mongo in hopes that gridfs won't pollute the existing mongo connection
+            // What pollution you ask?  Well if you use gridfs on a connection, the java mongo driver returns gridfs
+            // objects from those collections used for gridfs instead of the generic DBObject.  The worst part is that
+            // the gridfs object isn't a subclass of DBObject, so you get a class cast exception when using morphia.
+            GridFS gridfs = new GridFS(gridfsMongo.getDB("slickij"));
+            bind(GridFS.class).toInstance(gridfs);
 		} catch (UnknownHostException ex)
 		{
 			addError(ex);
