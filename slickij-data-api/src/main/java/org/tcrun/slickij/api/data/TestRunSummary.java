@@ -79,6 +79,11 @@ public class TestRunSummary implements Serializable, Copyable<TestRunSummary>
 		return statusListOrdered;
 	}
 
+    public void setStatusListOrdered(List<String> val)
+    {
+        // do nothing, just here to avoid json serialization errors
+    }
+
 	public Long getTotal()
 	{
 		Long retval = 0L;
@@ -86,6 +91,11 @@ public class TestRunSummary implements Serializable, Copyable<TestRunSummary>
 			retval += bystatus;
 		return retval;
 	}
+
+    public void setTotal(Long val)
+    {
+        // do nothing, just here to avoid json serialization errors
+    }
 
     public int getTotalTime() {
         return totalTime;
