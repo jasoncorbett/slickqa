@@ -24,7 +24,7 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
     onReady: function() {
 
         // this section sets up data needed by the template
-        this.subtitle1 = (new Date(this.data.testrun.dateCreated)).toLocaleDateString();
+        this.subtitle1 = moment(this.data.testrun.dateCreated).format("L");
         this.subtitle2 = safeReference(this.data.testrun, "project.name", "");
         if (this.data.testrun.config) {
             this.subtitle3 = safeReference(this.data.testrun, "config.name", "");
@@ -33,7 +33,7 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
         if (this.data.testrun.runtimeOptions) {
             this.subtitle5 = "Runtime Options: " + safeReference(this.data.testrun, "runtimeOptions.name", "");
         }
-		this.timeCreated = (new Date(this.data.testrun.dateCreated)).toLocaleTimeString();
+		this.timeCreated = moment(this.data.testrun.dateCreated).format("LT");
 		this.chartdata = new google.visualization.DataTable();
         this.chartdata.addColumn('string', 'Result Type');
         this.chartdata.addColumn('number', 'Number of Results');
@@ -72,6 +72,17 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
             numberoftests: this.data.testrun.summary.total,
             percentageoftotal: ""
         };
+
+        this.totalTime = null;
+        if (this.data.testrun.runStarted > 0 && this.data.testrun.runFinished > 0) {
+            this.totalTime = getDurationMilliseconds(this.data.testrun.runFinished - this.data.testrun.runStarted);
+        }
+
+        this.isRunning = false;
+        if (this.data.testrun.state == "RUNNING") {
+            this.isRunning = true;
+        }
+
     },
 
     onFinish: function() {

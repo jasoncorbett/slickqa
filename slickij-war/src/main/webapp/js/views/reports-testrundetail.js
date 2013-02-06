@@ -48,7 +48,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
         }
 
         // this section sets up data needed by the template
-        this.subtitle1 = (new Date(this.data.testrun.dateCreated)).toLocaleDateString();
+        this.subtitle1 = moment(this.data.testrun.dateCreated).format("L");
         this.subtitle2 = safeReference(this.data.testrun, "project.name", "");
         if (this.data.testrun.config) {
             this.subtitle3 = safeReference(this.data.testrun, "config.name", "");
@@ -57,7 +57,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
         if (this.data.testrun.runtimeOptions) {
             this.subtitle5 = "Runtime Options: " + safeReference(this.data.testrun , "runtimeOptions.name", "");
         }
-        this.timeCreated = (new Date(this.data.testrun.dateCreated)).toLocaleTimeString();
+        this.timeCreated = moment(this.data.testrun.dateCreated).format("LT");
 
         this.includepass = (this.options.query && this.options.query.includepass);
 
@@ -67,7 +67,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
                 "<img src=\"images/reschedule.png\" id=\"reschedule-" + result.id + "\" class=\"reschedule-result\" alt=\"Reschedule Result\" title=\"Reschedule Result\" />",
                 "<a id=\"" + result.id + "\" href=\"#/reports/result/" + result.id + "\" class=\"modal-link\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>",
                 safeReference(result, "component.name", ""),
-                new Date(result.recorded),
+                result.recorded,
                 getDurationMilliseconds(result.runlength),
                 safeReference(result, "testcase.automationId", ""),
                 safeReference(result, "reason", ""),
@@ -77,6 +77,10 @@ var ReportsTestRunDetailPage = SlickPage.extend({
         }, this);
     },
 
+    renderDateTime: function(data, type, row) {
+        return moment(data).format("L LT");
+    },
+
     onFinish: function() {
         var datatable = $("#trdetailtable").dataTable({
             aaData: this.tbldata,
@@ -84,7 +88,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
                 {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "center"},
                 {"sTitle": "Test Name", "sWidth": "55%", "sType": "html", "sClass": "testrundetail-test-name"},
                 {"sTitle": "Component", "sWidth": "10%", "sClass": "center", "sClass": "testrundetail-component-name"},
-                {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": true},
+                {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": true, mRender: this.renderDateTime},
                 {"sTitle": "Test Duration", "sWidth": "10%", "sClass": "center"},
                 {"sTitle": "Automation ID", "bVisible": false},
                 {"sTitle": "Reason", "bVisible": false},

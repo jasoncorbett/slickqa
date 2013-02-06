@@ -41,6 +41,12 @@ public class Result implements Serializable, Copyable<Result>
 	@Indexed
 	private Date recorded;
 
+    @Property
+    private Date started;
+
+    @Property
+    private Date finished;
+
 	@Property
 	private ResultStatus status;
 
@@ -356,6 +362,26 @@ public class Result implements Serializable, Copyable<Result>
 		return allRequirementsSatisfied;
 	}
 
+    public Date getStarted()
+    {
+        return started;
+    }
+
+    public void setStarted(Date started)
+    {
+        this.started = started;
+    }
+
+    public Date getFinished()
+    {
+        return finished;
+    }
+
+    public void setFinished(Date finished)
+    {
+        this.finished = finished;
+    }
+
     @Override
     public Result createCopy()
     {
@@ -374,6 +400,8 @@ public class Result implements Serializable, Copyable<Result>
         copy.setRunlength(runlength);
         copy.setRelease(copyIfNotNull(release));
         copy.setRecorded(copyDateIfNotNull(recorded));
+        copy.setStarted(copyDateIfNotNull(started));
+        copy.setFinished(copyDateIfNotNull(finished));
         copy.setReason(reason);
         copy.setTestrun(copyIfNotNull(testrun));
 

@@ -15,6 +15,10 @@
     <h5 id="subtitle5" class="subtitle-right">{{subtitle5}}</h5>
     <div class="clear"></div>
     {{/if}}
+    {{#if totalTime}}
+        <h5 id="totalTime" class="subtitle-left">This testrun took: {{totalTime}}</h5>
+        <div class="clear"></div>
+    {{/if}}
 </div>
 <div id="testrunsummary-chart" class="chart">
 </div>
@@ -36,6 +40,9 @@
 </div>
 <div class="clear">
 </div>
+{{#if isRunning}}
+<h4 class="result-status-BROKENTEST">WARNING: This testrun is currently running.</h4>
+{{/if}}
 <a class="button" href="#/reports/testrundetail/{{data.testrun.id}}?includepass=true">All Results</a>
 <a class="button" href="#/reports/testrundetail/{{data.testrun.id}}">All Results Except <span class="result-status-PASS">PASS</span></a>
 <a id="{{data.testrun.id}}/reschedule-FAIL" class="button testrun-reschedule-bulk" href="javascript:;">Reschedule Failed Tests</a>

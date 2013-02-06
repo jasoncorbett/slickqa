@@ -89,5 +89,29 @@ public class ResultReference implements Serializable, Copyable<ResultReference>
         return copy;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        ResultReference that = (ResultReference) o;
+
+        if (build != null ? !build.equals(that.build) : that.build != null) return false;
+        if (recorded != null ? !recorded.equals(that.recorded) : that.recorded != null) return false;
+        if (resultId != null ? !resultId.equals(that.resultId) : that.resultId != null) return false;
+        if (status != that.status) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = resultId != null ? resultId.hashCode() : 0;
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (recorded != null ? recorded.hashCode() : 0);
+        result = 31 * result + (build != null ? build.hashCode() : 0);
+        return result;
+    }
 }

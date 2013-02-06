@@ -47,6 +47,12 @@ public class Testrun implements Serializable, Copyable<Testrun>
 	@Indexed
 	private Date dateCreated;
 
+    @Property
+    private Date runStarted;
+
+    @Property
+    private Date runFinished;
+
 	@Embedded
 	private ReleaseReference release;
 
@@ -60,11 +66,12 @@ public class Testrun implements Serializable, Copyable<Testrun>
     private TestRunSummary summary;
 
     @Property
-    private Boolean finished;
+    private RunStatus state;
 
     public Testrun()
     {
-        finished = false;
+        dateCreated = new Date();
+        state = RunStatus.TO_BE_RUN;
     }
 
 	public ConfigurationReference getConfig()
@@ -232,14 +239,34 @@ public class Testrun implements Serializable, Copyable<Testrun>
         this.testplan = testplan;
     }
 
-    public Boolean getFinished()
+    public Date getRunStarted()
     {
-        return finished;
+        return runStarted;
     }
 
-    public void setFinished(Boolean finished)
+    public void setRunStarted(Date runStarted)
     {
-        this.finished = finished;
+        this.runStarted = runStarted;
+    }
+
+    public Date getRunFinished()
+    {
+        return runFinished;
+    }
+
+    public void setRunFinished(Date runFinished)
+    {
+        this.runFinished = runFinished;
+    }
+
+    public RunStatus getState()
+    {
+        return state;
+    }
+
+    public void setState(RunStatus state)
+    {
+        this.state = state;
     }
 
     @Override
@@ -258,7 +285,9 @@ public class Testrun implements Serializable, Copyable<Testrun>
         copy.setSummary(copyIfNotNull(summary));
         copy.setTestplan(copyIfNotNull(testplan));
         copy.setTestplanId(testplanId);
-        copy.setFinished(finished);
+        copy.setRunStarted(copyDateIfNotNull(runStarted));
+        copy.setRunFinished(copyDateIfNotNull(runFinished));
+        copy.setState(state);
 
         return copy;
     }

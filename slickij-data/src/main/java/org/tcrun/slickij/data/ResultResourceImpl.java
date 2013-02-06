@@ -222,6 +222,10 @@ public class ResultResourceImpl implements ResultResource
 			result.setRecorded(update.getRecorded());
         if(update.getRunlength() != 0)
             result.setRunlength(update.getRunlength());
+        if(update.getStarted() != null)
+            result.setStarted(update.getStarted());
+        if(update.getFinished() != null)
+            result.setFinished(update.getFinished());
 		if(update.getTestcase() != null)
 		{
 			Testcase test = m_testcaseDAO.findTestcaseByReference(update.getTestcase());
@@ -379,6 +383,8 @@ public class ResultResourceImpl implements ResultResource
 			m_hoststatusDAO.save(hoststatus);
 		}
 
+        result.setHistory(m_resultDAO.getHistory(result));
+        m_resultDAO.save(result);
 
 		return result;
 	}

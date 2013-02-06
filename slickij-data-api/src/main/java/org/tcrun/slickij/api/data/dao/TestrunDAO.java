@@ -6,10 +6,7 @@ package org.tcrun.slickij.api.data.dao;
 
 import com.google.code.morphia.dao.DAO;
 import org.bson.types.ObjectId;
-import org.tcrun.slickij.api.data.ResultStatus;
-import org.tcrun.slickij.api.data.TestRunSummary;
-import org.tcrun.slickij.api.data.Testrun;
-import org.tcrun.slickij.api.data.TestrunReference;
+import org.tcrun.slickij.api.data.*;
 
 /**
  *

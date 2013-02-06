@@ -10,6 +10,12 @@ import com.google.code.morphia.annotations.Property;
  */
 public class EmailTemplateConfiguration extends AbstractSystemConfiguration
 {
+
+    public EmailTemplateConfiguration()
+    {
+        configurationType = "email-template-configuration";
+    }
+
     @Property
     public ProjectReference project;
 
@@ -52,6 +58,8 @@ public class EmailTemplateConfiguration extends AbstractSystemConfiguration
     @Override
     public void validate() throws InvalidDataError
     {
+        if(configurationType == null || configurationType.equals(""))
+            configurationType = "email-template-configuration";
         if(project == null && subjectTemplate == null && emailTemplate == null)
             throw new InvalidDataError("EmailTemplateConfiguration", "project, subjectTemplate, and emailTemplate", "All three properties cannot be null.");
     }

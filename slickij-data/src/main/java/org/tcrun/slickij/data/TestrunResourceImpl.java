@@ -307,10 +307,18 @@ public class TestrunResourceImpl implements TestrunResource
 				throw new NotFoundError(Configuration.class);
 			real.setConfig(update.getConfig());
 		}
-        if(update.getFinished() != null)
+        if(update.getState() != null)
         {
-            real.setFinished(update.getFinished());
+            if(real.getState() != null && real.getState() == RunStatus.TO_BE_RUN && update.getState() == RunStatus.RUNNING && update.getRunStarted() == null)
+                real.setRunStarted(new Date());
+            if(real.getState() != null && real.getState() == RunStatus.RUNNING && update.getState() == RunStatus.FINISHED && update.getRunFinished() == null)
+                real.setRunFinished(new Date());
+            real.setState(update.getState());
         }
+        if(update.getRunStarted() != null)
+            real.setRunStarted(update.getRunStarted());
+        if(update.getRunFinished() != null)
+            real.setRunFinished(update.getRunFinished());
 		m_testrunDAO.save(real);
         m_events.publishEvent(new UpdateTestrunEvent(original, real));
 		return real;

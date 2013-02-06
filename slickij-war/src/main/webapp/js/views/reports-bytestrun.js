@@ -64,9 +64,13 @@ var ReportsByTestrunPage = SlickPage.extend({
                 safeReference(testrun, "summary.total", "?"),
                 safeReference(testrun, "config.name", "Unknown Environment"),
                 safeReference(testrun, "release.name", "Unknown Release") + " Build " + safeReference(testrun, "build.name", "Unknown"),
-                new Date(testrun.dateCreated)];
+                testrun.dateCreated];
         });
         this.testrunData = tbldata;
+    },
+
+    renderDateTime: function(data, type, row) {
+        return moment(data).format("L LT");
     },
 
     onFinish: function() {
@@ -78,7 +82,7 @@ var ReportsByTestrunPage = SlickPage.extend({
                 {"sTitle": "Total", "sWidth": "5%", "sClass": "center"},
                 {"sTitle": "Environment", "sWidth": "12%", "sClass": "center"},
                 {"sTitle": "Build", "sWidth": "15%", "sClass": "center"},
-                {"sTitle": "Date Created", "sWidth": "18%", "sClass": "center"}],
+                {"sTitle": "Date Created", "sWidth": "18%", "sClass": "center", mRender: this.renderDateTime}],
             bJQueryUI: true,
             bAutoWidth: false,
             bDeferRender: true,
