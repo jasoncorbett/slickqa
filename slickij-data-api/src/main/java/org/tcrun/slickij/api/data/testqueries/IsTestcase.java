@@ -49,7 +49,12 @@ public class IsTestcase implements TestcaseQuery
 		return retval;
 	}
 
-	public TestcaseReference getRef()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public TestcaseReference getRef()
 	{
 		return ref;
 	}

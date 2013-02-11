@@ -29,7 +29,12 @@ public class FieldContains implements TestcaseQuery
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
-	public String getFieldName()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public String getFieldName()
 	{
 		return fieldName;
 	}

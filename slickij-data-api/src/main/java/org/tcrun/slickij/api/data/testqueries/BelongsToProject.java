@@ -25,7 +25,12 @@ public class BelongsToProject implements TestcaseQuery
 		return "references project with id '" + projectId.toString() + "'.";
 	}
 
-	public ObjectId getProjectId()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public ObjectId getProjectId()
 	{
 		return projectId;
 	}

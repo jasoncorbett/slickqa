@@ -25,7 +25,12 @@ public class BelongsToComponent implements TestcaseQuery
 		return "references component with id '" + componentId.toString() + "'.";
 	}
 
-	public ObjectId getComponentId()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public ObjectId getComponentId()
 	{
 		return componentId;
 	}

@@ -29,7 +29,12 @@ public class HasAttributeWithValue implements TestcaseQuery
 		return "Has attribute with name '" + attributeName + "' set to value '" + attributeValue + "'";
 	}
 
-	public String getAttributeName()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public String getAttributeName()
 	{
 		return attributeName;
 	}

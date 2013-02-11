@@ -37,7 +37,12 @@ public class ContainsTags implements TestcaseQuery
 		return retval;
 	}
 
-	public List<String> getTagnames()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public List<String> getTagnames()
 	{
 		return tagnames;
 	}

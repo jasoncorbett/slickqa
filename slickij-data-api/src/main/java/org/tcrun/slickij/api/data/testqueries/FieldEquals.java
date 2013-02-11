@@ -33,7 +33,12 @@ public class FieldEquals implements TestcaseQuery
 		return "field '" + fieldName + "' equals value '" + fieldValue + "'";
 	}
 
-	public String getFieldName()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public String getFieldName()
 	{
 		return fieldName;
 	}

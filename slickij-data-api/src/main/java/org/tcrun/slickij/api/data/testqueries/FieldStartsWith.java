@@ -26,7 +26,12 @@ public class FieldStartsWith implements TestcaseQuery
 		return "field '" + fieldName + "' starts with '" + fieldValue + "'";
 	}
 
-	public String getFieldName()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public String getFieldName()
 	{
 		return fieldName;
 	}

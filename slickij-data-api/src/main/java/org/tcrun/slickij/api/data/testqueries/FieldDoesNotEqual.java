@@ -33,7 +33,12 @@ public class FieldDoesNotEqual implements TestcaseQuery
 		return "field '" + fieldName + "' does not equal value '" + fieldValue + "'";
 	}
 
-	public String getFieldName()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public String getFieldName()
 	{
 		return fieldName;
 	}

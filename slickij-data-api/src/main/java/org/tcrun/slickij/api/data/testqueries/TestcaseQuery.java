@@ -22,4 +22,6 @@ public interface TestcaseQuery extends Copyable<TestcaseQuery>
 	public Criteria toMorphiaQuery(Query<Testcase> original);
 
 	public String getQueryDescription();
+
+    public void setQueryDescription(String description);
 }

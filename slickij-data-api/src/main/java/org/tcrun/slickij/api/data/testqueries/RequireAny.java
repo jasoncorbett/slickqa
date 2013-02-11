@@ -42,7 +42,12 @@ public class RequireAny implements TestcaseQuery
 		return retval;
 	}
 
-	public List<TestcaseQuery> getCriteria()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public List<TestcaseQuery> getCriteria()
 	{
 		return criteria;
 	}

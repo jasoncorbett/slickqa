@@ -28,7 +28,12 @@ public class IsNotTestcase implements TestcaseQuery
 		return "Is not testcase with id " + testcaseId.toString();
 	}
 
-	public String getTestcaseId()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public String getTestcaseId()
 	{
 		if(testcaseId == null)
 			return null;
