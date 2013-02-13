@@ -1006,7 +1006,7 @@ a.result-status-CANCELLED:visited {
 }
 
 .result-status-image {
-	width: 50px;
+	width: .4in;
 }
 
 .right-justify {
@@ -1530,6 +1530,7 @@ span.log-level-TRACE {
 .testrundetail-component-name {
     word-wrap: break-word;
     word-break: break-all;
+    text-align: center;
 }
 
 .error-message {
@@ -1559,3 +1560,51 @@ span.log-level-TRACE {
     border-radius: .08in .08in .08in .08in;
     border: 1px solid grey;
 }
+
+.result-history-container {
+    vertical-align: middle;
+    text-align: right;
+}
+
+.result-history-image {
+    width: .25in;
+}
+
+.result-history-image-1 {
+    opacity: 1;
+}
+
+.result-history-image-2 {
+     opacity: .9; 
+}
+
+.result-history-image-3 {
+    opacity: .8;
+}
+
+.result-history-image-4 {
+    opacity: .7;
+}
+
+.result-history-image-5 {
+    opacity: .6;
+}
+
+.result-history-image-6 {
+    opacity: .5;
+}
+
+.result-history-image-7 {
+    opacity: .4;
+}
+
+.result-history-image-8 {
+    opacity: .3;
+}
+.result-history-image-9 {
+    opacity: .2;
+}
+.result-history-image-10 {
+    opacity: .1;
+}
+

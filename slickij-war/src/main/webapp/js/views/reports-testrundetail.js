@@ -63,15 +63,20 @@ var ReportsTestRunDetailPage = SlickPage.extend({
 
         this.tbldata = [];
         _.each(this.data.results, function(result) {
+            var history = "";
+            _.each(result.history.reverse(), function(hresult, index) {
+                history = history + "<a class=\"modal-link\" href=\"#/reports/result/" + hresult.resultId + "\"><img class=\"result-history-image result-history-image-" + (10 - index) + "\" src=\"images/status-" + hresult["status"] + ".png\" /></a>";
+            }, this);
             this.tbldata[this.tbldata.length] = [
                 "<img src=\"images/reschedule.png\" id=\"reschedule-" + result.id + "\" class=\"reschedule-result\" alt=\"Reschedule Result\" title=\"Reschedule Result\" />",
-                "<a id=\"" + result.id + "\" href=\"#/reports/result/" + result.id + "\" class=\"modal-link\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>",
+                "<a id=\"" + result.id + "\" href=\"#/reports/result/" + result.id + "\" class=\"modal-link\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")),
                 safeReference(result, "component.name", ""),
                 result.recorded,
                 getDurationMilliseconds(result.runlength),
                 safeReference(result, "testcase.automationId", ""),
                 safeReference(result, "reason", ""),
                 safeReference(result, "hostname", ""),
+                history,
                 "<span class=\"result-status-" + result["status"].replace("_","") + "\">" + result["status"].replace("_", " ") + "<img class=\"result-status-image\" src=\"images/status-" + result["status"] + ".png\" /></span>"
             ];
         }, this);
@@ -86,13 +91,14 @@ var ReportsTestRunDetailPage = SlickPage.extend({
             aaData: this.tbldata,
             aoColumns: [
                 {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "center"},
-                {"sTitle": "Test Name", "sWidth": "55%", "sType": "html", "sClass": "testrundetail-test-name"},
-                {"sTitle": "Component", "sWidth": "10%", "sClass": "center", "sClass": "testrundetail-component-name"},
-                {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": true, mRender: this.renderDateTime},
+                {"sTitle": "Test Name and History (newest on right)", "sWidth": "40%", "sType": "html", "sClass": "testrundetail-test-name"},
+                {"sTitle": "Component", "sWidth": "10%", "sClass": "testrundetail-component-name"},
+                {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": true, mRender: this.renderDateTime, "sClass": "center"},
                 {"sTitle": "Test Duration", "sWidth": "10%", "sClass": "center"},
                 {"sTitle": "Automation ID", "bVisible": false},
                 {"sTitle": "Reason", "bVisible": false},
                 {"sTitle": "Hostname", "sWidth": "10%", "sClass": "center"},
+                {"sTitle": "History (newest on right)", "sWidth": "15%", "sClass": "result-history-container"},
                 {"sTitle": "Result Status", "sWidth": "10%", "sType": "html", "sClass": "center"}],
             bJQueryUI: true,
             bAutoWidth: false,
