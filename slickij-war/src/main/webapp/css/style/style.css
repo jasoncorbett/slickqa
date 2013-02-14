@@ -47,7 +47,7 @@ body {
 }
 
 #content-bottom-pad {
-    height: 2in;
+    height: 1.7in;
 }
 
 #titlebar {
@@ -295,6 +295,7 @@ body {
 .main {
 	margin: 0;
 	padding: .1in;
+    padding-top: 0;
 	font-size: 1.1em;
 	background: #000000;
 	color: #d3d2d2;
@@ -1525,6 +1526,7 @@ span.log-level-TRACE {
 .testrundetail-test-name {
     word-wrap: break-word;
     word-break: break-all;
+    text-align: left;
 }
 
 .testrundetail-component-name {
@@ -1564,6 +1566,7 @@ span.log-level-TRACE {
 .result-history-container {
     vertical-align: middle;
     text-align: right;
+    min-width: 2.5in;
 }
 
 .result-history-image {
