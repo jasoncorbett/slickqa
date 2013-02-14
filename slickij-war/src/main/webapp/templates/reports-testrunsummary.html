@@ -38,6 +38,9 @@
         </div>
     {{/with}}
 </div>
+{{#if data.build.description}}
+<div class="right"><pre>{{data.build.description}}</pre></div>
+{{/if}}
 <div class="clear">
 </div>
 {{#if isRunning}}

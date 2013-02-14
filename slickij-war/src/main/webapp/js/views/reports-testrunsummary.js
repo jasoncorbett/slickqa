@@ -19,6 +19,15 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
     initialize: function() {
         this.on("ready", this.onReady, this);
         this.on("finish", this.onFinish, this);
+        this.on("dataRecieved", this.onDataRecieved, this);
+    },
+
+    onDataRecieved: function(event) {
+        var key = event[0];
+        var value = event[1];
+        if(key == "testrun" && value.project && value.project.id && value.release && value.release.releaseId && value.build && value.build.buildId) {
+            this.addRequiredData("build", "api/projects/" + value.project.id + "/releases/" + value.release.releaseId + "/builds/" + value.build.buildId);
+        }
     },
 
     onReady: function() {

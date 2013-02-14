@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
@@ -279,7 +280,7 @@ public class ProjectResourceImpl implements ProjectResource
 		return build;
 	}
 
-	@Override
+    @Override
 	public Build getBuildByName(String projectId, String releaseId, String buildName) {
 		Release release = getRelease(projectId, releaseId);
 		Build retval = release.findBuildByName(buildName);
@@ -503,6 +504,8 @@ public class ProjectResourceImpl implements ProjectResource
 			realBuild.setName(build.getName());
 		if(build.getBuilt() != null && !build.getBuilt().equals(new Date(0)) && !build.getBuilt().equals(realBuild.getBuilt()))
 			realBuild.setBuilt(build.getBuilt());
+        if(build.getDescription() != null)
+            realBuild.setDescription(build.getDescription());
 
 		m_projectDAO.save(project);
 		return realBuild;
