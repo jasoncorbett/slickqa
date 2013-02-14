@@ -15,6 +15,13 @@
         <option value="{{id}}">{{name}}</option>
         {{/each}}
     </select>
+    <label id="tps-report-release-label" for="tps-report-release-select">Release: </label>
+    <select id="tps-report-release-select" name="tps-report-release-select">
+        <option value="none">Any Release</option>
+        {{#each data.project.releases}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select>
     <a id="tps-report-generate-button" href="javascript:;" class="button">Generate Report</a>
 </div>
 
