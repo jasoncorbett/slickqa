@@ -175,6 +175,8 @@ public class TestplanResourceImpl implements TestplanResource
 			result.setTestrun(run.createReference());
 			result.setRelease(run.getRelease());
 			result.setBuild(run.getBuild());
+            result.setRecorded(new Date());
+            result.setHistory(m_resultDAO.getHistory(result));
 			m_resultDAO.save(result);
             m_testrunDAO.addNewResultStatusToRun(run.getObjectId(), ResultStatus.NO_RESULT);
 		}
@@ -292,6 +294,8 @@ public class TestplanResourceImpl implements TestplanResource
 			result.setTestrun(run.createReference());
 			result.setRelease(run.getRelease());
 			result.setBuild(run.getBuild());
+            result.setRecorded(new Date());
+            result.setHistory(m_resultDAO.getHistory(result));
 			m_resultDAO.save(result);
             m_testrunDAO.addNewResultStatusToRun(run.getObjectId(), ResultStatus.NO_RESULT);
 		}
