@@ -138,7 +138,7 @@ var EmailSubscriptionPage = SlickPage.extend({
     isSubscribed: function(type, value) {
         var subscribed = false;
         return _.find(this.emailsettings.get("subscriptions"), function (subscription) {
-             return type == subscription.subscriptionType && value == subscription.subscriptionValue;
+             return (type == subscription.subscriptionType && value == subscription.subscriptionValue) || (type == "Global" && type == subscription.subscriptionType);
         });
     },
 
@@ -158,7 +158,7 @@ var EmailSubscriptionPage = SlickPage.extend({
     },
 
     removeSubscription: function(type, value) {
-        var subscriptions = _.filter(this.emailsettings.get("subscriptions"), function(subscription) {return !(subscription.subscriptionType == type && subscription.subscriptionValue == value)});
+        var subscriptions = _.filter(this.emailsettings.get("subscriptions"), function(subscription) {return !((subscription.subscriptionType == type && subscription.subscriptionValue == value) || (type == "Global" && subscription.subscriptionType == type))});
         this.emailsettings.set({subscriptions: subscriptions});
         this.emailsettings.save().done(function(data) {
             $.jGrowl("Subscription removed");
