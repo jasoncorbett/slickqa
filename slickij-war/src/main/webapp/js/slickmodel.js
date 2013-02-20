@@ -7,11 +7,12 @@
 	var slick = {
 		models: {},
 		collections: {}
-	}
+	};
 
 	// ---------------------- Models ------------------------------------------
 
 	slick.models.SystemConfiguration = Backbone.DeepModel.extend({
+        urlRoot: "api/system-configuration",
 		loadOne: function() {
             return $.ajax({
                 url: "api/system-configuration?config-type=" + this.get('configurationType'),
@@ -31,9 +32,16 @@
 		}
 	});
 
-		window.slick = slick;
+    slick.models.EmailSubscription = slick.models.SystemConfiguration.extend({
+        defaults: {
+            'className': 'org.tcrun.slickij.api.data.EmailSubscription',
+            'configurationType': 'email-subscription'
+        }
+    });
 
-})()
+	window.slick = slick;
+
+})();
 
 
 
