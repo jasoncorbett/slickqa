@@ -46,8 +46,10 @@
 {{#if isRunning}}
 <h4 class="result-status-BROKENTEST">WARNING: This testrun is currently running.</h4>
 {{/if}}
+{{#if notDashboard}}
 <a class="button" href="#/reports/testrundetail/{{data.testrun.id}}?includepass=true">All Results</a>
 <a class="button" href="#/reports/testrundetail/{{data.testrun.id}}">All Results Except <span class="result-status-PASS">PASS</span></a>
 <a id="{{data.testrun.id}}/reschedule-FAIL" class="button testrun-reschedule-bulk" href="javascript:;">Reschedule Failed Tests</a>
 <a id="{{data.testrun.id}}/reschedule-BROKEN_TEST" class="button testrun-reschedule-bulk" href="javascript:;">Reschedule Broken Tests</a>
+{{/if}}
 

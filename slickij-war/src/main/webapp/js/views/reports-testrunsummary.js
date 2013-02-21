@@ -10,13 +10,27 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
     codename: "testrunsummary",
     group: "reports",
 
-    requiredData: {
-        "testrun": function() {
-            return SlickUrlBuilder.testrun.getTestrun(this.options.positional[0]);
-        }
-    },
 
     initialize: function() {
+        if(this.options.positional[0] == "latest") {
+            this.requiredData = {
+                testruns: function() {
+                    return "api/testruns?testplanid=" + this.options.query.testplanid + "&releaseid=" + this.options.query.releaseid + "&limit=1";
+                }
+            }
+        } else {
+            this.requiredData = {
+                "testrun": function() {
+                    return SlickUrlBuilder.testrun.getTestrun(this.options.positional[0]);
+                }
+            };
+        }
+
+        this.notDashboard = true;
+        if(this.options.query.dashboard) {
+            this.notDashboard = false;
+        }
+
         this.on("ready", this.onReady, this);
         this.on("finish", this.onFinish, this);
         this.on("dataRecieved", this.onDataRecieved, this);
@@ -27,6 +41,8 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
         var value = event[1];
         if(key == "testrun" && value.project && value.project.id && value.release && value.release.releaseId && value.build && value.build.buildId) {
             this.addRequiredData("build", "api/projects/" + value.project.id + "/releases/" + value.release.releaseId + "/builds/" + value.build.buildId);
+        } else if(key == "testruns") {
+            this.data.testrun = value[0];
         }
     },
 
@@ -124,6 +140,22 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
                 }
             });
         });
+
+        if(! this.notDashboard) {
+            var title = this.getTitle();
+            if(this.subtitle2 != "") {
+                title = this.subtitle2 + "<br/>" + title;
+                $("#subtitle2").hide();
+            }
+            if(this.subtitle4 != "") {
+                title = title + "<br/>" + this.subtitle4;
+                $("#subtitle4").hide();
+            }
+            $('#pagetitle').html(title).css("height", "auto");
+
+            $('#mainnavigation').hide();
+            $('#footer').hide();
+        }
     },
 
     getTitle: function() {
