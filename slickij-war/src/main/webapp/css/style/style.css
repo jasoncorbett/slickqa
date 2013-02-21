@@ -1611,3 +1611,11 @@ span.log-level-TRACE {
     opacity: .1;
 }
 
+.dashboard-logo {
+    padding-left: 2in;
+    color: white;
+    background-image: url("../../images/Slick.png");
+    background-repeat: no-repeat;
+    background-size: auto .6in;
+    background-position: left bottom;
+}

@@ -1,23 +1,47 @@
 <div id="subtitle">
-    <h2 id="subtitle1" class="subtitle-left">{{subtitle1}}</h2>
-	<h2 id="subtitle2" class="subtitle-right">{{subtitle2}}</h2>
-    <div class="clear"></div>
-    {{#if subtitle3}}
-    <h3 id="subtitle3" class="subtitle-left">{{subtitle3}}</h3>
-    {{/if}}
-    {{#if subtitle4}}
-    <h3 id="subtitle4" class="subtitle-right">{{subtitle4}}</h3>
-    {{/if}}
-    <div class="clear"></div>
-    <h5 id="createdTime" class="subtitle-left">{{timeCreated}}</h5>
-    <div class="clear"></div>
-    {{#if subtitle5}}
-    <h5 id="subtitle5" class="subtitle-right">{{subtitle5}}</h5>
-    <div class="clear"></div>
-    {{/if}}
-    {{#if totalTime}}
+    {{#if notDashboard}}
+        <h2 id="subtitle1" class="subtitle-left">{{subtitle1}}</h2>
+        <h2 id="subtitle2" class="subtitle-right">{{subtitle2}}</h2>
+        <div class="clear"></div>
+        {{#if subtitle3}}
+        <h3 id="subtitle3" class="subtitle-left">{{subtitle3}}</h3>
+        {{/if}}
+        {{#if subtitle4}}
+        <h3 id="subtitle4" class="subtitle-right">{{subtitle4}}</h3>
+        {{/if}}
+        <div class="clear"></div>
+        <h5 id="createdTime" class="subtitle-left">{{timeCreated}}</h5>
+        <div class="clear"></div>
+        {{#if subtitle5}}
+        <h5 id="subtitle5" class="subtitle-right">{{subtitle5}}</h5>
+        <div class="clear"></div>
+        {{/if}}
+        {{#if totalTime}}
+            <h5 id="totalTime" class="subtitle-left">This testrun took: {{totalTime}}</h5>
+            <div class="clear"></div>
+        {{/if}}
+    {{else}}
+        <h2 id="subtitle1" class="subtitle-right">{{subtitle1}}</h2>
+        <h2 id="subtitle2" class="subtitle-left">{{subtitle2}}</h2>
+        <div class="clear"></div>
+        {{#if subtitle3}}
+        <h3 id="subtitle3" class="subtitle-right">{{subtitle3}}</h3>
+        <h3 class="subtitle-left">{{title}}</h3>
+        {{/if}}
+        <div class="clear"></div>
+        <h5 id="createdTime" class="subtitle-right">{{timeCreated}}</h5>
+        {{#if subtitle4}}
+        <h3 id="subtitle4" class="subtitle-left">{{subtitle4}}</h3>
+        <div class="clear"></div>
+        {{/if}}
+        {{#if subtitle5}}
+        <h5 id="subtitle5" class="subtitle-right">{{subtitle5}}</h5>
+        <div class="clear"></div>
+        {{/if}}
+        {{#if totalTime}}
         <h5 id="totalTime" class="subtitle-left">This testrun took: {{totalTime}}</h5>
         <div class="clear"></div>
+        {{/if}}
     {{/if}}
 </div>
 <div id="testrunsummary-chart" class="chart">
@@ -51,5 +75,7 @@
 <a class="button" href="#/reports/testrundetail/{{data.testrun.id}}">All Results Except <span class="result-status-PASS">PASS</span></a>
 <a id="{{data.testrun.id}}/reschedule-FAIL" class="button testrun-reschedule-bulk" href="javascript:;">Reschedule Failed Tests</a>
 <a id="{{data.testrun.id}}/reschedule-BROKEN_TEST" class="button testrun-reschedule-bulk" href="javascript:;">Reschedule Broken Tests</a>
+{{else}}
+<div class="dashboard-logo"><br/><br/>Has furnished these results.</div>
 {{/if}}
 

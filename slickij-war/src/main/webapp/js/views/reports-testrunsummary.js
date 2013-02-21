@@ -47,7 +47,7 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
     },
 
     onReady: function() {
-
+        this.title = this.getTitle();
         // this section sets up data needed by the template
         this.subtitle1 = moment(this.data.testrun.dateCreated).format("L");
         this.subtitle2 = safeReference(this.data.testrun, "project.name", "");
@@ -142,7 +142,7 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
         });
 
         if(! this.notDashboard) {
-            var title = this.getTitle();
+            /*var title = this.getTitle();
             if(this.subtitle2 != "") {
                 title = this.subtitle2 + "<br/>" + title;
                 $("#subtitle2").hide();
@@ -151,7 +151,8 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
                 title = title + "<br/>" + this.subtitle4;
                 $("#subtitle4").hide();
             }
-            $('#pagetitle').html(title).css("height", "auto");
+            $('#pagetitle').html(title).css("height", "auto");*/
+            $('#pagetitle').hide();
 
             $('#mainnavigation').hide();
             $('#footer').hide();
