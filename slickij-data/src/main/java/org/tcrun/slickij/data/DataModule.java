@@ -41,6 +41,7 @@ public class DataModule extends AbstractModule implements DataPluginModule
         morphia.map(UpdateRecord.class);
         morphia.map(TestrunGroup.class);
         morphia.map(AMQPSystemConfiguration.class);
+        morphia.map(Quote.class);
 		bind(ProjectDAO.class).to(ProjectDAOImpl.class);
 		bind(FileChunkDAO.class).to(FileChunkDAOImpl.class);
 		bind(ConfigurationDAO.class).to(ConfigurationDAOImpl.class);
@@ -54,6 +55,7 @@ public class DataModule extends AbstractModule implements DataPluginModule
         bind(UpdateRecordDAO.class).to(UpdateRecordDAOImpl.class);
         bind(TestrunGroupDAO.class).to(TestrunGroupDAOImpl.class);
         bind(SystemConfigurationDAO.class).to(SystemConfigurationDAOImpl.class);
+        bind(QuoteDAO.class).to(QuoteDAOImpl.class);
 		bind(ProjectResource.class).to(ProjectResourceImpl.class);
 		bind(TestplanResource.class).to(TestplanResourceImpl.class);
 		bind(ConfigurationResource.class).to(ConfigurationResourceImpl.class);
@@ -68,6 +70,7 @@ public class DataModule extends AbstractModule implements DataPluginModule
         bind(TestrunGroupResource.class).to(TestrunGroupResourceImpl.class);
         bind(SystemConfigurationResource.class).to(SystemConfigurationResourceImpl.class);
         bind(ReloadResource.class).to(ReloadResourceImpl.class);
+        bind(QuoteResource.class).to(QuoteResourceImpl.class);
         bind(EventManager.class).to(AMQPEventManager.class).asEagerSingleton();
 		bind(SlickApiExceptionMapper.class);
 		bind(NotFoundExceptionMapper.class);
