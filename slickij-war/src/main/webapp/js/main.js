@@ -292,6 +292,24 @@ var SlickPage = Backbone.View.extend({
             if(! this.options.noSetTitle) {
                 setSlickTitle(this.getTitle());
             }
+            if(this.shouldShowQuote()) {
+                this.showRandomQuote();
+            }
+        },
+
+        showRandomQuote: function() {
+            var page = this;
+            this.quote = new slick.models.Quote({});
+            this.quote.randomQuote().then(function() {
+                var el = $("<div></div>").addClass("quote");
+                page.template("quote.html", page.quote.toJSON(), el);
+                $.jGrowl(el[0].outerHTML);
+            });
+
+        },
+
+        shouldShowQuote: function() {
+            return Boolean(this.options.query.quote);
         },
 
         getTitle: function() {

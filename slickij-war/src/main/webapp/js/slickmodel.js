@@ -39,6 +39,19 @@
         }
     });
 
+    slick.models.Quote = Backbone.DeepModel.extend({
+        urlRoot: "api/quotes",
+        randomQuote: function() {
+            return $.ajax({
+                url: "api/quotes/random",
+                model: this,
+                success: function(data) {
+                    this.model.set(data);
+                }
+            });
+        }
+    });
+
 	window.slick = slick;
 
 })();
