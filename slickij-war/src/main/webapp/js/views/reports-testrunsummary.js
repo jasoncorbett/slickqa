@@ -166,8 +166,27 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
         }
     },
 
+    showRandomQuote: function() {
+        var page = this;
+        this.quote = new slick.models.Quote({});
+        this.quote.randomQuote().then(function() {
+            var el = $("<div></div>").addClass("quote");
+            page.template("quote.html", page.quote.toJSON(), el);
+            if(page.notDashboard) {
+                $.jGrowl(el[0].outerHTML);
+            } else {
+                $.jGrowl(el[0].outerHTML, {position: "bottom-right"});
+            }
+        });
+
+    },
+
     getTitle: function() {
-        return safeReference(this.data.testrun, "testplan.name", this.data.testrun.name) + " Summary";
+        if(this.notDashboard) {
+            return safeReference(this.data.testrun, "testplan.name", this.data.testrun.name) + " Summary";
+        } else {
+            return safeReference(this.data.testrun, "testplan.name", this.data.testrun.name);
+        }
     }
 });
 
