@@ -118,6 +118,13 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
             backgroundColor: $("#main").css('background-color'),
             legendTextStyle: {
                 color: $("#main").css('color')},
+            legend: {
+                position: "none"
+            },
+            chartArea: {
+                width: "100%",
+                height: "100%"
+            },
             colors: this.statusColors
         });
 

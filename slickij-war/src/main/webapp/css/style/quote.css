@@ -1,3 +1,8 @@
 .quote-image {
-    width: .5in;
+    width: 1in;
+    float: left;
+}
+
+.quote-text {
+    font-size: 2em;
 }

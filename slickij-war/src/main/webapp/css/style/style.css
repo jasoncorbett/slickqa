@@ -205,6 +205,7 @@ body {
     text-align: center;
 	color: white;
     height: .6in;
+    font-size: .4in;
     width: 100%;
     background-image: url("../../images/Slick.png");
     background-repeat: no-repeat;
@@ -376,19 +377,19 @@ body {
 
 .chart {
 	float: left;
-	width: 5in;
+	width: 4in;
 	height: 3.5in;
 }
 
 #summary {
-	width: 5.5in;
+	width: 6in;
 	float: left;
 	margin-left: .5in;
 	margin-top: .5in;
 }
 
 .summaryline {
-	font-size: xx-large;
+	font-size: 2.5em;
 	margin: 0;
 	padding: 0;
 
@@ -396,7 +397,7 @@ body {
 
 .summarylinetitle {
 	display: inline-block;
-	width: 3in;
+	width: 3.5in;
 }
 
 .summarylinenumber {
@@ -1609,6 +1610,16 @@ span.log-level-TRACE {
 }
 .result-history-image-10 {
     opacity: .1;
+}
+
+h2.subtitle-left,h2.subtitle-right {
+    font-size: 2.5em;
+}
+h3.subtitle-left,h3.subtitle-right {
+    font-size: 2.1em;
+}
+h5.subtitle-left,h5.subtitle-right {
+    font-size: 1.2em;
 }
 
 .dashboard-logo {
