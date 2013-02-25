@@ -8,7 +8,7 @@ import java.io.Serializable;
  *
  * @author slambson
  */
-public class Step implements Serializable
+public class Step implements Serializable, Copyable<Step>
 {
 
     @Property
@@ -35,5 +35,16 @@ public class Step implements Serializable
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    @Override
+    public Step createCopy()
+    {
+        Step copy = new Step();
+
+        copy.setName(getName());
+        copy.setExpectedResult(getExpectedResult());
+
+        return copy;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

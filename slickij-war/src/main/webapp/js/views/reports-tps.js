@@ -17,7 +17,8 @@ var TPSReportPage = SlickPage.extend({
             this.primaryTemplateName = "reports-tps-choosetp.html";
             this.requiredData = {
                 "testplans": "api/testplans?projectid=" + getCurrentProject().id,
-                "environments": "api/configurations?configurationType=ENVIRONMENT"
+                "environments": "api/configurations?configurationType=ENVIRONMENT",
+                "project": "api/projects/" + getCurrentProject().id
             };
             this.on("finish", this.onChooseFinish, this);
         } else {
@@ -25,6 +26,9 @@ var TPSReportPage = SlickPage.extend({
             var testrunUrl = "api/testruns?testplanid=" + this.options.query.testplanid + "&limit=10";
             if(_.has(this.options.query, "environmentid")) {
                 testrunUrl = testrunUrl + "&configid=" + this.options.query.environmentid;
+            }
+            if(_.has(this.options.query, "releaseid")) {
+                testrunUrl = testrunUrl + "&releaseid=" + this.options.query.releaseid;
             }
             this.requiredData = {
                 "theruns": testrunUrl
@@ -41,11 +45,18 @@ var TPSReportPage = SlickPage.extend({
         $("#tps-report-generate-button").on("click", function() {
             var url = "reports/tps?testplanid=" + $("#tps-report-testplan-select :selected").val();
             var environmentid = $("#tps-report-environment-select :selected").val();
+            var releaseid = $("#tps-report-release-select :selected").val();
 
             if (environmentid != "none")
             {
                 url = url + "&environmentid=" + environmentid;
             }
+
+            if (releaseid != "none")
+            {
+                url = url + "&releaseid=" + releaseid;
+            }
+
             $.address.value(url);
         });
     },
@@ -129,7 +140,7 @@ var TPSReportPage = SlickPage.extend({
             bPaginate: false,
             sDom: '<"H"lfrT<"clear">>tS<"F"ip>',
             sScrollY: "2in",
-            oTableTools: {"sSwfPath": "media/swf/copy_cvs_xls_pdf.swf"}
+            oTableTools: {"sSwfPath": "http://www.datatables.net/release-datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"}
         });
 
     }

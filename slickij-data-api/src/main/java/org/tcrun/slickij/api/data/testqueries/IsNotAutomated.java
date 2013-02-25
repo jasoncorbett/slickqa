@@ -23,4 +23,13 @@ public class IsNotAutomated implements TestcaseQuery
 		return "is not automated";
 	}
 
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    @Override
+    public TestcaseQuery createCopy() {
+        return new IsNotAutomated();
+    }
 }

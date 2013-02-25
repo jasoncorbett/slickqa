@@ -33,7 +33,7 @@ public interface TestplanResource
 	@Produces(MediaType.APPLICATION_JSON)
 	@GET
 	@GZIP
-	public List<Testplan> getTestPlans(@QueryParam("projectid") String projectid, @Context UriInfo uriInfo);
+	public List<Testplan> getTestPlans(@Context UriInfo uriInfo);
 
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

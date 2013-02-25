@@ -7,6 +7,7 @@ package org.tcrun.slickij.api.data.testqueries;
 import com.google.code.morphia.query.Criteria;
 import com.google.code.morphia.query.Query;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.tcrun.slickij.api.data.Copyable;
 import org.tcrun.slickij.api.data.Testcase;
 import static org.codehaus.jackson.annotate.JsonTypeInfo.Id;
 import static org.codehaus.jackson.annotate.JsonTypeInfo.As;
@@ -16,9 +17,11 @@ import static org.codehaus.jackson.annotate.JsonTypeInfo.As;
  * @author jcorbett
  */
 @JsonTypeInfo(use=Id.CLASS, include=As.PROPERTY, property="className")
-public interface TestcaseQuery
+public interface TestcaseQuery extends Copyable<TestcaseQuery>
 {
 	public Criteria toMorphiaQuery(Query<Testcase> original);
 
 	public String getQueryDescription();
+
+    public void setQueryDescription(String description);
 }

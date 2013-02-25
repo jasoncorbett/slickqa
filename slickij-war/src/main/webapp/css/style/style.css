@@ -47,7 +47,7 @@ body {
 }
 
 #content-bottom-pad {
-    height: 2in;
+    height: 1.7in;
 }
 
 #titlebar {
@@ -205,6 +205,7 @@ body {
     text-align: center;
 	color: white;
     height: .6in;
+    font-size: .4in;
     width: 100%;
     background-image: url("../../images/Slick.png");
     background-repeat: no-repeat;
@@ -295,6 +296,7 @@ body {
 .main {
 	margin: 0;
 	padding: .1in;
+    padding-top: 0;
 	font-size: 1.1em;
 	background: #000000;
 	color: #d3d2d2;
@@ -375,19 +377,19 @@ body {
 
 .chart {
 	float: left;
-	width: 5in;
+	width: 4in;
 	height: 3.5in;
 }
 
 #summary {
-	width: 5.5in;
+	width: 6in;
 	float: left;
 	margin-left: .5in;
 	margin-top: .5in;
 }
 
 .summaryline {
-	font-size: xx-large;
+	font-size: 2.5em;
 	margin: 0;
 	padding: 0;
 
@@ -395,7 +397,7 @@ body {
 
 .summarylinetitle {
 	display: inline-block;
-	width: 3in;
+	width: 3.5in;
 }
 
 .summarylinenumber {
@@ -587,14 +589,11 @@ a.result-status-CANCELLED:visited {
     text-align: right;
 }
 
-#trdetailtable_filter {
+.dataTables_filter {
     float: left;
-    margin: .1in;
-}
-
-.DTTT_container {
-    float: right;
-    margin: .1in;
+    margin-left: .1in;
+    margin-top: .05in;
+    margin-bottom: .05in;
 }
 
 .boxname {
@@ -1009,21 +1008,16 @@ a.result-status-CANCELLED:visited {
 }
 
 .result-status-image {
-	width: 50px;
+	width: .4in;
 }
 
 .right-justify {
 	text-align: right;
 }
 
-#trdetailtable_filter {
-	float: left;
-	margin: .1in;
-}
-
 .DTTT_container {
 	float: right;
-	margin: .1in;
+	margin-right: .1in;
 }
 
 .boxname {
@@ -1533,10 +1527,106 @@ span.log-level-TRACE {
 .testrundetail-test-name {
     word-wrap: break-word;
     word-break: break-all;
+    text-align: left;
 }
 
 .testrundetail-component-name {
     word-wrap: break-word;
     word-break: break-all;
+    text-align: center;
 }
 
+.error-message {
+    border-radius: .1in .1in .1in .1in;
+    -webkit-box-shadow: #d00 0 0 .15in;
+    -moz-box-shadow: #d00 0 0 .15in;
+    -ms-box-shadow: #d00 0 0 .15in;
+    box-shadow: #d00 0 0 .15in;
+    background-color: #000;
+    border: 1px solid #d00;
+    padding: .1in;
+    display: inline-block;
+}
+
+.error-container {
+    padding-top: .1in;
+    padding-bottom: .1in;
+    padding-left: .5in;
+    padding-right: .5in;
+}
+
+.DTTT_button.ui-button {
+    margin-top: .04in;
+    margin-bottom: .04in;
+    margin-right: .04in;
+    padding: .05in;
+    border-radius: .08in .08in .08in .08in;
+    border: 1px solid grey;
+}
+
+.result-history-container {
+    vertical-align: middle;
+    text-align: right;
+    min-width: 2.5in;
+}
+
+.result-history-image {
+    width: .25in;
+}
+
+.result-history-image-1 {
+    opacity: 1;
+}
+
+.result-history-image-2 {
+     opacity: .9; 
+}
+
+.result-history-image-3 {
+    opacity: .8;
+}
+
+.result-history-image-4 {
+    opacity: .7;
+}
+
+.result-history-image-5 {
+    opacity: .6;
+}
+
+.result-history-image-6 {
+    opacity: .5;
+}
+
+.result-history-image-7 {
+    opacity: .4;
+}
+
+.result-history-image-8 {
+    opacity: .3;
+}
+.result-history-image-9 {
+    opacity: .2;
+}
+.result-history-image-10 {
+    opacity: .1;
+}
+
+h2.subtitle-left,h2.subtitle-right {
+    font-size: 2em;
+}
+h3.subtitle-left,h3.subtitle-right {
+    font-size: 1.8em;
+}
+h5.subtitle-left,h5.subtitle-right {
+    font-size: 1.2em;
+}
+
+.dashboard-logo {
+    padding-left: 2in;
+    color: white;
+    background-image: url("../../images/Slick.png");
+    background-repeat: no-repeat;
+    background-size: auto .6in;
+    background-position: left bottom;
+}

@@ -9,7 +9,7 @@ import static org.codehaus.jackson.annotate.JsonTypeInfo.As;
  * @author jcorbett
  */
 @JsonTypeInfo(use=Id.CLASS, include=As.PROPERTY, property="className")
-public interface DataExtension<T>
+public interface DataExtension<T> extends Copyable<DataExtension<T>>
 {
 	public String getId();
 

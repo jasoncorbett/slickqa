@@ -13,4 +13,6 @@ public interface StoredFileDAO extends DAO<StoredFile, ObjectId>
 	public byte[] getFileContent(ObjectId id);
 
 	public StoredFile saveFileContent(StoredFile file, byte[] data);
+
+    public StoredFile addChunk(StoredFile file, byte[] data);
 }

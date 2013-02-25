@@ -26,6 +26,13 @@ do
 	echo "Done."
 done
 
+#------- Run Javascript Tests -------------------------------------------------------
+
+echo "------------------  Running Javascript Tests -------------------------------"
+cd ../../slickij-war
+./runjstests.sh http://localhost:9090/test.html
+cd -
+
 #------- Run Api Tests -------------------------------------------------------
 
 echo "------------------  Running API Tests -------------------------------"

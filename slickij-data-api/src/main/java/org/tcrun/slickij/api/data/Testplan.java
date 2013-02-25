@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
 
 
 /**
@@ -24,7 +25,7 @@ import java.util.List;
  * @author jcorbett
  */
 @Entity("testplans")
-public class Testplan implements Serializable
+public class Testplan implements Serializable, Copyable<Testplan>
 {
 	@Id
 	private ObjectId id;
@@ -168,4 +169,25 @@ public class Testplan implements Serializable
 	{
 		this.extensions = extensions;
 	}
+
+    @Override
+    public Testplan createCopy()
+    {
+        Testplan copy = new Testplan();
+
+        copy.setId(id);
+        copy.setCreatedBy(createdBy);
+        copy.setIsprivate(isprivate);
+        copy.setName(name);
+        copy.setProject(copyIfNotNull(project));
+
+        List<NamedTestcaseQuery> copyOfQueries = new ArrayList<NamedTestcaseQuery>();
+        for(NamedTestcaseQuery orig : queries)
+            copyOfQueries.add(copyIfNotNull(orig));
+        copy.setQueries(copyOfQueries);
+
+        copy.setSharedWith(new ArrayList<String>(sharedWith));
+
+        return copy;
+    }
 }

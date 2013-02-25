@@ -2,6 +2,7 @@ package org.tcrun.slickij.data.dao;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.dao.BasicDAO;
+import com.google.code.morphia.query.Query;
 import com.google.inject.Inject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -89,7 +90,24 @@ public class StoredFileDAOImpl extends BasicDAO<StoredFile, ObjectId> implements
 		return file;
 	}
 
-	public static String toHexString(byte[] digest)
+    @Override
+    public StoredFile addChunk(StoredFile file, byte[] data)
+    {
+        Query<FileChunk> chunksQuery = filechunkDAO.createQuery();
+        chunksQuery.criteria("files_id").equal(file.getObjectId());
+        long existing_chunks = filechunkDAO.count(chunksQuery);
+        FileChunk chunk = new FileChunk();
+        chunk.setChunkNumber((int)existing_chunks);
+        file.setLength(file.getLength() + data.length);
+        chunk.setFilesId(file.getObjectId());
+        chunk.setData(data);
+        filechunkDAO.save(chunk);
+
+        save(file);
+        return file;
+    }
+
+    public static String toHexString(byte[] digest)
 	{
 		StringBuilder sb = new StringBuilder();
 		for (byte b : digest)

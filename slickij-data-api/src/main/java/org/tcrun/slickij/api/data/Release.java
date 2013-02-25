@@ -13,11 +13,14 @@ import java.util.List;
 import java.util.Set;
 import org.bson.types.ObjectId;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  *
  * @author jcorbett
  */
-public class Release implements Serializable
+public class Release implements Serializable, Copyable<Release>
 {
 	@Property
 	@Indexed
@@ -162,4 +165,24 @@ public class Release implements Serializable
 		retval.setName(name);
 		return retval;
 	}
+
+    @Override
+    public Release createCopy()
+    {
+        Release copy = new Release();
+
+        copy.setId(id);
+        copy.setTarget(copyDateIfNotNull(target));
+        copy.setDefaultBuild(defaultBuild);
+        copy.setName(name);
+
+        List<Build> copyOfBuilds = new ArrayList<Build>();
+        for(Build orig : builds)
+        {
+            copyOfBuilds.add(copyIfNotNull(orig));
+        }
+        copy.setBuilds(copyOfBuilds);
+
+        return copy;
+    }
 }

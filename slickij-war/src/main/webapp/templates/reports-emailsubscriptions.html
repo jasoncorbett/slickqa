@@ -1,0 +1,18 @@
+{{#if needEmail}}
+    <div class="box center-block reports-emailsubscriptions-emailaddress-box">
+        <div class="boxname">Enter an email address:</div>
+        <hr class="glowing" />
+        <form id="reports-emailsubscriptions-emailaddress-form">
+            <input type="text" id="reports-emailsubscriptions-emailaddress" name="emailaddress" />
+            <a id="reports-emailsubscriptions-emailaddress-submit" class="button" href="javascript:;">Edit Subscriptions</a>
+        </form>
+    </div>
+{{else}}
+    <h2 id="reports-emailsubscriptions-address-name">Email Subscriptions for {{address}}</h2>
+    {{#if globalSubscription}}
+        <input id="reports-emailsubscriptions-global-subscription" type="checkbox" name="" value="Global" class="reports-emailsubscriptions-subscription" checked/><label for="reports-emailsubscriptions-global-subscription">All Testrun Reports</label>
+    {{else}}
+        <input id="reports-emailsubscriptions-global-subscription" type="checkbox" name="" value="Global" class="reports-emailsubscriptions-subscription" /><label for="reports-emailsubscriptions-global-subscription">All Testrun Reports</label>
+    {{/if}}
+    <table id="reports-emailsubscriptions-available" class="table-full-width"></table>
+{{/if}}

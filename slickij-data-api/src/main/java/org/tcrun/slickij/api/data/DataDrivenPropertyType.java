@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author jcorbett
  */
-public class DataDrivenPropertyType implements Serializable
+public class DataDrivenPropertyType implements Serializable, Copyable<DataDrivenPropertyType>
 {
 
 	@Property
@@ -64,4 +64,18 @@ public class DataDrivenPropertyType implements Serializable
 		if(getStandardValues() == null)
 			setStandardValues(new ArrayList<String>());
 	}
+
+    @Override
+    public DataDrivenPropertyType createCopy()
+    {
+        DataDrivenPropertyType copy = new DataDrivenPropertyType();
+
+        copy.setName(name);
+        copy.setRequirement(requirement);
+
+        copy.setStandardValues(new ArrayList<String>());
+        copy.getStandardValues().addAll(standardValues);
+
+        return copy;
+    }
 }

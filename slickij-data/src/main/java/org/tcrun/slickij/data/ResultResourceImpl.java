@@ -21,6 +21,8 @@ import org.tcrun.slickij.api.data.dao.ProjectDAO;
 import org.tcrun.slickij.api.data.dao.ResultDAO;
 import org.tcrun.slickij.api.data.dao.TestcaseDAO;
 import org.tcrun.slickij.api.data.dao.TestrunDAO;
+import org.tcrun.slickij.api.events.EventManager;
+import org.tcrun.slickij.api.events.UpdateTestrunEvent;
 
 /**
  *
@@ -34,10 +36,11 @@ public class ResultResourceImpl implements ResultResource
 	private ConfigurationDAO m_configDAO;
 	private TestcaseDAO m_testcaseDAO;
 	private TestrunDAO m_testrunDAO;
+    private EventManager m_events;
 
 
 	@Inject
-	public ResultResourceImpl(ResultDAO p_resultDAO, HostStatusDAO p_hoststatusDAO, ProjectDAO p_projectDAO, TestcaseDAO p_testcaseDAO, TestrunDAO p_testrunDAO, ConfigurationDAO p_configDAO)
+	public ResultResourceImpl(ResultDAO p_resultDAO, HostStatusDAO p_hoststatusDAO, ProjectDAO p_projectDAO, TestcaseDAO p_testcaseDAO, TestrunDAO p_testrunDAO, ConfigurationDAO p_configDAO, EventManager p_events)
 	{
 		m_resultDAO = p_resultDAO;
 		m_hoststatusDAO = p_hoststatusDAO;
@@ -45,6 +48,7 @@ public class ResultResourceImpl implements ResultResource
 		m_configDAO = p_configDAO;
 		m_testcaseDAO = p_testcaseDAO;
 		m_testrunDAO = p_testrunDAO;
+        m_events = p_events;
 	}
 
 	@Override
@@ -218,6 +222,10 @@ public class ResultResourceImpl implements ResultResource
 			result.setRecorded(update.getRecorded());
         if(update.getRunlength() != 0)
             result.setRunlength(update.getRunlength());
+        if(update.getStarted() != null)
+            result.setStarted(update.getStarted());
+        if(update.getFinished() != null)
+            result.setFinished(update.getFinished());
 		if(update.getTestcase() != null)
 		{
 			Testcase test = m_testcaseDAO.findTestcaseByReference(update.getTestcase());
@@ -235,7 +243,10 @@ public class ResultResourceImpl implements ResultResource
 
         if(oldstatus != null && oldstatus != result.getStatus() && result.getTestrun() != null)
         {
+            Testrun before = m_testrunDAO.get(result.getTestrun().getTestrunObjectId()).createCopy();
             m_testrunDAO.changeResultStatus(result.getTestrun().getTestrunObjectId(), oldstatus, result.getStatus());
+            Testrun after = m_testrunDAO.get(result.getTestrun().getTestrunObjectId());
+            m_events.publishEvent(new UpdateTestrunEvent(before, after));
         }
 		m_resultDAO.save(result);
 
@@ -348,7 +359,12 @@ public class ResultResourceImpl implements ResultResource
 
 		// you have to save the new result before setting up the hoststatus
 		m_resultDAO.save(result);
+
+        // publish a testrun update event and update the testrun summary
+        Testrun before = m_testrunDAO.get(result.getTestrun().getTestrunObjectId()).createCopy();
         m_testrunDAO.addNewResultStatusToRun(result.getTestrun().getTestrunObjectId(), result.getStatus());
+        Testrun after = m_testrunDAO.get(result.getTestrun().getTestrunObjectId());
+        m_events.publishEvent(new UpdateTestrunEvent(before, after));
 
 		// Hostname (HostStatus)
 		if(result.getHostname() != null)
@@ -367,6 +383,8 @@ public class ResultResourceImpl implements ResultResource
 			m_hoststatusDAO.save(hoststatus);
 		}
 
+        result.setHistory(m_resultDAO.getHistory(result));
+        m_resultDAO.save(result);
 
 		return result;
 	}
@@ -407,7 +425,10 @@ public class ResultResourceImpl implements ResultResource
 
         if(result.getTestrun() != null)
         {
+            Testrun before = m_testrunDAO.get(result.getTestrun().getTestrunObjectId()).createCopy();
             m_testrunDAO.deleteResultStatusFromRun(result.getTestrun().getTestrunObjectId(), result.getStatus());
+            Testrun after = m_testrunDAO.get(result.getTestrun().getTestrunObjectId());
+            m_events.publishEvent(new UpdateTestrunEvent(before, after));
         }
 
         m_resultDAO.delete(result);
@@ -447,7 +468,10 @@ public class ResultResourceImpl implements ResultResource
         Result result = getResult(resultid);
         if(result.getTestrun() != null)
         {
+            Testrun before = m_testrunDAO.get(result.getTestrun().getTestrunObjectId()).createCopy();
             m_testrunDAO.changeResultStatus(result.getTestrun().getTestrunObjectId(), result.getStatus(), ResultStatus.CANCELLED);
+            Testrun after = m_testrunDAO.get(result.getTestrun().getTestrunObjectId());
+            m_events.publishEvent(new UpdateTestrunEvent(before, after));
         }
 		
 		// update the host status
@@ -492,7 +516,10 @@ public class ResultResourceImpl implements ResultResource
 			m_resultDAO.save(res);
             if(res.getTestrun() != null)
             {
+                Testrun before = m_testrunDAO.get(res.getTestrun().getTestrunObjectId()).createCopy();
                 m_testrunDAO.changeResultStatus(res.getTestrun().getTestrunObjectId(), oldStatus, ResultStatus.NO_RESULT);
+                Testrun after = m_testrunDAO.get(res.getTestrun().getTestrunObjectId());
+                m_events.publishEvent(new UpdateTestrunEvent(before, after));
             }
 		}
 

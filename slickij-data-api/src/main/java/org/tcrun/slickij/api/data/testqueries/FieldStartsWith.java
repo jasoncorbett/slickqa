@@ -26,7 +26,12 @@ public class FieldStartsWith implements TestcaseQuery
 		return "field '" + fieldName + "' starts with '" + fieldValue + "'";
 	}
 
-	public String getFieldName()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public String getFieldName()
 	{
 		return fieldName;
 	}
@@ -45,4 +50,13 @@ public class FieldStartsWith implements TestcaseQuery
 	{
 		this.fieldValue = fieldValue;
 	}
+
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        FieldStartsWith copy = new FieldStartsWith();
+        copy.setFieldName(fieldName);
+        copy.setFieldValue(fieldValue);
+        return copy;
+    }
 }

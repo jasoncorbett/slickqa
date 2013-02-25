@@ -10,13 +10,16 @@ import java.util.Map;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  * Class representing a project in the database.
  *
  * @author jcorbett
  */
 @Entity("projects")
-public class Project implements Serializable
+public class Project implements Serializable, Copyable<Project>
 {
 	@Id
 	private ObjectId id;
@@ -515,4 +518,51 @@ public class Project implements Serializable
         // do nothing
     }
 
+    @Override
+    public Project createCopy()
+    {
+        Project copy = new Project();
+        copy.setName(getName());
+        copy.setDescription(getDescription());
+        copy.setDefaultRelease(getDefaultRelease());
+        copy.setLastUpdated(copyDateIfNotNull(getLastUpdated()));
+        copy.setId(getObjectId());
+        copy.setConfiguration(copyIfNotNull(getConfiguration()));
+
+        copy.setTags(new ArrayList<String>(getTags()));
+
+        copy.setAttributes(new HashMap<String, String>(getAttributes()));
+
+        copy.setAutomationTools(new ArrayList<String>(automationTools));
+
+        List<Release> copyOfReleases = new ArrayList<Release>();
+        for(Release orig : getReleases())
+        {
+            copyOfReleases.add(copyIfNotNull(orig));
+        }
+        copy.setReleases(copyOfReleases);
+
+        ArrayList<Release> copyOfInactiveReleases = new ArrayList<Release>();
+        for(Release orig : getInactiveReleases())
+        {
+            copyOfInactiveReleases.add(copyIfNotNull(orig));
+        }
+        copy.setInactiveReleases(copyOfInactiveReleases);
+
+        List<Component> copyOfComponents = new ArrayList<Component>();
+        for(Component orig : getComponents())
+        {
+            copyOfComponents.add(copyIfNotNull(orig));
+        }
+        copy.setComponents(copyOfComponents);
+
+        List<DataDrivenPropertyType> copyOfDataDrivenProperties = new ArrayList<DataDrivenPropertyType>();
+        for(DataDrivenPropertyType orig : getDatadrivenProperties())
+        {
+            copyOfDataDrivenProperties.add(copyIfNotNull(orig));
+        }
+        copy.setDatadrivenProperties(copyOfDataDrivenProperties);
+
+        return copy;
+    }
 }

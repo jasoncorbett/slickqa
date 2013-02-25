@@ -17,12 +17,15 @@ $(document).ready(function () {
 			$("#actiongroup-" + $(this).attr("id")).addClass("groupselected");
 			$(showid).show(250);
 		}
-        if ($(this).hasAttribute("href")) {
+        if (_.has(this, "href")) {
             return true;
         } else {
 		    return false;
         }
 	});
+
+    $.jGrowl.defaults.position = 'center';
+    $.jGrowl.defaults.life = 5000;
 });
 
 
@@ -289,6 +292,24 @@ var SlickPage = Backbone.View.extend({
             if(! this.options.noSetTitle) {
                 setSlickTitle(this.getTitle());
             }
+            if(this.shouldShowQuote()) {
+                this.showRandomQuote();
+            }
+        },
+
+        showRandomQuote: function() {
+            var page = this;
+            this.quote = new slick.models.Quote({});
+            this.quote.randomQuote().then(function() {
+                var el = $("<div></div>").addClass("quote");
+                page.template("quote.html", page.quote.toJSON(), el);
+                $.jGrowl(el[0].outerHTML);
+            });
+
+        },
+
+        shouldShowQuote: function() {
+            return Boolean(this.options.query.quote);
         },
 
         getTitle: function() {
@@ -369,6 +390,7 @@ var SlickPage = Backbone.View.extend({
 {
     PageGroups: {},
     StandardNavigationGroups: [
+        {displayname: 'Administration', codename: 'admin'},
         {displayname: 'Dashboards', codename: 'dashboards'},
         {displayname: 'Test Management', codename: 'testmgmt'},
         {displayname: 'Run Tests', codename: 'runtests'},

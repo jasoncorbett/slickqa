@@ -9,7 +9,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author jcorbett
  */
-public class ReleaseReference implements Serializable
+public class ReleaseReference implements Serializable, Copyable<ReleaseReference>
 {
 	@Property
 	private ObjectId releaseId;
@@ -45,4 +45,15 @@ public class ReleaseReference implements Serializable
 	{
 		this.releaseId = releaseId;
 	}
+
+    @Override
+    public ReleaseReference createCopy()
+    {
+        ReleaseReference copy = new ReleaseReference();
+
+        copy.setName(getName());
+        copy.setReleaseId(getReleaseObjectId());
+
+        return copy;
+    }
 }

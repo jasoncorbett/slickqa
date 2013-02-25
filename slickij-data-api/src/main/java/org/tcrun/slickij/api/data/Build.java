@@ -7,17 +7,23 @@ import java.util.Date;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  *
  * @author jcorbett
  */
-public class Build implements Serializable
+public class Build implements Serializable, Copyable<Build>
 {
 	@Property
 	private ObjectId id;
 
 	@Property
 	private String name;
+
+    @Property
+    private String description;
 
 	@Property
 	private Date built;
@@ -61,7 +67,17 @@ public class Build implements Serializable
 		this.name = name;
 	}
 
-	@PrePersist
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    @PrePersist
 	public void prePersist()
 	{
 		if(id == null)
@@ -85,4 +101,17 @@ public class Build implements Serializable
 		retval.setName(name);
 		return retval;
 	}
+
+    @Override
+    public Build createCopy()
+    {
+        Build copy = new Build();
+
+        copy.setId(id);
+        copy.setBuilt(copyDateIfNotNull(built));
+        copy.setName(name);
+        copy.setDescription(description);
+
+        return copy;
+    }
 }

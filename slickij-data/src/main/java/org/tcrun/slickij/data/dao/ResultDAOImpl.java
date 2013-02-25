@@ -11,6 +11,8 @@ import com.google.code.morphia.query.Query;
 import com.google.code.morphia.query.UpdateOperations;
 import com.google.code.morphia.query.UpdateResults;
 import com.google.inject.Inject;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
@@ -99,5 +101,73 @@ public class ResultDAOImpl extends BasicDAO<Result, ObjectId> implements ResultD
         }
 
         return summary;
+    }
+
+    @Override
+    public List<ResultReference> getHistory(Result result)
+    {
+        List<ResultReference> retval = new ArrayList<ResultReference>(10);
+        if(result.getConfig() != null && result.getRelease() != null)
+        {
+            Query<Result> query = createQuery();
+            query.criteria("testcase.testcaseId").equal(result.getTestcase().getActualId());
+            query.criteria("config.configId").equal(result.getConfig().getConfigObjectId());
+            query.criteria("release.releaseId").equal(result.getRelease().getReleaseObjectId());
+            query.criteria("recorded").lessThan(result.getRecorded());
+            query.order("-recorded");
+            query.retrievedFields(true, "id", "status", "recorded", "build"); // only need these fields as we are creating a reference
+            for(Result hist : query)
+            {
+                if(retval.size() < 10 && result.getObjectId() != hist.getObjectId())
+                    retval.add(hist.createReference());
+            }
+        }
+
+        if(retval.size() < 10 && result.getConfig() != null && result.getRelease() != null)
+        {
+            Query<Result> query = createQuery();
+            query.criteria("testcase.testcaseId").equal(result.getTestcase().getActualId());
+            query.criteria("config.configId").equal(result.getConfig().getConfigObjectId());
+            query.criteria("release.releaseId").notEqual(result.getRelease().getReleaseObjectId());
+            query.criteria("recorded").lessThan(result.getRecorded());
+            query.order("-recorded");
+            query.retrievedFields(true, "id", "status", "recorded", "build"); // only need these fields as we are creating a reference
+            for(Result hist : query)
+            {
+                if(retval.size() < 10 && result.getObjectId() != hist.getObjectId() && !retval.contains(hist.createReference()))
+                    retval.add(hist.createReference());
+            }
+        }
+
+        if(retval.size() < 10 && result.getRelease() != null && result.getConfig() != null)
+        {
+            Query<Result> query = createQuery();
+            query.criteria("testcase.testcaseId").equal(result.getTestcase().getActualId());
+            query.criteria("config.configId").notEqual(result.getConfig().getConfigObjectId());
+            query.criteria("release.releaseId").equal(result.getRelease().getReleaseObjectId());
+            query.criteria("recorded").lessThan(result.getRecorded());
+            query.order("-recorded");
+            query.retrievedFields(true, "id", "status", "recorded", "build"); // only need these fields as we are creating a reference
+            for(Result hist : query)
+            {
+                if(retval.size() < 10 && result.getObjectId() != hist.getObjectId() && !retval.contains(hist.createReference()))
+                    retval.add(hist.createReference());
+            }
+        }
+
+        if(retval.size() < 10)
+        {
+            Query<Result> query = createQuery();
+            query.criteria("testcase.testcaseId").equal(result.getTestcase().getActualId());
+            query.criteria("recorded").lessThan(result.getRecorded());
+            query.order("-recorded");
+            query.retrievedFields(true, "id", "status", "recorded", "build"); // only need these fields as we are creating a reference
+            for(Result hist : query)
+            {
+                if(retval.size() < 10 && result.getObjectId() != hist.getObjectId() && !retval.contains(hist.createReference()))
+                    retval.add(hist.createReference());
+            }
+        }
+        return retval;
     }
 }

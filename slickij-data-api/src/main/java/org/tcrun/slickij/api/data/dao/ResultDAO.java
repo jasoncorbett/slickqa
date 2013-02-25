@@ -16,4 +16,6 @@ public interface ResultDAO extends DAO<Result, ObjectId>
 	public Result getNextToBeRun(TestRunParameter params);
 
     public ResultGroupSummary getSummary(ResultQuery query);
+
+    public List<ResultReference> getHistory(Result result);
 }

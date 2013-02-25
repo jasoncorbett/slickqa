@@ -7,12 +7,15 @@ import com.google.code.morphia.annotations.Reference;
 import java.io.Serializable;
 import java.util.Date;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  *
  * @author jcorbett
  */
 @Entity("hoststatus")
-public class HostStatus implements Serializable
+public class HostStatus implements Serializable, Copyable<HostStatus>
 {
 	@Id
 	private String hostname;
@@ -63,5 +66,17 @@ public class HostStatus implements Serializable
     public int getSecondsSinceLastCheckin()
     {
         return (int)(((new Date()).getTime() - lastCheckin.getTime())/1000);
+    }
+
+    @Override
+    public HostStatus createCopy()
+    {
+        HostStatus copy = new HostStatus();
+
+        copy.setHostname(hostname);
+        copy.setLastCheckin(copyDateIfNotNull(lastCheckin));
+        copy.setCurrentWork(copyIfNotNull(currentWork));
+
+        return copy;
     }
 }

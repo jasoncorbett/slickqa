@@ -8,7 +8,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author jcorbett
  */
-public class TestplanReference implements Serializable
+public class TestplanReference implements Serializable, Copyable<TestplanReference>
 {
 	private ObjectId id;
 	private String name;
@@ -52,4 +52,12 @@ public class TestplanReference implements Serializable
 		return id;
 	}
 
+    @Override
+    public TestplanReference createCopy()
+    {
+        TestplanReference copy = new TestplanReference();
+        copy.setId(id);
+        copy.setName(name);
+        return copy;
+    }
 }

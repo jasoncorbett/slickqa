@@ -23,4 +23,14 @@ public class IsAutomated implements TestcaseQuery
 		return "is automated";
 	}
 
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        return new IsAutomated();
+    }
 }

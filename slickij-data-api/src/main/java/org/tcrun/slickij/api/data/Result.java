@@ -7,18 +7,20 @@ import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Property;
 import com.google.code.morphia.annotations.Reference;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
+
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
 
 /**
  *
  * @author jcorbett
  */
 @Entity("results")
-public class Result implements Serializable
+public class Result implements Serializable, Copyable<Result>
 {
 	@Id
 	private ObjectId id;
@@ -38,6 +40,12 @@ public class Result implements Serializable
 	@Property
 	@Indexed
 	private Date recorded;
+
+    @Property
+    private Date started;
+
+    @Property
+    private Date finished;
 
 	@Property
 	private ResultStatus status;
@@ -353,4 +361,81 @@ public class Result implements Serializable
 
 		return allRequirementsSatisfied;
 	}
+
+    public Date getStarted()
+    {
+        return started;
+    }
+
+    public void setStarted(Date started)
+    {
+        this.started = started;
+    }
+
+    public Date getFinished()
+    {
+        return finished;
+    }
+
+    public void setFinished(Date finished)
+    {
+        this.finished = finished;
+    }
+
+    @Override
+    public Result createCopy()
+    {
+        Result copy = new Result();
+
+        copy.setBuild(copyIfNotNull(build));
+        copy.setComponent(copyIfNotNull(component));
+        copy.setConfig(copyIfNotNull(config));
+        copy.setHostname(hostname);
+        copy.setId(id);
+        copy.setProject(copyIfNotNull(project));
+        copy.setTestrun(copyIfNotNull(testrun));
+        copy.setTestcase(copyIfNotNull(testcase));
+        copy.setStatus(status);
+        copy.setRunstatus(runstatus);
+        copy.setRunlength(runlength);
+        copy.setRelease(copyIfNotNull(release));
+        copy.setRecorded(copyDateIfNotNull(recorded));
+        copy.setStarted(copyDateIfNotNull(started));
+        copy.setFinished(copyDateIfNotNull(finished));
+        copy.setReason(reason);
+        copy.setTestrun(copyIfNotNull(testrun));
+
+        copy.setAttributes(new HashMap<String, String>());
+        copy.getAttributes().putAll(attributes);
+
+        List<ResultReference> copyOfHistory = new ArrayList<ResultReference>();
+        for(ResultReference orig : history)
+        {
+            copyOfHistory.add(copyIfNotNull(orig));
+        }
+        copy.setHistory(copyOfHistory);
+
+        List<ConfigurationOverride> copyOfOverrides = new ArrayList<ConfigurationOverride>();
+        for(ConfigurationOverride orig : getConfigurationOverride())
+        {
+            copyOfOverrides.add(copyIfNotNull(orig));
+        }
+        copy.setConfigurationOverride(copyOfOverrides);
+
+        List<StoredFile> copyOfStoredFiles = new ArrayList<StoredFile>();
+        for(StoredFile orig : getFiles())
+        {
+            copyOfStoredFiles.add(copyIfNotNull(orig));
+        }
+        copy.setFiles(copyOfStoredFiles);
+
+        List<LogEntry> copyOfLogs = new ArrayList<LogEntry>();
+        for(LogEntry orig : log)
+        {
+            copyOfLogs.add(copyIfNotNull(orig));
+        }
+        copy.setLog(copyOfLogs);
+
+        return copy;
+    }
 }

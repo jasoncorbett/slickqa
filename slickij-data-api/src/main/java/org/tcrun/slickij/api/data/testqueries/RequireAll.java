@@ -3,6 +3,8 @@ package org.tcrun.slickij.api.data.testqueries;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.query.Criteria;
 import com.google.code.morphia.query.Query;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.tcrun.slickij.api.data.Testcase;
 
@@ -39,7 +41,12 @@ public class RequireAll implements TestcaseQuery
 		return retval;
 	}
 
-	public List<TestcaseQuery> getCriteria()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public List<TestcaseQuery> getCriteria()
 	{
 		return criteria;
 	}
@@ -50,4 +57,14 @@ public class RequireAll implements TestcaseQuery
 	}
 
 
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        RequireAll copy = new RequireAll();
+        List<TestcaseQuery> copyOfCriteria = new ArrayList<TestcaseQuery>();
+        for(TestcaseQuery orig : criteria)
+            copyOfCriteria.add(orig.createCopy());
+        copy.setCriteria(copyOfCriteria);
+        return copy;
+    }
 }

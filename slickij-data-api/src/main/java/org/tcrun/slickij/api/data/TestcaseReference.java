@@ -10,7 +10,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author jcorbett
  */
-public class TestcaseReference implements Serializable
+public class TestcaseReference implements Serializable, Copyable<TestcaseReference>
 {
 	@Property
 	private ObjectId testcaseId;
@@ -91,4 +91,18 @@ public class TestcaseReference implements Serializable
 	{
 		this.automationTool = automationTool;
 	}
+
+    @Override
+    public TestcaseReference createCopy()
+    {
+        TestcaseReference copy = new TestcaseReference();
+
+        copy.setActualId(getActualId());
+        copy.setAutomationId(getAutomationId());
+        copy.setAutomationKey(getAutomationKey());
+        copy.setAutomationTool(getAutomationTool());
+        copy.setName(getName());
+
+        return copy;
+    }
 }

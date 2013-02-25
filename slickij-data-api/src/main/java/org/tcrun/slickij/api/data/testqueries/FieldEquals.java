@@ -33,7 +33,12 @@ public class FieldEquals implements TestcaseQuery
 		return "field '" + fieldName + "' equals value '" + fieldValue + "'";
 	}
 
-	public String getFieldName()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public String getFieldName()
 	{
 		return fieldName;
 	}
@@ -52,4 +57,15 @@ public class FieldEquals implements TestcaseQuery
 	{
 		this.fieldValue = fieldValue;
 	}
+
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        FieldEquals copy = new FieldEquals();
+
+        copy.setFieldName(fieldName);
+        copy.setFieldValue(fieldValue);
+
+        return copy;
+    }
 }

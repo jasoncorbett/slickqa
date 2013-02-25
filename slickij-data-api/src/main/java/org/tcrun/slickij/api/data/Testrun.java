@@ -10,13 +10,16 @@ import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import static org.tcrun.slickij.api.data.CopyUtil.copyDateIfNotNull;
+import static org.tcrun.slickij.api.data.CopyUtil.copyIfNotNull;
+
 /**
  *
  * @author jcorbett
  */
 @Entity("testruns")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Testrun implements Serializable
+public class Testrun implements Serializable, Copyable<Testrun>
 {
 	@Id
 	private ObjectId id;
@@ -44,6 +47,12 @@ public class Testrun implements Serializable
 	@Indexed
 	private Date dateCreated;
 
+    @Property
+    private Date runStarted;
+
+    @Property
+    private Date runFinished;
+
 	@Embedded
 	private ReleaseReference release;
 
@@ -55,6 +64,15 @@ public class Testrun implements Serializable
 
     @Embedded
     private TestRunSummary summary;
+
+    @Property
+    private RunStatus state;
+
+    public Testrun()
+    {
+        dateCreated = new Date();
+        state = RunStatus.TO_BE_RUN;
+    }
 
 	public ConfigurationReference getConfig()
 	{
@@ -219,5 +237,58 @@ public class Testrun implements Serializable
     public void setTestplan(Testplan testplan)
     {
         this.testplan = testplan;
+    }
+
+    public Date getRunStarted()
+    {
+        return runStarted;
+    }
+
+    public void setRunStarted(Date runStarted)
+    {
+        this.runStarted = runStarted;
+    }
+
+    public Date getRunFinished()
+    {
+        return runFinished;
+    }
+
+    public void setRunFinished(Date runFinished)
+    {
+        this.runFinished = runFinished;
+    }
+
+    public RunStatus getState()
+    {
+        return state;
+    }
+
+    public void setState(RunStatus state)
+    {
+        this.state = state;
+    }
+
+    @Override
+    public Testrun createCopy()
+    {
+        Testrun copy = new Testrun();
+
+        copy.setId(id);
+        copy.setBuild(copyIfNotNull(build));
+        copy.setConfig(copyIfNotNull(config));
+        copy.setDateCreated(copyDateIfNotNull(dateCreated));
+        copy.setName(name);
+        copy.setProject(copyIfNotNull(project));
+        copy.setRelease(copyIfNotNull(release));
+        copy.setRuntimeOptions(copyIfNotNull(runtimeOptions));
+        copy.setSummary(copyIfNotNull(summary));
+        copy.setTestplan(copyIfNotNull(testplan));
+        copy.setTestplanId(testplanId);
+        copy.setRunStarted(copyDateIfNotNull(runStarted));
+        copy.setRunFinished(copyDateIfNotNull(runFinished));
+        copy.setState(state);
+
+        return copy;
     }
 }

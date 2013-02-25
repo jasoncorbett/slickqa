@@ -48,7 +48,7 @@ var ReportsTestRunDetailPage = SlickPage.extend({
         }
 
         // this section sets up data needed by the template
-        this.subtitle1 = (new Date(this.data.testrun.dateCreated)).toLocaleDateString();
+        this.subtitle1 = moment(this.data.testrun.dateCreated).format("L");
         this.subtitle2 = safeReference(this.data.testrun, "project.name", "");
         if (this.data.testrun.config) {
             this.subtitle3 = safeReference(this.data.testrun, "config.name", "");
@@ -57,24 +57,35 @@ var ReportsTestRunDetailPage = SlickPage.extend({
         if (this.data.testrun.runtimeOptions) {
             this.subtitle5 = "Runtime Options: " + safeReference(this.data.testrun , "runtimeOptions.name", "");
         }
-        this.timeCreated = (new Date(this.data.testrun.dateCreated)).toLocaleTimeString();
+        this.timeCreated = moment(this.data.testrun.dateCreated).format("LT");
 
         this.includepass = (this.options.query && this.options.query.includepass);
 
         this.tbldata = [];
         _.each(this.data.results, function(result) {
+            var history = "";
+            if(result.history) {
+                _.each(result.history.reverse(), function(hresult, index) {
+                    history = history + "<a class=\"modal-link\" href=\"#/reports/result/" + hresult.resultId + "\"><img class=\"result-history-image result-history-image-" + (10 - index) + "\" src=\"images/status-" + hresult["status"] + ".png\" /></a>";
+                }, this);
+            }
             this.tbldata[this.tbldata.length] = [
                 "<img src=\"images/reschedule.png\" id=\"reschedule-" + result.id + "\" class=\"reschedule-result\" alt=\"Reschedule Result\" title=\"Reschedule Result\" />",
-                "<a id=\"" + result.id + "\" href=\"#/reports/result/" + result.id + "\" class=\"modal-link\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")) + "</span>",
+                "<a id=\"" + result.id + "\" href=\"#/reports/result/" + result.id + "\" class=\"modal-link\">" + safeReference(result, "testcase.name", safeReference(result, "testcase.automationId", "Unknown Test Name")),
                 safeReference(result, "component.name", ""),
-                new Date(result.recorded),
+                result.recorded,
                 getDurationMilliseconds(result.runlength),
                 safeReference(result, "testcase.automationId", ""),
                 safeReference(result, "reason", ""),
                 safeReference(result, "hostname", ""),
+                history,
                 "<span class=\"result-status-" + result["status"].replace("_","") + "\">" + result["status"].replace("_", " ") + "<img class=\"result-status-image\" src=\"images/status-" + result["status"] + ".png\" /></span>"
             ];
         }, this);
+    },
+
+    renderDateTime: function(data, type, row) {
+        return moment(data).format("L LT");
     },
 
     onFinish: function() {
@@ -82,21 +93,22 @@ var ReportsTestRunDetailPage = SlickPage.extend({
             aaData: this.tbldata,
             aoColumns: [
                 {"sTitle": "Actions", "sWidth": "5%", "sType": "html", "sClass": "center"},
-                {"sTitle": "Test Name", "sWidth": "55%", "sType": "html", "sClass": "testrundetail-test-name"},
-                {"sTitle": "Component", "sWidth": "10%", "sClass": "center", "sClass": "testrundetail-component-name"},
-                {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": true},
+                {"sTitle": "Test Name", "sWidth": "37%", "sType": "html", "sClass": "testrundetail-test-name"},
+                {"sTitle": "Component", "sWidth": "10%", "sClass": "testrundetail-component-name"},
+                {"sTitle": "Time Reported", "sWidth": "10%", "bVisible": true, mRender: this.renderDateTime, "sClass": "center"},
                 {"sTitle": "Test Duration", "sWidth": "10%", "sClass": "center"},
                 {"sTitle": "Automation ID", "bVisible": false},
                 {"sTitle": "Reason", "bVisible": false},
                 {"sTitle": "Hostname", "sWidth": "10%", "sClass": "center"},
+                {"sTitle": "History (newest on right)", "sWidth": "18%", "sClass": "result-history-container"},
                 {"sTitle": "Result Status", "sWidth": "10%", "sType": "html", "sClass": "center"}],
             bJQueryUI: true,
             bAutoWidth: false,
             bDeferRender: true,
             bPaginate: false,
             sDom: '<"H"lfrT<"clear">>tS<"F"ip>',
-            sScrollY: "" + ($("#content").height() - (3 * $("#footer").height()) - (2 * $("#content-bottom-pad").height())) + "px",
-            oTableTools: {"sSwfPath": "media/swf/copy_cvs_xls_pdf.swf"}
+            sScrollY: "" + ($("#content").height() - (5 * $("#footer").height()) - (2 * $("#content-bottom-pad").height())) + "px",
+            oTableTools: {"sSwfPath": "http://www.datatables.net/release-datatables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"}
         });
         datatable.fnSort([[3, "asc"]]);
 

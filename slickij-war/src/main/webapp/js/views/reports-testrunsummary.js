@@ -10,21 +10,46 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
     codename: "testrunsummary",
     group: "reports",
 
-    requiredData: {
-        "testrun": function() {
-            return SlickUrlBuilder.testrun.getTestrun(this.options.positional[0]);
+
+    initialize: function() {
+        if(this.options.positional[0] == "latest") {
+            this.requiredData = {
+                testruns: function() {
+                    return "api/testruns?testplanid=" + this.options.query.testplanid + "&releaseid=" + this.options.query.releaseid + "&limit=1";
+                }
+            }
+        } else {
+            this.requiredData = {
+                "testrun": function() {
+                    return SlickUrlBuilder.testrun.getTestrun(this.options.positional[0]);
+                }
+            };
+        }
+
+        this.notDashboard = true;
+        if(this.options.query.dashboard) {
+            this.notDashboard = false;
+        }
+
+        this.on("ready", this.onReady, this);
+        this.on("finish", this.onFinish, this);
+        this.on("dataRecieved", this.onDataRecieved, this);
+    },
+
+    onDataRecieved: function(event) {
+        var key = event[0];
+        var value = event[1];
+        if(key == "testrun" && value.project && value.project.id && value.release && value.release.releaseId && value.build && value.build.buildId) {
+            this.addRequiredData("build", "api/projects/" + value.project.id + "/releases/" + value.release.releaseId + "/builds/" + value.build.buildId);
+        } else if(key == "testruns") {
+            this.data.testrun = value[0];
         }
     },
 
-    initialize: function() {
-        this.on("ready", this.onReady, this);
-        this.on("finish", this.onFinish, this);
-    },
-
     onReady: function() {
-
+        this.title = this.getTitle();
         // this section sets up data needed by the template
-        this.subtitle1 = (new Date(this.data.testrun.dateCreated)).toLocaleDateString();
+        this.subtitle1 = moment(this.data.testrun.dateCreated).format("L");
         this.subtitle2 = safeReference(this.data.testrun, "project.name", "");
         if (this.data.testrun.config) {
             this.subtitle3 = safeReference(this.data.testrun, "config.name", "");
@@ -33,7 +58,7 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
         if (this.data.testrun.runtimeOptions) {
             this.subtitle5 = "Runtime Options: " + safeReference(this.data.testrun, "runtimeOptions.name", "");
         }
-		this.timeCreated = (new Date(this.data.testrun.dateCreated)).toLocaleTimeString();
+		this.timeCreated = moment(this.data.testrun.dateCreated).format("LT");
 		this.chartdata = new google.visualization.DataTable();
         this.chartdata.addColumn('string', 'Result Type');
         this.chartdata.addColumn('number', 'Number of Results');
@@ -72,6 +97,17 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
             numberoftests: this.data.testrun.summary.total,
             percentageoftotal: ""
         };
+
+        this.totalTime = null;
+        if (this.data.testrun.runStarted > 0 && this.data.testrun.runFinished > 0) {
+            this.totalTime = getDurationMilliseconds(this.data.testrun.runFinished - this.data.testrun.runStarted);
+        }
+
+        this.isRunning = false;
+        if (this.data.testrun.state == "RUNNING") {
+            this.isRunning = true;
+        }
+
     },
 
     onFinish: function() {
@@ -82,6 +118,13 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
             backgroundColor: $("#main").css('background-color'),
             legendTextStyle: {
                 color: $("#main").css('color')},
+            legend: {
+                position: "none"
+            },
+            chartArea: {
+                width: "100%",
+                height: "100%"
+            },
             colors: this.statusColors
         });
 
@@ -104,10 +147,46 @@ var ReportsTestrunSummaryPage = SlickPage.extend({
                 }
             });
         });
+
+        if(! this.notDashboard) {
+            /*var title = this.getTitle();
+            if(this.subtitle2 != "") {
+                title = this.subtitle2 + "<br/>" + title;
+                $("#subtitle2").hide();
+            }
+            if(this.subtitle4 != "") {
+                title = title + "<br/>" + this.subtitle4;
+                $("#subtitle4").hide();
+            }
+            $('#pagetitle').html(title).css("height", "auto");*/
+            $('#pagetitle').hide();
+
+            $('#mainnavigation').hide();
+            $('#footer').hide();
+        }
+    },
+
+    showRandomQuote: function() {
+        var page = this;
+        this.quote = new slick.models.Quote({});
+        this.quote.randomQuote().then(function() {
+            var el = $("<div></div>").addClass("quote");
+            page.template("quote.html", page.quote.toJSON(), el);
+            if(page.notDashboard) {
+                $.jGrowl(el[0].outerHTML);
+            } else {
+                $.jGrowl(el[0].outerHTML, {position: "bottom-right"});
+            }
+        });
+
     },
 
     getTitle: function() {
-        return safeReference(this.data.testrun, "testplan.name", this.data.testrun.name) + " Summary";
+        if(this.notDashboard) {
+            return safeReference(this.data.testrun, "testplan.name", this.data.testrun.name) + " Summary";
+        } else {
+            return safeReference(this.data.testrun, "testplan.name", this.data.testrun.name);
+        }
     }
 });
 

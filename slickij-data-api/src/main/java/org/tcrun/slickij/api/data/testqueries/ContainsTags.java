@@ -3,6 +3,8 @@ package org.tcrun.slickij.api.data.testqueries;
 import com.google.code.morphia.annotations.Property;
 import com.google.code.morphia.query.Criteria;
 import com.google.code.morphia.query.Query;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.tcrun.slickij.api.data.Testcase;
 
@@ -35,7 +37,12 @@ public class ContainsTags implements TestcaseQuery
 		return retval;
 	}
 
-	public List<String> getTagnames()
+    @Override
+    public void setQueryDescription(String description)
+    {
+    }
+
+    public List<String> getTagnames()
 	{
 		return tagnames;
 	}
@@ -45,4 +52,13 @@ public class ContainsTags implements TestcaseQuery
 		this.tagnames = tagnames;
 	}
 
+    @Override
+    public TestcaseQuery createCopy()
+    {
+        ContainsTags copy = new ContainsTags();
+
+        copy.setTagnames(new ArrayList<String>(tagnames));
+
+        return copy;
+    }
 }

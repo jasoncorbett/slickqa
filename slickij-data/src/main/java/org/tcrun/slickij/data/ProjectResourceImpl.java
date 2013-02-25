@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
@@ -24,6 +25,9 @@ import org.tcrun.slickij.api.data.DataDrivenPropertyType;
 import org.tcrun.slickij.api.data.InvalidDataError;
 import org.tcrun.slickij.api.data.Project;
 import org.tcrun.slickij.api.data.Release;
+import org.tcrun.slickij.api.events.CreateReleaseEvent;
+import org.tcrun.slickij.api.events.EventManager;
+import org.tcrun.slickij.api.events.SlickEventException;
 
 /**
  *
@@ -33,12 +37,14 @@ public class ProjectResourceImpl implements ProjectResource
 {
 	private ProjectDAO m_projectDAO;
 	private ConfigurationDAO m_configDAO;
+    private EventManager m_eventManager;
 
 	@Inject
-	public ProjectResourceImpl(ProjectDAO p_projectDAO, ConfigurationDAO p_configDAO)
+	public ProjectResourceImpl(ProjectDAO p_projectDAO, ConfigurationDAO p_configDAO, EventManager p_eventManager)
 	{
 		m_projectDAO = p_projectDAO;
 		m_configDAO = p_configDAO;
+        m_eventManager = p_eventManager;
 	}
 
 	@Override
@@ -154,11 +160,11 @@ public class ProjectResourceImpl implements ProjectResource
 		try
 		{
 			project.addRelease(release);
+            m_eventManager.publishEvent(new CreateReleaseEvent(project, release));
 		} catch(InvalidDataError e)
 		{
 			throw new WebApplicationException(e, Status.BAD_REQUEST);
 		}
-
 		m_projectDAO.save(project);
 
 		return release;
@@ -274,7 +280,7 @@ public class ProjectResourceImpl implements ProjectResource
 		return build;
 	}
 
-	@Override
+    @Override
 	public Build getBuildByName(String projectId, String releaseId, String buildName) {
 		Release release = getRelease(projectId, releaseId);
 		Build retval = release.findBuildByName(buildName);
@@ -498,6 +504,8 @@ public class ProjectResourceImpl implements ProjectResource
 			realBuild.setName(build.getName());
 		if(build.getBuilt() != null && !build.getBuilt().equals(new Date(0)) && !build.getBuilt().equals(realBuild.getBuilt()))
 			realBuild.setBuilt(build.getBuilt());
+        if(build.getDescription() != null)
+            realBuild.setDescription(build.getDescription());
 
 		m_projectDAO.save(project);
 		return realBuild;
@@ -546,8 +554,8 @@ public class ProjectResourceImpl implements ProjectResource
 
 	protected DataExtension<Project> getExtensionById(Project project, String extensionid)
 	{
-		DataExtension retval = null;
-		for(DataExtension potential : project.getExtensions())
+		DataExtension<Project> retval = null;
+		for(DataExtension<Project> potential : project.getExtensions())
 		{
 			if(potential.getId().equals(extensionid))
 			{
@@ -586,7 +594,7 @@ public class ProjectResourceImpl implements ProjectResource
 	public DataExtension<Project> updateExtension(String projectId, String extensionid, DataExtension<Project> extension)
 	{
 		Project project = getProjectById(projectId);
-		DataExtension realExtension = getExtensionById(project, extensionid);
+		DataExtension<Project> realExtension = getExtensionById(project, extensionid);
 		realExtension.update(extension);
 		m_projectDAO.save(project);
 		return realExtension;

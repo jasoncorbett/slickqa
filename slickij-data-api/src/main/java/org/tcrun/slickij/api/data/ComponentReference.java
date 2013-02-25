@@ -10,7 +10,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author slambson
  */
-public class ComponentReference implements Serializable
+public class ComponentReference implements Serializable, Copyable<ComponentReference>
 {
 
     @Property
@@ -55,5 +55,15 @@ public class ComponentReference implements Serializable
     public String getName()
     {
         return name;
+    }
+
+    @Override
+    public ComponentReference createCopy()
+    {
+        ComponentReference copy = new ComponentReference();
+        copy.setId(id);
+        copy.setName(name);
+        copy.setCode(code);
+        return copy;
     }
 }

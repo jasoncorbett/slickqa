@@ -47,25 +47,30 @@ public class TestplanResourceImpl implements TestplanResource
 	}
 
 	@Override
-	public List<Testplan> getTestPlans(String projectid, UriInfo uriInfo)
+	public List<Testplan> getTestPlans(UriInfo uriInfo)
 	{
 		MultivaluedMap<String, String> params = uriInfo.getQueryParameters();
-		if(params.containsKey("username"))
-			return getTestPlans(projectid, uriInfo.getQueryParameters().getFirst("username"));
-		ObjectId projectId = null;
+		if(params.containsKey("username") && params.containsKey("projectid"))
+			return getTestPlans(params.getFirst("projectid"), uriInfo.getQueryParameters().getFirst("username"));
 		Query<Testplan> query = m_testplanDAO.createQuery();
-		try
-		{
-			projectId = new ObjectId(projectid);
-			query.criteria("project.id").equal(projectId);
-		} catch(RuntimeException ex)
-		{
-			throw new WebApplicationException(ex, Status.BAD_REQUEST);
-		}
+        if(params.containsKey("projectid"))
+        {
+            try
+            {
+                query.criteria("project.id").equal(new ObjectId(params.getFirst("projectid")));
+            } catch(RuntimeException ex)
+            {
+                throw new WebApplicationException(ex, Status.BAD_REQUEST);
+            }
+        }
 		if(params.containsKey("createdby"))
 		{
 			query.criteria("createdBy").equal(params.getFirst("createdby"));
 		}
+        if(params.containsKey("name"))
+        {
+            query.criteria("name").equal(params.getFirst("name"));
+        }
 		return query.asList();
 	}
 
@@ -170,6 +175,8 @@ public class TestplanResourceImpl implements TestplanResource
 			result.setTestrun(run.createReference());
 			result.setRelease(run.getRelease());
 			result.setBuild(run.getBuild());
+            result.setRecorded(new Date());
+            result.setHistory(m_resultDAO.getHistory(result));
 			m_resultDAO.save(result);
             m_testrunDAO.addNewResultStatusToRun(run.getObjectId(), ResultStatus.NO_RESULT);
 		}
@@ -287,6 +294,8 @@ public class TestplanResourceImpl implements TestplanResource
 			result.setTestrun(run.createReference());
 			result.setRelease(run.getRelease());
 			result.setBuild(run.getBuild());
+            result.setRecorded(new Date());
+            result.setHistory(m_resultDAO.getHistory(result));
 			m_resultDAO.save(result);
             m_testrunDAO.addNewResultStatusToRun(run.getObjectId(), ResultStatus.NO_RESULT);
 		}
