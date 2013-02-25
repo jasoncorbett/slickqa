@@ -136,7 +136,7 @@ class SlickTestResult(TestResult):
     def addSuccess(self, test):
         super_fun = super(SlickTestResult, self).addSuccess
         test_name, taken = self._add_result(test, super_fun, "PASS")
-        self.logger.info("{} passed in {}".format(test_name, taken))
+        self.logger.info("{} passed in {}".format(test_name, str(timedelta(milliseconds=taken))[:-3]))
 
     def addError(self, test, err):
         super_fun = super(SlickTestResult, self).addError
