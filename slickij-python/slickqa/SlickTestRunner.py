@@ -241,7 +241,7 @@ class SlickTestRunner(TextTestRunner):
                     try:
                         self.slickCon.add_component(foundValues["component"])
                     except SlickError:
-                        print "Component already exists"
+                        pass
                 
                 foundValues["component"] = {"name": foundValues["component"]}
                 
