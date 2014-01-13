@@ -135,12 +135,11 @@ class SlickFormatter(Formatter):
         except UnicodeEncodeError as ee:
             message = "Error trying to encode. {}".format(traceback.format_exc())
         except Exception as e:
-            message = "Some weird error occured. {}".format(traceback.format_exc())
-        if record.exc_info:
-            exctype = str(record.exc_info[0])
-            excvalue = str(record.exc_info[1])
-            exctraceback = traceback.format_exc().splitlines()
-        
+            if str(e) == 'decoding Unicode is not supported':
+                message = record.msg
+            else:
+                message = "Some weird error occured. {}".format(traceback.format_exc())
+
         return {"entryTime": now, "level": record.levelname, "loggerName": record.name, "message": message, 
                 "exceptionClassName": exctype, "exceptionMessage": excvalue, "exceptionStackTrace": exctraceback}
     
