@@ -6,4 +6,4 @@ def get_date():
     """
     A date object formatted for slick with the local time zone
     """
-    return datetime.now(tzlocal()).strftime('%a, %m %b %Y %H:%M:%S %Z')
+    return datetime.now(tzlocal()).strftime('%a, %d %b %Y %H:%M:%S %Z')

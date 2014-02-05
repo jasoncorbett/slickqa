@@ -117,7 +117,7 @@ class SlickTestResult(TestResult):
             test_result["status"] = result_name
             test_result["runstatus"] = "FINISHED"
             test_result["runlength"] = taken
-            test_result["recorded"] = self.testStartTime.strftime('%a, %m %b %Y %H:%M:%S %Z')
+            test_result["recorded"] = self.testStartTime.strftime('%a, %d %b %Y %H:%M:%S %Z')
             test_result["files"] = files
             test_result["hostname"] = self._getHostname(test)
             
