@@ -1,0 +1,3 @@
+Slick is a test management platform. The term platform is used to indicate that it is more than just an application. A test management application would typically dictate, very strictly, the workflow of the testing. Slick is meant to be adaptable to many different types of testing. Currently it is used by several companies to aid in testing web based products, desktop products, and everything in between.
+
+It includes a client for manual testing (Oil), and has an API that automated frameworks can use to submit results. It does not track test cases (though that will be included in the future), it tracks results, this makes it much more flexible for result submission. Slick does not have to know about the test before a result is submitted.
